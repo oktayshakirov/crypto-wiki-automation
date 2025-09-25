@@ -1,0 +1,397 @@
+{
+  "crypto_ogs": {
+    "satoshi nakamoto": {
+      "slug": "/crypto-ogs/satoshi-nakamoto",
+      "title": "Satoshi Nakamoto",
+      "order": 1
+    },
+    "vitalik buterin": {
+      "slug": "/crypto-ogs/vitalik-buterin",
+      "title": "Vitalik Buterin",
+      "order": 2
+    },
+    "changpeng zhao": {
+      "slug": "/crypto-ogs/changpeng-zhao",
+      "title": "Changpeng Zhao",
+      "order": 3
+    },
+    "cz": {
+      "slug": "/crypto-ogs/changpeng-zhao",
+      "title": "Changpeng Zhao (CZ)",
+      "order": 3
+    },
+    "michael saylor": {
+      "slug": "/crypto-ogs/michael-saylor",
+      "title": "Michael Saylor",
+      "order": 4
+    },
+    "brian armstrong": {
+      "slug": "/crypto-ogs/brian-armstrong",
+      "title": "Brian Armstrong",
+      "order": 5
+    },
+    "gavin wood": {
+      "slug": "/crypto-ogs/gavin-wood",
+      "title": "Gavin Wood",
+      "order": 6
+    },
+    "elon musk": {
+      "slug": "/crypto-ogs/elon-musk",
+      "title": "Elon Musk",
+      "order": 7
+    },
+    "sam bankman": {
+      "slug": "/crypto-ogs/sam-bankman",
+      "title": "Sam Bankman",
+      "order": 8
+    },
+    "charles hoskinson": {
+      "slug": "/crypto-ogs/charles-hoskinson",
+      "title": "Charles Hoskinson",
+      "order": 9
+    },
+    "billy markus": {
+      "slug": "/crypto-ogs/billy-markus",
+      "title": "Billy Markus",
+      "order": 10
+    },
+    "jackson palmer": {
+      "slug": "/crypto-ogs/jackson-palmer",
+      "title": "Jackson Palmer",
+      "order": 11
+    },
+    "snoop dogg": {
+      "slug": "/crypto-ogs/snoop-dogg",
+      "title": "Snoop Dogg",
+      "order": 12
+    },
+    "yi he": {
+      "slug": "/crypto-ogs/yi-he",
+      "title": "Yi He",
+      "order": 13
+    },
+    "anatoly yakovenko": {
+      "slug": "/crypto-ogs/anatoly-yakovenko",
+      "title": "Anatoly Yakovenko",
+      "order": 14
+    },
+    "justin sun": {
+      "slug": "/crypto-ogs/justin-sun",
+      "title": "Justin Sun",
+      "order": 15
+    },
+    "vasily shapovalov": {
+      "slug": "/crypto-ogs/vasily-shapovalov",
+      "title": "Vasily Shapovalov",
+      "order": 16
+    },
+    "pavel durov": {
+      "slug": "/crypto-ogs/pavel-durov",
+      "title": "Pavel Durov",
+      "order": 17
+    },
+    "nayib bukele": {
+      "slug": "/crypto-ogs/nayib-bukele",
+      "title": "Nayib Bukele",
+      "order": 18
+    },
+    "sergey nazarov": {
+      "slug": "/crypto-ogs/sergey-nazarov",
+      "title": "Sergey Nazarov",
+      "order": 19
+    },
+    "charlie lee": {
+      "slug": "/crypto-ogs/charlie-lee",
+      "title": "Charlie Lee",
+      "order": 20
+    },
+    "donald trump": {
+      "slug": "/crypto-ogs/donald-trump",
+      "title": "Donald Trump",
+      "order": 21
+    },
+    "ruja ignatova": {
+      "slug": "/crypto-ogs/ruja-ignatova",
+      "title": "Ruja Ignatova",
+      "order": 22
+    },
+    "hal finney": {
+      "slug": "/crypto-ogs/hal-finney",
+      "title": "Hal Finney",
+      "order": 23
+    },
+    "roger ver": {
+      "slug": "/crypto-ogs/roger-ver",
+      "title": "Roger Ver",
+      "order": 24
+    },
+    "hayden adams": {
+      "slug": "/crypto-ogs/hayden-adams",
+      "title": "Hayden Adams",
+      "order": 25
+    }
+  },
+  "exchanges": {
+    "crypto.com": {
+      "slug": "/exchanges/cryptocom",
+      "title": "Crypto.com",
+      "order": 1
+    },
+    "coinbase": {
+      "slug": "/exchanges/coinbase",
+      "title": "Coinbase",
+      "order": 2
+    },
+    "nexo": {
+      "slug": "/exchanges/nexo",
+      "title": "Nexo",
+      "order": 3
+    },
+    "binance": {
+      "slug": "/exchanges/binance",
+      "title": "Binance",
+      "order": 4
+    },
+    "kucoin": {
+      "slug": "/exchanges/kucoin",
+      "title": "KuCoin",
+      "order": 5
+    },
+    "coinex": {
+      "slug": "/exchanges/coinex",
+      "title": "CoinEx",
+      "order": 6
+    },
+    "bitpanda": {
+      "slug": "/exchanges/bitpanda",
+      "title": "Bitpanda",
+      "order": 7
+    },
+    "whitebit": {
+      "slug": "/exchanges/whitebit",
+      "title": "WhiteBIT",
+      "order": 8
+    },
+    "kraken": {
+      "slug": "/exchanges/kraken",
+      "title": "Kraken",
+      "order": 9
+    },
+    "bybit": {
+      "slug": "/exchanges/bybit",
+      "title": "Bybit",
+      "order": 10
+    },
+    "trade republic": {
+      "slug": "/exchanges/trade-republic",
+      "title": "Trade Republic",
+      "order": 11
+    },
+    "okx": {
+      "slug": "/exchanges/okx",
+      "title": "OKX",
+      "order": 12
+    },
+    "uniswap": {
+      "slug": "/exchanges/uniswap",
+      "title": "Uniswap",
+      "order": 13
+    },
+    "gemini": {
+      "slug": "/exchanges/gemini",
+      "title": "Gemini",
+      "order": 14
+    }
+  },
+  "posts": {
+    "bitcoin": {
+      "slug": "/posts/what-is-bitcoin",
+      "title": "What is Bitcoin? A Beginner's Guide"
+    },
+    "ethereum": {
+      "slug": "/posts/what-is-ethereum",
+      "title": "What is Ethereum? A Beginner's Guide"
+    },
+    "solana": {
+      "slug": "/posts/what-is-solana",
+      "title": "What is Solana? A Beginner's Guide"
+    },
+    "blockchain": {
+      "slug": "/posts/what-is-blockchain",
+      "title": "Everything You Need to Know About Blockchain Technology"
+    },
+    "defi": {
+      "slug": "/posts/what-is-defi",
+      "title": "What is DeFi (Decentralized Finance)?"
+    },
+    "staking": {
+      "slug": "/posts/crypto-staking",
+      "title": "The Ultimate Beginner's Guide to Crypto Staking"
+    },
+    "nft": {
+      "slug": "/posts/are-nfts-dead",
+      "title": "Are NFTs Dead? The Future of Non-Fungible Tokens"
+    },
+    "non-fungible tokens": {
+      "slug": "/posts/are-nfts-dead",
+      "title": "Non-Fungible Tokens"
+    },
+    "altcoins": {
+      "slug": "/posts/what-are-altcoins",
+      "title": "Altcoins: What They Are and How They Work"
+    },
+    "proof-of-work": {
+      "slug": "/posts/what-is-proof-of-work",
+      "title": "What is Proof-of-Work (PoW)?"
+    },
+    "proof-of-stake": {
+      "slug": "/posts/what-is-proof-of-stake",
+      "title": "What is Proof-of-Stake (PoS)?"
+    },
+    "smart contracts": {
+      "slug": "/posts/smart-contracts-and-industries-beyond-crypto",
+      "title": "How Smart Contracts Are Transforming Industries"
+    },
+    "web3": {
+      "slug": "/posts/what-is-web3",
+      "title": "What is Web3: The Decentralized Web of the Future"
+    },
+    "gamefi": {
+      "slug": "/posts/what-is-gamefi",
+      "title": "What is GameFi (Game Finance)"
+    },
+    "crypto scams": {
+      "slug": "/posts/how-to-avoid-crypto-scams",
+      "title": "Crypto Scams: How to Spot and Avoid Them"
+    },
+    "store crypto": {
+      "slug": "/posts/how-to-store-crypto",
+      "title": "How to Safely Store Your Cryptocurrency"
+    },
+    "buy crypto": {
+      "slug": "/posts/how-to-buy-your-first-crypto",
+      "title": "How to Buy Your First Cryptocurrency"
+    },
+    "crypto taxes": {
+      "slug": "/posts/understanding-crypto-taxes",
+      "title": "Understanding Cryptocurrency Taxes"
+    },
+    "crypto volatility": {
+      "slug": "/posts/crypto-volatility",
+      "title": "Understanding Cryptocurrency Volatility"
+    },
+    "crypto trading": {
+      "slug": "/posts/crypto-trading-vs-holding",
+      "title": "Crypto Trading vs. Holding: Which Strategy Is Right for You?"
+    },
+    "fear and greed index": {
+      "slug": "/posts/crypto-fear-and-greed-index-for-beginners",
+      "title": "Crypto Fear & Greed Index: How Beginners Can Use It"
+    },
+    "bull or bear market": {
+      "slug": "/posts/how-to-identify-crypto-bull-or-bear-market",
+      "title": "Bull or Bear Market"
+    },
+    "memecoins": {
+      "slug": "/posts/what-are-memecoins",
+      "title": "What Are Meme Coins and How Do They Work?"
+    },
+    "crypto airdrops": {
+      "slug": "/posts/understanding-crypto-airdrops",
+      "title": "Understanding Crypto Airdrops: How to Get Free Crypto"
+    },
+    "dyor": {
+      "slug": "/posts/do-your-own-research",
+      "title": "The Importance of DYOR (Do Your Own Research)"
+    },
+    "bitcoin mining": {
+      "slug": "/posts/is-bitcoin-mining-still-profitable",
+      "title": "Is Bitcoin Mining Still Profitable?"
+    },
+    "mining rig": {
+      "slug": "/posts/how-to-build-a-mining-rig",
+      "title": "How To Build a Mining Rig: A Step-by-Step Guide for Beginners"
+    },
+    "crypto etfs": {
+      "slug": "/posts/crypto-etfs-explained",
+      "title": "Crypto ETFs Explained: Bridging Digital and Traditional Finance"
+    },
+    "cbdc": {
+      "slug": "/posts/central-bank-digital-currencies",
+      "title": "The Rise of Central Bank Digital Currencies (CBDCs)"
+    },
+    "ai and blockchain": {
+      "slug": "/posts/ai-and-blockchain",
+      "title": "AI and Blockchain: A New Era of Technological Innovations"
+    },
+    "quantum computers": {
+      "slug": "/posts/quantum-computers-and-crypto",
+      "title": "Quantum Computers vs. Crypto: The Upcoming Challenges"
+    },
+    "allianz crypto": {
+      "slug": "/posts/allianz-enters-the-crypto-world",
+      "title": "Allianz Enters the Crypto World"
+    },
+    "apple crypto": {
+      "slug": "/posts/apple-crypto-adoption",
+      "title": "Apple Crypto Adoption"
+    },
+    "crypto books": {
+      "slug": "/posts/best-crypto-books-and-resources",
+      "title": "Best Crypto Books and Resources"
+    },
+    "crypto terms": {
+      "slug": "/posts/common-crypto-terms",
+      "title": "Common Crypto Terms"
+    },
+    "corporate crypto": {
+      "slug": "/posts/corporate-movements-in-crypto",
+      "title": "Corporate Movements in Crypto"
+    },
+    "crypto environment": {
+      "slug": "/posts/crypto-and-the-environment",
+      "title": "Crypto and the Environment"
+    },
+    "crypto beginners": {
+      "slug": "/posts/crypto-for-beginners",
+      "title": "Crypto for Beginners"
+    },
+    "trump crypto": {
+      "slug": "/posts/donald-trumps-2024-victory",
+      "title": "Donald Trump's 2024 Victory"
+    },
+    "gta crypto": {
+      "slug": "/posts/grand-theft-auto-crypto",
+      "title": "Grand Theft Auto Crypto"
+    },
+    "explain crypto grandma": {
+      "slug": "/posts/how-to-explain-crypto-to-your-grandma-in-5-minutes",
+      "title": "How to Explain Crypto to Your Grandma in 5 Minutes"
+    },
+    "crypto portfolio": {
+      "slug": "/posts/how-to-track-your-crypto-portfolio",
+      "title": "How to Track Your Crypto Portfolio"
+    },
+    "future of crypto": {
+      "slug": "/posts/the-future-of-crypto",
+      "title": "The Future of Crypto"
+    },
+    "squid game crypto": {
+      "slug": "/posts/the-squid-game-crypto-scam",
+      "title": "The Squid Game Crypto Scam"
+    },
+    "crypto exchanges guide": {
+      "slug": "/posts/understanding-crypto-exchanges",
+      "title": "Understanding Crypto Exchanges"
+    },
+    "bitcoin price control": {
+      "slug": "/posts/who-controls-bitcoins-price",
+      "title": "Who Controls Bitcoin's Price"
+    }
+  },
+  "next_orders": {
+    "crypto_ogs": 26,
+    "exchanges": 15,
+    "posts": null
+  }
+}

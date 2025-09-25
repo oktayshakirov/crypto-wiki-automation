@@ -1,0 +1,406 @@
+{
+  "name": "Crypto Wiki: New Exchange",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "84038da1-8432-452c-8568-498d2b81d919",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "Gemini"
+            },
+            {
+              "name": "website",
+              "value": "https://www.gemini.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e123c5e2-37ae-428c-940f-6be0e0e8f993",
+      "name": "Set Exchange Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        32,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "automation/content-database.json",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "36435da0-d673-42d8-9566-bdb588d8fd7f",
+      "name": "Get content-database.json",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        224,
+        32
+      ],
+      "webhookId": "8af5d58b-af86-47d8-971b-dbf4b40302d7",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "automation/exchange_guidelines.md",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "ed3b25d0-92db-4a00-a22f-2e5d575898e9",
+      "name": "Get Guidelines",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        224,
+        240
+      ],
+      "webhookId": "868cb777-82aa-4244-9260-5987f185246b",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "wait"
+      },
+      "id": "72733f96-7d32-4bab-978f-73b2365b3e18",
+      "name": "Merge DB + Guidelines",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 1,
+      "position": [
+        432,
+        144
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "c18a8468-3875-4245-b7fb-948e4d3d1855",
+      "name": "Parse & Prepare Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        624,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "chatModel": "=gpt-5",
+        "prompt": {
+          "messages": [
+            {
+              "role": "system",
+              "content": "=\"You are an expert crypto editor creating comprehensive exchange reviews for Crypto Wiki.\n\nIMPORTANT:\n- Follow the provided guidelines exactly\n- Write ONLY the Markdown body (no frontmatter)\n- Use ONLY the provided internal link databases\n- Generate professional, balanced, expert-level content\n- Include social media links in your response as a separate JSON object\""
+            },
+            {
+              "content": "=\"Exchange: {{$json.name}}  \nWebsite: {{$json.website}}  \n\nINTERNAL LINK DATABASES:  \nCRYPTO_OGS: {{$json.ogs | json}}  \nPOSTS: {{$json.posts | json}}  \nEXCHANGES: {{$json.exchanges | json}}  \nTOOLS: {{$json.tools | json}}  \n\n=== COMPLETE GUIDELINES ===  \n{{$json.guidelinesText}}\n\nCRITICAL REQUIREMENTS:\n1. Include EXACTLY 2 images in the article body using /images/posts/ paths\n2. First image: After main services section, before security section\n3. Second image: After user experience/regulatory section, before conclusion\n4. Use descriptive alt text for all images\n5. Include 15-20 internal links using the provided databases\n6. Use **bold** formatting for ALL sub-categories consistently\n7. Include SEO keywords naturally: 'cryptocurrency exchange', 'crypto trading', 'digital assets'\n8. Always include these priority links: How To Store Crypto, How to Avoid Crypto Scams\n9. Link to Bitcoin, Ethereum, DeFi, Staking, and other major concepts\n10. Use exchange comparisons with other exchanges from the database\n\nIMPORTANT: After writing the exchange review, provide social media links as a JSON object in this format:\n{\n  \"social\": {\n    \"website\": \"https://www.exchange.com\",\n    \"twitter\": \"https://twitter.com/exchange\",\n    \"youtube\": \"https://youtube.com/@exchange\",\n    \"linkedin\": \"https://linkedin.com/company/exchange\",\n    \"facebook\": \"https://facebook.com/exchange\",\n    \"instagram\": \"https://instagram.com/exchange\",\n    \"tiktok\": \"https://tiktok.com/@exchange\",\n    \"telegram\": \"https://t.me/exchange\",\n    \"reddit\": \"https://reddit.com/r/exchange\",\n    \"discord\": \"https://discord.gg/exchange\",\n    \"wikipedia\": \"https://en.wikipedia.org/wiki/Exchange\"\n  }\n}\n\nOnly include social media platforms that actually exist for this exchange. Research the exchange's official social media presence.\""
+            }
+          ]
+        },
+        "simplifyOutput": false,
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "b089badc-b52d-4c61-899a-64474ad3c984",
+      "name": "OpenAI: Generate Body",
+      "type": "n8n-nodes-base.openAi",
+      "position": [
+        848,
+        144
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "V3M27dVzBH2bYknk",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "id": "2cecc07c-67f1-4a7e-a0b0-fb6494b34f4b",
+      "name": "Build Frontmatter + MDX",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        144
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "787cd5ae-6e07-4487-98aa-1ffad8ada8ee",
+      "name": "Prepare File Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "={{$json.filePath}}",
+        "fileContent": "={{$json.mdx}}",
+        "commitMessage": "={{$json.commitMessage}}"
+      },
+      "id": "a1d70038-bafc-4d0b-ae4a-944165716076",
+      "name": "Write New Exchange MDX",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        144
+      ],
+      "webhookId": "0659f16d-29c4-4df0-b762-51f61500a898",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "39985f52-405a-487f-9988-49f6a0f81e0e",
+      "name": "Update Database",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "automation/content-database.json",
+        "fileContent": "={{JSON.stringify($json.db, null, 2)}}",
+        "commitMessage": "=Update exchanges DB after adding {{$json.name || 'new exchange'}}"
+      },
+      "id": "c600153a-18b5-4390-95b0-10c44eabb559",
+      "name": "Write Updated DB JSON",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        144
+      ],
+      "webhookId": "c216a840-93e7-41f1-99d2-215bce62e058",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Exchange Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Exchange Data": {
+      "main": [
+        [
+          {
+            "node": "Get content-database.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Guidelines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get content-database.json": {
+      "main": [
+        [
+          {
+            "node": "Merge DB + Guidelines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Guidelines": {
+      "main": [
+        [
+          {
+            "node": "Merge DB + Guidelines",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge DB + Guidelines": {
+      "main": [
+        [
+          {
+            "node": "Parse & Prepare Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Prepare Data": {
+      "main": [
+        [
+          {
+            "node": "OpenAI: Generate Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI: Generate Body": {
+      "main": [
+        [
+          {
+            "node": "Build Frontmatter + MDX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Frontmatter + MDX": {
+      "main": [
+        [
+          {
+            "node": "Prepare File Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare File Data": {
+      "main": [
+        [
+          {
+            "node": "Write New Exchange MDX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write New Exchange MDX": {
+      "main": [
+        [
+          {
+            "node": "Update Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Database": {
+      "main": [
+        [
+          {
+            "node": "Write Updated DB JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "3e264bfb-8eb9-437e-a6e9-e31687789d24",
+  "meta": {
+    "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"
+  },
+  "id": "pEfGTfVz5FdtLTGM",
+  "tags": []
+}

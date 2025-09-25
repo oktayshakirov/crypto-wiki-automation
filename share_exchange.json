@@ -1,0 +1,311 @@
+{
+  "name": "Crypto Wiki: Share Exchange",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2ced7e00-f0fa-4795-9cf5-ba71fa73ce8e",
+      "name": "Manual Trigger (Social Share)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1552,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "slug",
+              "value": "coinbase"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7043fbe1-f5b2-4707-aa99-b9785bac169f",
+      "name": "Set Slug",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "=content/exchanges/{{$json.slug}}.mdx",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "6ea18fd5-1fae-4b04-89f0-de73cc534ba2",
+      "name": "Get Exchange MDX",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        128
+      ],
+      "webhookId": "9378457c-322a-4fbe-862f-fa2358a685cb",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.content;\nconst decoded = Buffer.from(raw, 'base64').toString('utf8');\nconst match = /---([\\s\\S]*?)---/.exec(decoded);\nconst fm = {};\nif (match && match[1]) {\n  match[1].split('\\n').forEach(line => {\n    const [key, ...rest] = line.split(':');\n    if (key && rest.length > 0) {\n      fm[key.trim()] = rest.join(':').trim().replace(/^\\\"|\\\"$|'/g, '');\n    }\n  });\n}\nreturn [{ json: {\n  name: fm.title || \"Exchange\",\n  image: fm.image ? `https://www.thecrypto.wiki${fm.image}` : \"\",\n  description: fm.description || \"\",\n  link: `http://thecrypto.wiki/exchanges/${$json.name.replace('.mdx','')}`\n}}];"
+      },
+      "id": "85c1404d-e545-47d0-9b90-6ffbf4380cc8",
+      "name": "Parse Frontmatter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const name = item.json.name || \"Exchanges\";\n  const link = item.json.link || \"http://thecrypto.wiki/exchanges\";\n  \n  const variants = [\n    `Check out our latest ${name} review 🔎 Features, pros & cons for crypto traders. 👉 {{link}} #CryptoExchange #CryptoTrading`,\n    `Curious about ${name}? Our review covers fees, security & usability — all you need before trading digital assets. 👉 {{link}} #CryptoTrading`,\n    `We reviewed ${name} so you don’t have to. Key insights on this crypto exchange 👉 {{link}} #Crypto`,\n    `Thinking about trading on ${name}? Our review explores its strengths & weaknesses to help you decide. 👉 {{link}} #CryptoExchange`,\n    `${name} under review 🔍 From security to fees, here’s what every trader should know before using this exchange. 👉 {{link}} #Crypto #CryptoTrading`,\n    `Is ${name} the right platform for your crypto journey? 🚀 Our latest review breaks down the essentials. 👉 {{link}} #CryptoExchange`\n  ];\n  \n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  \n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost\n    }\n  };\n});"
+      },
+      "id": "f7ab4add-6882-49ea-9595-e990c85a9d64",
+      "name": "Format Social Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "text": "={{$json.twitter}}",
+        "additionalFields": {}
+      },
+      "id": "7434563a-5301-4a22-8d09-5765401c0af4",
+      "name": "Create Tweet",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        -560,
+        240
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "QT8bLYGAdrhMNYdJ",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{$json.facebook}}"
+              },
+              {
+                "name": "link",
+                "value": "={{$json.link}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a58041d1-4cab-4af1-8670-9fb4fec78a9f",
+      "name": "Facebook Graph API",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        16
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{$json.image}}"
+              },
+              {
+                "name": "caption",
+                "value": "={{$json.instagramCaption}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "50634b55-4e65-4c1e-a5ec-5a9a156a8217",
+      "name": "Instagram Create Media",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        128
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{$json.id}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "97f12432-c806-44b7-94b9-63179c0569c3",
+      "name": "Instagram Publish Media",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        128
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger (Social Share)": {
+      "main": [
+        [
+          {
+            "node": "Set Slug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slug": {
+      "main": [
+        [
+          {
+            "node": "Get Exchange MDX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Exchange MDX": {
+      "main": [
+        [
+          {
+            "node": "Parse Frontmatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Frontmatter": {
+      "main": [
+        [
+          {
+            "node": "Format Social Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Social Post": {
+      "main": [
+        [
+          {
+            "node": "Instagram Create Media",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Graph API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media": {
+      "main": [
+        [
+          {
+            "node": "Instagram Publish Media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "df904266-313c-49e4-a305-d8ed462ce174",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"
+  },
+  "id": "KYJga45bwixvg8DY",
+  "tags": []
+}

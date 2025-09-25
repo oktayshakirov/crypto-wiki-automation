@@ -197,8 +197,8 @@
       "type": "n8n-nodes-base.twitter",
       "typeVersion": 2,
       "position": [
-        -672,
-        176
+        -656,
+        224
       ],
       "credentials": {
         "twitterOAuth2Api": {
@@ -310,6 +310,31 @@
           "name": "Facebook Graph account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "@thecryptowiki",
+        "file": "={{$json.imageUrl}}",
+        "additionalFields": {
+          "caption": "={{$json.twitter}}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -656,
+        624
+      ],
+      "id": "8237e65e-593e-4f63-9e5e-09c4433ffd0d",
+      "name": "Telegram Post",
+      "webhookId": "5451a267-98bb-425d-9640-76c1afb4791e",
+      "credentials": {
+        "telegramApi": {
+          "id": "uVLOnoo4RVLvHhIs",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -395,6 +420,11 @@
       "main": [
         [
           {
+            "node": "Telegram Post",
+            "type": "main",
+            "index": 0
+          },
+          {
             "node": "Instagram Create Media",
             "type": "main",
             "index": 0
@@ -428,7 +458,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "b90e6772-ba77-405b-9674-340ba4e8f302",
+  "versionId": "efb78046-e42a-4586-8a83-e4bd65cfba52",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"

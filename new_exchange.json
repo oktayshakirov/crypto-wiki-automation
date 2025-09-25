@@ -7,10 +7,7 @@
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        -176,
-        144
-      ]
+      "position": [-176, 144]
     },
     {
       "parameters": {
@@ -32,10 +29,7 @@
       "name": "Set Exchange Data",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
-      "position": [
-        32,
-        144
-      ]
+      "position": [32, 144]
     },
     {
       "parameters": {
@@ -48,7 +42,7 @@
         },
         "repository": {
           "__rl": true,
-          "value": "crypto-wiki",
+          "value": "crypto-wiki-automation",
           "mode": "name"
         },
         "filePath": "automation/content-database.json",
@@ -59,10 +53,7 @@
       "name": "Get content-database.json",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        224,
-        32
-      ],
+      "position": [224, 32],
       "webhookId": "8af5d58b-af86-47d8-971b-dbf4b40302d7",
       "credentials": {
         "githubApi": {
@@ -82,7 +73,7 @@
         },
         "repository": {
           "__rl": true,
-          "value": "crypto-wiki",
+          "value": "crypto-wiki-automation",
           "mode": "name"
         },
         "filePath": "automation/exchange_guidelines.md",
@@ -93,10 +84,7 @@
       "name": "Get Guidelines",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        224,
-        240
-      ],
+      "position": [224, 240],
       "webhookId": "868cb777-82aa-4244-9260-5987f185246b",
       "credentials": {
         "githubApi": {
@@ -113,10 +101,7 @@
       "name": "Merge DB + Guidelines",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 1,
-      "position": [
-        432,
-        144
-      ]
+      "position": [432, 144]
     },
     {
       "parameters": {},
@@ -124,10 +109,7 @@
       "name": "Parse & Prepare Data",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [
-        624,
-        144
-      ]
+      "position": [624, 144]
     },
     {
       "parameters": {
@@ -151,10 +133,7 @@
       "id": "b089badc-b52d-4c61-899a-64474ad3c984",
       "name": "OpenAI: Generate Body",
       "type": "n8n-nodes-base.openAi",
-      "position": [
-        848,
-        144
-      ],
+      "position": [848, 144],
       "typeVersion": 1.1,
       "credentials": {
         "openAiApi": {
@@ -171,10 +150,7 @@
       "name": "Build Frontmatter + MDX",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [
-        1040,
-        144
-      ]
+      "position": [1040, 144]
     },
     {
       "parameters": {},
@@ -182,10 +158,7 @@
       "name": "Prepare File Data",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [
-        1248,
-        144
-      ]
+      "position": [1248, 144]
     },
     {
       "parameters": {
@@ -208,10 +181,7 @@
       "name": "Write New Exchange MDX",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        1440,
-        144
-      ],
+      "position": [1440, 144],
       "webhookId": "0659f16d-29c4-4df0-b762-51f61500a898",
       "credentials": {
         "githubApi": {
@@ -226,10 +196,7 @@
       "name": "Update Database",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [
-        1680,
-        144
-      ]
+      "position": [1680, 144]
     },
     {
       "parameters": {
@@ -242,7 +209,7 @@
         },
         "repository": {
           "__rl": true,
-          "value": "crypto-wiki",
+          "value": "crypto-wiki-automation",
           "mode": "name"
         },
         "filePath": "automation/content-database.json",
@@ -253,10 +220,7 @@
       "name": "Write Updated DB JSON",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        1936,
-        144
-      ],
+      "position": [1936, 144],
       "webhookId": "c216a840-93e7-41f1-99d2-215bce62e058",
       "credentials": {
         "githubApi": {

@@ -3,13 +3,13 @@
   "nodes": [
     {
       "parameters": {},
-      "id": "2ced7e00-f0fa-4795-9cf5-ba71fa73ce8e",
+      "id": "ee86ae01-6e88-487f-887f-6584d6a9ab83",
       "name": "Manual Trigger (Social Share)",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1552,
-        128
+        -2096,
+        432
       ]
     },
     {
@@ -18,19 +18,19 @@
           "string": [
             {
               "name": "slug",
-              "value": "coinbase"
+              "value": "cryptocom"
             }
           ]
         },
         "options": {}
       },
-      "id": "7043fbe1-f5b2-4707-aa99-b9785bac169f",
+      "id": "57742b97-a61f-42d7-9b0a-33b249f8a4fd",
       "name": "Set Slug",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        -1360,
-        128
+        -1952,
+        432
       ]
     },
     {
@@ -51,13 +51,13 @@
         "asBinaryProperty": false,
         "additionalParameters": {}
       },
-      "id": "6ea18fd5-1fae-4b04-89f0-de73cc534ba2",
+      "id": "2c0f801c-61c9-4c37-a4a1-a5bd43a58e85",
       "name": "Get Exchange MDX",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
       "position": [
-        -1152,
-        128
+        -1808,
+        432
       ],
       "webhookId": "9378457c-322a-4fbe-862f-fa2358a685cb",
       "credentials": {
@@ -71,26 +71,120 @@
       "parameters": {
         "jsCode": "const raw = $json.content;\nconst decoded = Buffer.from(raw, 'base64').toString('utf8');\nconst match = /---([\\s\\S]*?)---/.exec(decoded);\nconst fm = {};\nif (match && match[1]) {\n  match[1].split('\\n').forEach(line => {\n    const [key, ...rest] = line.split(':');\n    if (key && rest.length > 0) {\n      fm[key.trim()] = rest.join(':').trim().replace(/^\\\"|\\\"$|'/g, '');\n    }\n  });\n}\nreturn [{ json: {\n  name: fm.title || \"Exchange\",\n  image: fm.image ? `https://www.thecrypto.wiki${fm.image}` : \"\",\n  description: fm.description || \"\",\n  link: `http://thecrypto.wiki/exchanges/${$json.name.replace('.mdx','')}`\n}}];"
       },
-      "id": "85c1404d-e545-47d0-9b90-6ffbf4380cc8",
+      "id": "7f39eef1-ce6b-4768-836a-2de57c3da9fe",
       "name": "Parse Frontmatter",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -960,
-        128
+        -1648,
+        432
       ]
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map(item => {\n  const name = item.json.name || \"Exchanges\";\n  const link = item.json.link || \"http://thecrypto.wiki/exchanges\";\n  \n  const variants = [\n    `Check out our latest ${name} review 🔎 Features, pros & cons for crypto traders. 👉 {{link}} #CryptoExchange #CryptoTrading`,\n    `Curious about ${name}? Our review covers fees, security & usability — all you need before trading digital assets. 👉 {{link}} #CryptoTrading`,\n    `We reviewed ${name} so you don’t have to. Key insights on this crypto exchange 👉 {{link}} #Crypto`,\n    `Thinking about trading on ${name}? Our review explores its strengths & weaknesses to help you decide. 👉 {{link}} #CryptoExchange`,\n    `${name} under review 🔍 From security to fees, here’s what every trader should know before using this exchange. 👉 {{link}} #Crypto #CryptoTrading`,\n    `Is ${name} the right platform for your crypto journey? 🚀 Our latest review breaks down the essentials. 👉 {{link}} #CryptoExchange`\n  ];\n  \n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  \n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost\n    }\n  };\n});"
+        "imageTemplateId": "a6077b23d13fc380",
+        "overridesUi": {
+          "overrideValues": [
+            {
+              "propertiesUi": {
+                "propertyValues": [
+                  {
+                    "key": "image.src",
+                    "value": "={{$json.image}}"
+                  },
+                  {
+                    "key": "title.text",
+                    "value": "=Is {{$json.name}} the right platform for you ?"
+                  },
+                  {
+                    "key": "description.text",
+                    "value": "={{$json.description}}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
       },
-      "id": "f7ab4add-6882-49ea-9595-e990c85a9d64",
+      "id": "7497e824-26cf-43bb-9175-babd9c2264ba",
+      "name": "Create an image",
+      "type": "n8n-nodes-base.apiTemplateIo",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        432
+      ],
+      "credentials": {
+        "apiTemplateIoApi": {
+          "id": "vNIrPpfU5KGJggDq",
+          "name": "APITemplate.io account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{$json.download_url_png || $json.download_url || $json.url || $json.image_url || $json.image}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "e60df3a4-5536-4749-bd40-287246e7c731",
+      "name": "Download APITemplate Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1344,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki-automation",
+          "mode": "name"
+        },
+        "filePath": "=images/exchanges/{{$('Set Slug').item.json.slug}}.png",
+        "binaryData": true,
+        "commitMessage": "new automated image"
+      },
+      "id": "2cdbc51d-e9a6-40c2-97b5-097acaea0f6a",
+      "name": "Upload to GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        432
+      ],
+      "webhookId": "077f29d7-8e40-4b35-927b-da35e335485e",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  // Get the name from the Parse Frontmatter step (from the original data)\n  const name = $('Parse Frontmatter').item.json.name || \"Exchange\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/exchanges\";\n  // Get the slug from the Set Slug step\n  const slug = $('Set Slug').item.json.slug || \"exchange\";\n\n  const variants = [\n    `Check out our latest ${name} review 🔎 Features, pros & cons for crypto traders. 👉 {{link}} #CryptoExchange #CryptoTrading`,\n    `Curious about ${name}? Our review covers fees, security & usability — all you need before trading digital assets. 👉 {{link}} #CryptoTrading`,\n    `We reviewed ${name} so you don't have to. Key insights on this crypto exchange 👉 {{link}} #Crypto`,\n    `Thinking about trading on ${name}? Our review explores its strengths & weaknesses to help you decide. 👉 {{link}} #CryptoExchange`,\n    `${name} under review 🔍 From security to fees, here's what every trader should know before using this exchange. 👉 {{link}} #Crypto #CryptoTrading`,\n    `Is ${name} the right platform for your crypto journey? 🚀 Our latest review breaks down the essentials. 👉 {{link}} #CryptoExchange`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n\n  // Get the original image URL from the Parse Frontmatter step\n  const originalImageUrl = $('Parse Frontmatter').item.json.image || \"\";\n\n  // Construct GitHub raw URL for Instagram using the slug\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/exchanges/${slug}.png`;\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      originalImageUrl: originalImageUrl,\n      link: link\n    }\n  };\n});"
+      },
+      "id": "2f9f1113-a880-470a-88e7-b4d23d935565",
       "name": "Format Social Post",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
       "position": [
-        -752,
-        128
+        -1008,
+        432
       ]
     },
     {
@@ -98,18 +192,54 @@
         "text": "={{$json.twitter}}",
         "additionalFields": {}
       },
-      "id": "7434563a-5301-4a22-8d09-5765401c0af4",
+      "id": "ca627f26-c6e9-45ce-a011-8eec251d8306",
       "name": "Create Tweet",
       "type": "n8n-nodes-base.twitter",
       "typeVersion": 2,
       "position": [
-        -560,
-        240
+        -672,
+        176
       ],
       "credentials": {
         "twitterOAuth2Api": {
           "id": "QT8bLYGAdrhMNYdJ",
           "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{$json.imageUrl}}"
+              },
+              {
+                "name": "caption",
+                "value": "={{$json.instagramCaption}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "7f4e878f-0d5a-48f1-bbd4-a4494bad0883",
+      "name": "Instagram Create Media",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        432
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
         }
       }
     },
@@ -134,49 +264,13 @@
           }
         }
       },
-      "id": "a58041d1-4cab-4af1-8670-9fb4fec78a9f",
-      "name": "Facebook Graph API",
+      "id": "c0da6162-f691-480f-8580-8345e49a96bb",
+      "name": "Facebook Post",
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -560,
-        16
-      ],
-      "credentials": {
-        "facebookGraphApi": {
-          "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "httpRequestMethod": "POST",
-        "graphApiVersion": "v23.0",
-        "node": "17841477190733041",
-        "edge": "media",
-        "options": {
-          "queryParameters": {
-            "parameter": [
-              {
-                "name": "image_url",
-                "value": "={{$json.image}}"
-              },
-              {
-                "name": "caption",
-                "value": "={{$json.instagramCaption}}"
-              }
-            ]
-          }
-        }
-      },
-      "id": "50634b55-4e65-4c1e-a5ec-5a9a156a8217",
-      "name": "Instagram Create Media",
-      "type": "n8n-nodes-base.facebookGraphApi",
-      "typeVersion": 1,
-      "position": [
-        -352,
-        128
+        -768,
+        32
       ],
       "credentials": {
         "facebookGraphApi": {
@@ -202,13 +296,13 @@
           }
         }
       },
-      "id": "97f12432-c806-44b7-94b9-63179c0569c3",
-      "name": "Instagram Publish Media",
+      "id": "cd99c834-1d72-4203-9aab-930dec34b911",
+      "name": "Instagram Post",
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -128,
-        128
+        -560,
+        432
       ],
       "credentials": {
         "facebookGraphApi": {
@@ -257,6 +351,39 @@
       "main": [
         [
           {
+            "node": "Create an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an image": {
+      "main": [
+        [
+          {
+            "node": "Download APITemplate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download APITemplate Image": {
+      "main": [
+        [
+          {
+            "node": "Upload to GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to GitHub": {
+      "main": [
+        [
+          {
             "node": "Format Social Post",
             "type": "main",
             "index": 0
@@ -273,12 +400,12 @@
             "index": 0
           },
           {
-            "node": "Facebook Graph API",
+            "node": "Create Tweet",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Create Tweet",
+            "node": "Facebook Post",
             "type": "main",
             "index": 0
           }
@@ -289,7 +416,7 @@
       "main": [
         [
           {
-            "node": "Instagram Publish Media",
+            "node": "Instagram Post",
             "type": "main",
             "index": 0
           }
@@ -301,7 +428,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "df904266-313c-49e4-a305-d8ed462ce174",
+  "versionId": "b90e6772-ba77-405b-9674-340ba4e8f302",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"

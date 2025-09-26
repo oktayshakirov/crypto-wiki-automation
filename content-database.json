@@ -201,6 +201,11 @@
       "slug": "/exchanges/gemini",
       "title": "Gemini",
       "order": 14
+    },
+    "upbit": {
+      "slug": "/exchanges/upbit",
+      "title": "Upbit",
+      "order": 15
     }
   },
   "posts": {
@@ -391,7 +396,7 @@
   },
   "next_orders": {
     "crypto_ogs": 26,
-    "exchanges": 15,
+    "exchanges": 16,
     "posts": null
   }
 }

@@ -36,6 +36,47 @@
 - **Contextual Placement**: Links should flow naturally within content
 - **Links** should be distributed evenly across all sections, not clustered in one area.
 
+### **CRITICAL: Link Validation Requirements**
+
+- **MANDATORY**: Only use links that exist in the provided databases
+- **Key Variations**: Check multiple key variations for same concept:
+  - "nft" → check "nfts" in database
+  - "altcoin" → check "altcoins" in database
+  - "defi" → check "defi" in database
+- **No Guessing**: If a link doesn't exist in the database, don't create it
+- **Fallback Strategy**: If exact match not found, use related concept from database
+- **Validation Process**: Before creating any link, verify it exists in the provided JSON data
+
+### **Common Key Variations to Check**
+
+When looking for links, check these variations in the database:
+
+- **NFTs**: Try "nft" and "nfts" keys
+- **Altcoins**: Try "altcoin" and "altcoins" keys
+- **DeFi**: Use "defi" key
+- **Staking**: Use "staking" key
+- **Trading**: Use "crypto trading" key
+- **Storage**: Use "store crypto" key
+- **Scams**: Use "crypto scams" key
+
+### **Link Format Examples**
+
+✅ **CORRECT** (from database):
+
+- `[Bitcoin](/posts/what-is-bitcoin)`
+- `[Ethereum](/posts/what-is-ethereum)`
+- `[DeFi](/posts/what-is-defi)`
+- `[Staking](/posts/crypto-staking)`
+- `[How to Store Crypto](/posts/how-to-store-crypto)`
+- `[How to Avoid Crypto Scams](/posts/how-to-avoid-crypto-scams)`
+
+❌ **WRONG** (guessed URLs):
+
+- `[Bitcoin](/posts/bitcoin)`
+- `[NFTs](/posts/nfts)`
+- `[Altcoins](/posts/altcoins)`
+- `[Trading](/posts/trading)`
+
 ## Writing Standards
 
 - **Specific Numbers**: Use concrete data (e.g., "200+ cryptocurrencies", "700+ trading pairs")

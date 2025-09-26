@@ -7,10 +7,7 @@
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        -864,
-        -112
-      ]
+      "position": [-864, -112]
     },
     {
       "parameters": {
@@ -32,10 +29,7 @@
       "name": "Set Exchange Data",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
-      "position": [
-        -656,
-        -112
-      ]
+      "position": [-656, -112]
     },
     {
       "parameters": {
@@ -59,10 +53,7 @@
       "name": "Get content-database.json",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        -464,
-        -224
-      ],
+      "position": [-464, -224],
       "webhookId": "8af5d58b-af86-47d8-971b-dbf4b40302d7",
       "credentials": {
         "githubApi": {
@@ -93,10 +84,7 @@
       "name": "Get Guidelines",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        -464,
-        -16
-      ],
+      "position": [-464, -16],
       "webhookId": "868cb777-82aa-4244-9260-5987f185246b",
       "credentials": {
         "githubApi": {
@@ -113,23 +101,17 @@
       "name": "Merge DB + Guidelines",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 1,
-      "position": [
-        -256,
-        -112
-      ]
+      "position": [-256, -112]
     },
     {
       "parameters": {
-        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name, website } = $node[\"Set Exchange Data\"].json;\n\n// Prepare data for internal linking\nconst ogs = db.crypto_ogs || {};\nconst posts = db.posts || {};\nconst exchanges = db.exchanges || [];\nconst tools = {\n  \"crypto heatmap\": { \"slug\": \"/tools/crypto-heatmap\", \"title\": \"Crypto Heatmap\" },\n  \"fear and greed index\": { \"slug\": \"/tools/fear-and-greed-index\", \"title\": \"Fear and Greed Index\" },\n  \"bitcoin rainbow chart\": { \"slug\": \"/tools/bitcoin-rainbow-chart\", \"title\": \"Bitcoin Rainbow Chart\" },\n  \"staking calculator\": { \"slug\": \"/tools/staking-calculator\", \"title\": \"Staking Calculator\" },\n  \"random coin generator\": { \"slug\": \"/tools/random-coin-generator\", \"title\": \"Random Coin Generator\" }\n};\n\n// Guidelines loaded from external file - single source of truth\nreturn [{\n  json: { \n    db, \n    guidelinesText,\n    name, \n    website,\n    ogs,\n    posts,\n    exchanges,\n    tools\n  }\n}];"
+        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name, website } = $node[\"Set Exchange Data\"].json;\n\n// Prepare data for internal linking\nconst ogs = db.crypto_ogs || {};\nconst posts = db.posts || {};\nconst exchanges = db.exchanges || {};\nconst tools = {\n  \"crypto heatmap\": { \"slug\": \"/tools/crypto-heatmap\", \"title\": \"Crypto Heatmap\" },\n  \"fear and greed index\": { \"slug\": \"/tools/fear-and-greed-index\", \"title\": \"Fear and Greed Index\" },\n  \"bitcoin rainbow chart\": { \"slug\": \"/tools/bitcoin-rainbow-chart\", \"title\": \"Bitcoin Rainbow Chart\" },\n  \"staking calculator\": { \"slug\": \"/tools/staking-calculator\", \"title\": \"Staking Calculator\" },\n  \"random coin generator\": { \"slug\": \"/tools/random-coin-generator\", \"title\": \"Random Coin Generator\" }\n};\n\n// Guidelines loaded from external file - single source of truth\nreturn [{\n  json: { \n    db, \n    guidelinesText,\n    name, \n    website,\n    ogs,\n    posts,\n    exchanges,\n    tools\n  }\n}];"
       },
       "id": "fe9b3f7c-64ab-4238-a338-3e8e8804516e",
       "name": "Parse & Prepare Data",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        -64,
-        -112
-      ]
+      "position": [-64, -112]
     },
     {
       "parameters": {
@@ -153,10 +135,7 @@
       "id": "595191c4-8cb7-4ab5-acee-229e2cb7f017",
       "name": "OpenAI: Generate Body",
       "type": "n8n-nodes-base.openAi",
-      "position": [
-        160,
-        -112
-      ],
+      "position": [160, -112],
       "typeVersion": 1.1,
       "credentials": {
         "openAiApi": {
@@ -173,10 +152,7 @@
       "name": "Build Frontmatter + MDX",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        352,
-        -112
-      ]
+      "position": [352, -112]
     },
     {
       "parameters": {
@@ -186,10 +162,7 @@
       "name": "Prepare File Data",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        560,
-        -112
-      ]
+      "position": [560, -112]
     },
     {
       "parameters": {
@@ -212,10 +185,7 @@
       "name": "Write New Exchange MDX",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        752,
-        -112
-      ],
+      "position": [752, -112],
       "webhookId": "0659f16d-29c4-4df0-b762-51f61500a898",
       "credentials": {
         "githubApi": {
@@ -232,10 +202,7 @@
       "name": "Update Database",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        944,
-        -112
-      ]
+      "position": [944, -112]
     },
     {
       "parameters": {
@@ -259,10 +226,7 @@
       "name": "Write Updated DB JSON",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        1152,
-        -112
-      ],
+      "position": [1152, -112],
       "webhookId": "c216a840-93e7-41f1-99d2-215bce62e058",
       "credentials": {
         "githubApi": {

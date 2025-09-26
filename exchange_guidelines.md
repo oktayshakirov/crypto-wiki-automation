@@ -149,11 +149,82 @@ When looking for links, check these variations in the database:
 
 ### **Social Media Requirements (ENHANCED)**
 
-- **Minimum 6 social links** required
-- **Required platforms**: website, twitter, youtube, linkedin
-- **Recommended platforms**: facebook, instagram, telegram, tiktok, discord, reddit
+- **Minimum 8 social links** required (up from 5)
+- **Required platforms**: website, twitter, and iphone / android app store
+- **Comprehensive research**: Must research ALL available social media platforms
 - **Validation**: AI must research actual social media presence, don't guess URLs
 - **Fallback**: If platform doesn't exist for the exchange, don't include it
+
+## Social Media Research Strategy
+
+### **Comprehensive Social Media Discovery**
+
+- **Primary Research**: Check exchange's official website footer, about page, and contact page
+- **Secondary Research**: Verify social media presence through official exchange pages
+- **App Stores**: Check for official mobile apps (iOS App Store, Google Play Store)
+- **Platform Priority**: Research in this order to maximize efficiency
+
+### **Research Order (Resource-Efficient)**
+
+1. **Website Analysis**
+
+   - Check footer links
+   - Look for social media icons
+   - Check "About Us" or "Contact" pages
+   - Look for press kit or media resources
+
+2. **App Store Verification**
+
+   - Search iOS App Store for exchange name
+   - Search Google Play Store for exchange name
+
+3. **Social Platform Verification**
+   - Check each platform for official account
+   - Verify account authenticity
+   - Look for official account links on exchange website
+
+### **Social Media Variables (Complete List)**
+
+Use ALL available variables that have actual presence:
+
+```yaml
+social:
+  website: "https://exchange.com"
+  twitter: "https://twitter.com/exchange"
+  youtube: "https://youtube.com/@exchange"
+  linkedin: "https://linkedin.com/company/exchange"
+  facebook: "https://facebook.com/exchange"
+  instagram: "https://instagram.com/exchange"
+  telegram: "https://t.me/exchange"
+  discord: "https://discord.gg/exchange"
+  reddit: "https://reddit.com/r/exchange"
+  tiktok: "https://tiktok.com/@exchange"
+  github: "https://github.com/exchange"
+  medium: "https://medium.com/@exchange"
+  whatsapp: "https://wa.me/exchange"
+  vk: "https://vk.com/exchange"
+  wikipedia: "https://en.wikipedia.org/wiki/Exchange"
+  apple: "https://apps.apple.com/app/exchange"
+  android: "https://play.google.com/store/apps/details?id=com.exchange"
+```
+
+### **Validation Rules**
+
+- **Only include platforms with verified presence**
+- **Must have official account (not fan pages)**
+- **App store links must be official apps**
+- **Wikipedia must have dedicated page**
+- **Minimum 8 social links required** (up from 5)
+- **Must include website, twitter, and at least app stores**
+
+### **Research Checklist**
+
+- [ ] Checked website footer for social links
+- [ ] Verified each social platform has official account
+- [ ] Confirmed app store presence
+- [ ] Validated Wikipedia page exists
+- [ ] Ensured minimum 5 social links included
+- [ ] Verified all links are working and official
 
 ### **Social Media Priority Order**
 
@@ -229,6 +300,57 @@ When looking for links, check these variations in the database:
 - **Content Structure**: Must follow 7-section format with proper internal linking
 - **ExchangeButton**: Must include ExchangeButton component at the end of every exchange review
 
+## AI Prompt Instructions for Social Media Research
+
+### **Social Media Research Instructions**
+
+Before writing the exchange review, conduct comprehensive social media research:
+
+1. **Visit the exchange's official website**
+2. **Check the footer and about page for social media links**
+3. **Search app stores for official mobile apps**
+4. **Verify each social platform has an official account**
+5. **Include ALL available social media platforms from this list:**
+   - website, twitter, youtube, linkedin, facebook, instagram, telegram, discord, reddit, tiktok, github, medium, whatsapp, vk, wikipedia, apple, android
+
+**Requirements:**
+
+- Minimum 8 social links required
+- Only include platforms with verified official presence
+- Must include website, twitter, and at least one app store
+- Verify all links are working and official
+- Include app store links for both iOS and Android if available
+
+### **Research Process (10 minutes total)**
+
+1. **Website Analysis (5 minutes)**
+
+   - Open exchange website
+   - Check footer for social media icons
+   - Look for "About Us" or "Contact" pages
+   - Note all social media links found
+
+2. **App Store Verification (2 minutes)**
+
+   - Search iOS App Store for exchange name
+   - Search Google Play Store for exchange name
+   - Verify official developer accounts
+
+3. **Social Platform Verification (3 minutes)**
+   - Check each platform for official account
+   - Verify account authenticity
+   - Look for official account links on exchange website
+
+### **Social Media Validation**
+
+Before finalizing the review, verify:
+
+- [ ] All social links are working
+- [ ] Accounts are official (not fan pages)
+- [ ] App store links are for official apps
+- [ ] Minimum 8 social links included
+- [ ] Website, twitter, and at least one app store included
+
 ## Quality Checklist
 
 ### **Content Structure**
@@ -265,8 +387,10 @@ When looking for links, check these variations in the database:
 ### **Frontmatter & Technical**
 
 - [ ] Frontmatter includes: title, image, description, date (YYYY-MM-DD), order, authors, social, draft
-- [ ] **MANDATORY**: Minimum 6 social media links included in frontmatter
+- [ ] **MANDATORY**: Minimum 8 social media links included in frontmatter
 - [ ] Website included in social section (not separate field)
 - [ ] **MANDATORY**: Description is specific and includes unique value proposition (not generic)
 - [ ] Meta description 150-160 characters with primary keyword
+- [ ] **MANDATORY**: At least one app store link included (apple or android)
+- [ ] All social links verified as official accounts
 - [ ] NO "Additional resources" section at the end

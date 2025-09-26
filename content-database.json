@@ -206,6 +206,11 @@
       "slug": "/exchanges/upbit",
       "title": "Upbit",
       "order": 15
+    },
+    "bitget": {
+      "slug": "/exchanges/bitget",
+      "title": "Bitget",
+      "order": 16
     }
   },
   "posts": {
@@ -396,7 +401,7 @@
   },
   "next_orders": {
     "crypto_ogs": 26,
-    "exchanges": 16,
+    "exchanges": 17,
     "posts": null
   }
 }

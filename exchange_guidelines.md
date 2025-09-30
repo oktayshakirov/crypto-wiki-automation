@@ -150,6 +150,16 @@ After writing review, provide JSON with social links AND description:
 - Description: 150-160 characters, SPECIFIC with unique differentiator (NOT generic)
 - Required social: website, twitter, app stores (apple/android)
 
+**Social Media Research Guidelines:**
+
+- **Research the exchange's official website** to find their actual social media links
+- **Look for social media icons/links** in the website footer, header, or contact page
+- **Verify links exist** before including them in the JSON
+- **Use exact URLs** from the official website, not guessed URLs
+- **Common platforms to look for**: Twitter/X, YouTube, LinkedIn, Facebook, Instagram, Telegram, Discord, Reddit, TikTok, Medium, GitHub
+- **App store links**: Search for "Download" or "App" sections on their website
+- **Wikipedia**: Only include if the exchange has an official Wikipedia page
+
 **Description Quality:**
 ❌ BAD: "comprehensive cryptocurrency trading services with advanced features"  
 ✅ GOOD: "Leading US-based crypto exchange offering secure trading, staking and educational resources"  

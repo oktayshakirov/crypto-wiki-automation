@@ -95,32 +95,6 @@
     },
     {
       "parameters": {
-        "url": "={{$json.website}}",
-        "options": {
-          "timeout": 10000,
-          "headers": {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-          }
-        }
-      },
-      "id": "web-scraper-social-links",
-      "name": "Scrape Social Links",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [-1040, -200]
-    },
-    {
-      "parameters": {
-        "functionCode": "// Extract social media links from website HTML\nconst html = $json.body || '';\nconst website = $node[\"Set Exchange Data\"].json.website;\n\n// Common social media patterns to look for\nconst socialPatterns = {\n  twitter: /(?:twitter\\.com\\/|x\\.com\\/)([a-zA-Z0-9_]+)/gi,\n  youtube: /(?:youtube\\.com\\/(?:c\\/|channel\\/|@)|youtu\\.be\\/)([a-zA-Z0-9_-]+)/gi,\n  linkedin: /linkedin\\.com\\/(?:company\\/|in\\/)([a-zA-Z0-9_-]+)/gi,\n  facebook: /facebook\\.com\\/([a-zA-Z0-9_.-]+)/gi,\n  instagram: /instagram\\.com\\/([a-zA-Z0-9_.-]+)/gi,\n  telegram: /t\\.me\\/([a-zA-Z0-9_]+)/gi,\n  discord: /discord\\.gg\\/([a-zA-Z0-9]+)/gi,\n  reddit: /reddit\\.com\\/r\\/([a-zA-Z0-9_]+)/gi,\n  tiktok: /tiktok\\.com\\/@([a-zA-Z0-9_.-]+)/gi,\n  medium: /medium\\.com\\/@([a-zA-Z0-9_.-]+)/gi,\n  github: /github\\.com\\/([a-zA-Z0-9_.-]+)/gi\n};\n\n// App store patterns\nconst appPatterns = {\n  apple: /apps\\.apple\\.com\\/app\\/[^\"'\\s]+/gi,\n  android: /play\\.google\\.com\\/store\\/apps\\/details\\?id=[^\"'\\s]+/gi\n};\n\n// Wikipedia pattern\nconst wikipediaPattern = /en\\.wikipedia\\.org\\/wiki\\/[^\"'\\s]+/gi;\n\nconst socialLinks = { website };\n\n// Extract social media links\nObject.entries(socialPatterns).forEach(([platform, pattern]) => {\n  const matches = [...html.matchAll(pattern)];\n  if (matches.length > 0) {\n    const match = matches[0];\n    let url = match[0];\n    \n    // Clean up the URL\n    if (url.startsWith('//')) url = 'https:' + url;\n    if (!url.startsWith('http')) url = 'https://' + url;\n    \n    // Remove any trailing characters that aren't part of the URL\n    url = url.replace(/[\\s\"'<>]+$/, '');\n    \n    socialLinks[platform] = url;\n  }\n});\n\n// Extract app store links\nObject.entries(appPatterns).forEach(([platform, pattern]) => {\n  const matches = [...html.matchAll(pattern)];\n  if (matches.length > 0) {\n    let url = matches[0][0];\n    if (!url.startsWith('http')) url = 'https://' + url;\n    url = url.replace(/[\\s\"'<>]+$/, '');\n    socialLinks[platform] = url;\n  }\n});\n\n// Extract Wikipedia link\nconst wikiMatches = [...html.matchAll(wikipediaPattern)];\nif (wikiMatches.length > 0) {\n  let url = wikiMatches[0][0];\n  if (!url.startsWith('http')) url = 'https://' + url;\n  url = url.replace(/[\\s\"'<>]+$/, '');\n  socialLinks.wikipedia = url;\n}\n\n// Clean up any empty or invalid URLs\nObject.keys(socialLinks).forEach(key => {\n  if (!socialLinks[key] || socialLinks[key] === website || socialLinks[key].length < 10) {\n    delete socialLinks[key];\n  }\n});\n\nconsole.log('Scraped social links:', Object.keys(socialLinks));\n\nreturn [{\n  json: {\n    socialLinks,\n    scrapedCount: Object.keys(socialLinks).length\n  }\n}];"
-      },
-      "id": "extract-social-links",
-      "name": "Extract Social Links",
-      "type": "n8n-nodes-base.function",
-      "typeVersion": 1,
-      "position": [-848, -200]
-    },
-    {
-      "parameters": {
         "mode": "wait"
       },
       "id": "7a4a8cac-c584-48b7-aa1d-5688788dbfa6",
@@ -131,7 +105,7 @@
     },
     {
       "parameters": {
-        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name, website } = $node[\"Set Exchange Data\"].json;\n\n// Get scraped social links (with fallback to empty object)\nlet scrapedSocialLinks = {};\ntry {\n  const socialData = $node[\"Extract Social Links\"].json;\n  scrapedSocialLinks = socialData.socialLinks || {};\n  console.log('Using scraped social links:', Object.keys(scrapedSocialLinks));\n} catch (e) {\n  console.log('No scraped social links available, will use AI generation as fallback');\n}\n\n// Convert database to compact format: key|slug|title\n// This reduces token usage by ~80% while preserving all necessary data\nfunction formatDbCompact(dbObj, category) {\n  return Object.entries(dbObj || {})\n    .map(([key, val]) => {\n      // Prepend category prefix to slug (e.g., /crypto-ogs/, /posts/, /exchanges/, /tools/)\n      const fullSlug = `/${category}/${val.slug}`;\n      return [key, fullSlug, val.title].join('|');\n    })\n    .join('\\n');\n}\n\nconst compactOgs = formatDbCompact(db.crypto_ogs, 'crypto-ogs');\nconst compactPosts = formatDbCompact(db.posts, 'posts');\nconst compactExchanges = formatDbCompact(db.exchanges, 'exchanges');\nconst compactTools = formatDbCompact(db.tools, 'tools');\n\nreturn [{\n  json: { \n    db,              // Full database for backend processing\n    guidelinesText,\n    name, \n    website,\n    scrapedSocialLinks, // Scraped social links from website\n    compactOgs,      // Compact format for AI (80% fewer tokens)\n    compactPosts,\n    compactExchanges,\n    compactTools\n  }\n}];"
+        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name, website } = $node[\"Set Exchange Data\"].json;\n\n// Convert database to compact format: key|slug|title\n// This reduces token usage by ~80% while preserving all necessary data\nfunction formatDbCompact(dbObj, category) {\n  return Object.entries(dbObj || {})\n    .map(([key, val]) => {\n      // Prepend category prefix to slug (e.g., /crypto-ogs/, /posts/, /exchanges/, /tools/)\n      const fullSlug = `/${category}/${val.slug}`;\n      return [key, fullSlug, val.title].join('|');\n    })\n    .join('\\n');\n}\n\nconst compactOgs = formatDbCompact(db.crypto_ogs, 'crypto-ogs');\nconst compactPosts = formatDbCompact(db.posts, 'posts');\nconst compactExchanges = formatDbCompact(db.exchanges, 'exchanges');\nconst compactTools = formatDbCompact(db.tools, 'tools');\n\nreturn [{\n  json: { \n    db,              // Full database for backend processing\n    guidelinesText,\n    name, \n    website,\n    compactOgs,      // Compact format for AI (80% fewer tokens)\n    compactPosts,\n    compactExchanges,\n    compactTools\n  }\n}];"
       },
       "id": "3bad7d86-8ab8-40d9-8ffd-6d80c4b8d254",
       "name": "Parse & Prepare Data",
@@ -147,10 +121,10 @@
           "messages": [
             {
               "role": "system",
-              "content": "=\"You are an expert crypto editor creating comprehensive exchange reviews for Crypto Wiki.\n\nWrite ONLY the Markdown body (no frontmatter) following the provided guidelines exactly.\nUse 8-15 internal links that flow naturally with content.\nInclude social media links as a separate JSON object at the end.\""
+              "content": "=\"You are an expert crypto editor creating comprehensive exchange reviews for Crypto Wiki.\n\nIMPORTANT:\n- Follow the provided guidelines exactly\n- Write ONLY the Markdown body (no frontmatter)\n- Use ONLY the provided internal link databases\n- Generate professional, balanced, expert-level content\n- Use 8-15 internal links that flow naturally with the content\n- Links should feel like natural recommendations, not forced assignments\n- Include social media links in your response as a separate JSON object\""
             },
             {
-              "content": "=\"Exchange: {{$json.name}}  \nWebsite: {{$json.website}}  \n\nSCRAPED SOCIAL LINKS (use these exact URLs):\n{{JSON.stringify($json.scrapedSocialLinks, null, 2)}}\n\nINTERNAL LINK DATABASES (format: key|slug|title):  \n\nCRYPTO_OGS:\n{{$json.compactOgs}}\n\nPOSTS:\n{{$json.compactPosts}}\n\nEXCHANGES:\n{{$json.compactExchanges}}\n\nTOOLS:\n{{$json.compactTools}}\n\n=== GUIDELINES ===  \n{{$json.guidelinesText}}\n\nIMPORTANT: After writing the exchange review, provide a JSON object with:\n1. social: Use the scraped social links above (they are verified and working)\n2. description: 150-160 character frontmatter description (SPECIFIC with unique differentiator, NOT generic)\n\nExample JSON format:\n{\n  \"social\": {{JSON.stringify($json.scrapedSocialLinks)}},\n  \"description\": \"Leading US-based crypto exchange offering secure trading, staking and educational resources\"\n}\""
+              "content": "=\"Exchange: {{$json.name}}  \nWebsite: {{$json.website}}  \n\nINTERNAL LINK DATABASES (format: key|slug|title):  \n\nCRYPTO_OGS:\n{{$json.compactOgs}}\n\nPOSTS:\n{{$json.compactPosts}}\n\nEXCHANGES:\n{{$json.compactExchanges}}\n\nTOOLS:\n{{$json.compactTools}}\n\n=== GUIDELINES ===  \n{{$json.guidelinesText}}\n\nIMPORTANT: After writing the exchange review, provide a JSON object with:\n1. social: Research the exchange's official website ({{$json.website}}) to find their actual social media links in the footer/header. Use only verified, existing URLs.\n2. description: 150-160 character frontmatter description (SPECIFIC with unique differentiator, NOT generic)\n\nExample JSON format:\n{\n  \"social\": { \"website\": \"...\", \"twitter\": \"...\", ... },\n  \"description\": \"Leading US-based crypto exchange offering secure trading, staking and educational resources\"\n}\""
             }
           ]
         },
@@ -172,7 +146,7 @@
     },
     {
       "parameters": {
-        "functionCode": "const meta = $node[\"Parse & Prepare Data\"].json;\nconst ai = $node[\"OpenAI: Generate Body\"].json;\n\nconst slug = meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');\nconst isoDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format\nconst order = meta.db.next_orders.exchanges;\n\n// Use scraped social links as primary source, with AI fallback\nlet socialLinks = { website: meta.website };\nlet description = '';\nlet jsonFound = false;\n\n// First, try to use scraped social links\nif (meta.scrapedSocialLinks && Object.keys(meta.scrapedSocialLinks).length > 0) {\n  socialLinks = { ...socialLinks, ...meta.scrapedSocialLinks };\n  console.log('Using scraped social links:', Object.keys(meta.scrapedSocialLinks));\n  jsonFound = true;\n}\n\ntry {\n  const aiContent = ai.choices?.[0]?.message?.content || ai.content || '';\n  console.log('AI Response length:', aiContent.length);\n  \n  // Look for JSON object in the response\n  const jsonMatch = aiContent.match(/\\{[\\s\\S]*?\"social\"[\\s\\S]*?\\}/g);\n  if (jsonMatch && jsonMatch.length > 0) {\n    console.log('Found JSON match:', jsonMatch[0].substring(0, 200));\n    const aiData = JSON.parse(jsonMatch[0]);\n    \n    // Only use AI social links if scraping failed\n    if (!jsonFound && aiData.social) {\n      socialLinks = { ...socialLinks, ...aiData.social };\n      console.log('Using AI-generated social links as fallback:', Object.keys(aiData.social));\n      jsonFound = true;\n    }\n    \n    // Extract description (always needed)\n    if (aiData.description) {\n      description = aiData.description;\n      console.log('Extracted description:', description);\n    }\n  }\n  \n  // Validate we got the required data\n  if (!jsonFound) {\n    throw new Error('No social links found from scraping or AI. Manual review needed.');\n  }\n  \n  if (!description) {\n    throw new Error('AI did not return required description. Manual review needed.');\n  }\n  \n} catch (e) {\n  console.log('ERROR parsing AI response:', e.message);\n  throw new Error(`Failed to extract data from AI response: ${e.message}. Please check AI output format.`);\n}\n\n// Build social media section for frontmatter\nconst socialSection = Object.entries(socialLinks)\n  .filter(([key, value]) => value && value.trim())\n  .map(([key, value]) => `  ${key}: ${value}`)\n  .join('\\n');\n\nconst frontmatter = [\n  '---',\n  `title: \"${meta.name}\"`,\n  `image: \"/images/exchanges/${slug}.png\"`,\n  `description: \"${description}\"`,\n  `date: ${isoDate}`,\n  `order: ${order}`,\n  `authors: [\"Crypto Wiki Team\"]`,\n  `social:`,\n  socialSection,\n  '---'\n].join('\\n');\n\n// Extract just the markdown body (remove any JSON at the end)\nlet body = ai.choices?.[0]?.message?.content || ai.content || '';\n// Remove JSON object if it exists at the end\nbody = body.replace(/\\n\\{[\\s\\S]*\"social\"[\\s\\S]*\\}$/, '').trim();\n\nreturn [{\n  json: {\n    mdx: `${frontmatter}\\n\\n${body}`,\n    slug,\n    name: meta.name,\n    website: meta.website,\n    isoDate,\n    order,\n    db: meta.db,\n    socialLinks\n  }\n}];"
+        "functionCode": "const meta = $node[\"Parse & Prepare Data\"].json;\nconst ai = $node[\"OpenAI: Generate Body\"].json;\n\nconst slug = meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');\nconst isoDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format\nconst order = meta.db.next_orders.exchanges;\n\n// Extract social media links and description from AI response\nlet socialLinks = { website: meta.website };\nlet description = '';\nlet jsonFound = false;\n\ntry {\n  const aiContent = ai.choices?.[0]?.message?.content || ai.content || '';\n  console.log('AI Response length:', aiContent.length);\n  \n  // Look for JSON object in the response\n  const jsonMatch = aiContent.match(/\\{[\\s\\S]*?\"social\"[\\s\\S]*?\\}/g);\n  if (jsonMatch && jsonMatch.length > 0) {\n    console.log('Found JSON match:', jsonMatch[0].substring(0, 200));\n    const aiData = JSON.parse(jsonMatch[0]);\n    \n    // Extract social links\n    if (aiData.social) {\n      socialLinks = { ...socialLinks, ...aiData.social };\n      console.log('Extracted social links:', Object.keys(aiData.social));\n      jsonFound = true;\n    }\n    \n    // Extract description\n    if (aiData.description) {\n      description = aiData.description;\n      console.log('Extracted description:', description);\n    }\n  }\n  \n  // Validate we got the required data\n  if (!jsonFound) {\n    throw new Error('AI did not return required JSON with social links. Manual review needed.');\n  }\n  \n  if (!description) {\n    throw new Error('AI did not return required description. Manual review needed.');\n  }\n  \n} catch (e) {\n  console.log('ERROR parsing AI response:', e.message);\n  throw new Error(`Failed to extract data from AI response: ${e.message}. Please check AI output format.`);\n}\n\n// Build social media section for frontmatter\nconst socialSection = Object.entries(socialLinks)\n  .filter(([key, value]) => value && value.trim())\n  .map(([key, value]) => `  ${key}: ${value}`)\n  .join('\\n');\n\nconst frontmatter = [\n  '---',\n  `title: \"${meta.name}\"`,\n  `image: \"/images/exchanges/${slug}.png\"`,\n  `description: \"${description}\"`,\n  `date: ${isoDate}`,\n  `order: ${order}`,\n  `authors: [\"Crypto Wiki Team\"]`,\n  `social:`,\n  socialSection,\n  '---'\n].join('\\n');\n\n// Extract just the markdown body (remove any JSON at the end)\nlet body = ai.choices?.[0]?.message?.content || ai.content || '';\n// Remove JSON object if it exists at the end\nbody = body.replace(/\\n\\{[\\s\\S]*\"social\"[\\s\\S]*\\}$/, '').trim();\n\nreturn [{\n  json: {\n    mdx: `${frontmatter}\\n\\n${body}`,\n    slug,\n    name: meta.name,\n    website: meta.website,\n    isoDate,\n    order,\n    db: meta.db,\n    socialLinks\n  }\n}];"
       },
       "id": "52def2b7-c7ee-40de-89a7-23703aad370c",
       "name": "Build Frontmatter + MDX",
@@ -287,11 +261,6 @@
             "node": "Get Guidelines",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Scrape Social Links",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -314,28 +283,6 @@
             "node": "Merge DB + Guidelines",
             "type": "main",
             "index": 1
-          }
-        ]
-      ]
-    },
-    "Scrape Social Links": {
-      "main": [
-        [
-          {
-            "node": "Extract Social Links",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract Social Links": {
-      "main": [
-        [
-          {
-            "node": "Merge DB + Guidelines",
-            "type": "main",
-            "index": 2
           }
         ]
       ]

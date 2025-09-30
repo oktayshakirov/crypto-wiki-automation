@@ -169,6 +169,10 @@
     "gate": {
       "slug": "gate",
       "title": "Gate"
+    },
+    "mexc": {
+      "slug": "mexc",
+      "title": "MEXC"
     }
   },
   "posts": {
@@ -381,7 +385,7 @@
   },
   "next_orders": {
     "crypto_ogs": 26,
-    "exchanges": 18,
+    "exchanges": 19,
     "posts": null
   }
 }

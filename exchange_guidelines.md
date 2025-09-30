@@ -4,10 +4,10 @@
 
 1. **## [Exchange]: [Specific Descriptor]** - Opening with founding year, founder(s) if notable, headquarters, 1-2 positioning sentences highlighting uniqueness
 2. **## Core [Services/Offerings/Platform]** - Trading features, spot/derivatives/margin, staking, DeFi, specialized products
-3. **## Security Measures** - Account security, platform security, historical incidents if any, custodial disclaimers
+3. **## Security Measures** - Account security, platform security, historical incidents if any, custody arrangements
 4. **## User Experience** - Interface, educational resources, customer support, onboarding
 5. **## Regulatory Compliance** - Licenses, registrations, challenges, geographic restrictions
-6. **## Points to Consider** - 4-5 specific actionable points: fees, risks, complexity, target users
+6. **## Points to Consider** - 4-5 specific actionable points: fees, complexity, target users, important considerations
 7. **## Conclusion** - Market position, ideal users, balanced verdict sentence summarizing pros/cons
 8. **ExchangeButton Component** (MANDATORY) - Add at the very end: `<ExchangeButton href="{website}" text="Join {Exchange Name}" />`
 
@@ -16,7 +16,7 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 ## Content Requirements
 
 - **Length**: 1,500-2,500 words
-- **Internal Links**: 15-20 total, ALL using **[Text](/path)** bold format
+- **Internal Links**: 8-15 total, ALL using **[Text](/path)** bold format, flowing naturally
 - **Images**: Exactly 2 with descriptive alt text using /images/posts/ paths
   - First: After Core Services, before Security
   - Second: After User Experience/Regulatory, before Conclusion
@@ -24,18 +24,27 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Tone**: Professional, balanced, expert-level, E-E-A-T compliant
 - **SEO**: Include naturally 'cryptocurrency exchange', 'crypto trading', 'digital assets'
 
-## Internal Linking (CRITICAL - ALWAYS USE BOLD)
+## Internal Linking (NATURAL FLOW - ALWAYS USE BOLD)
 
 **MANDATORY FORMAT**: **[Text](/path)** NOT [Text](/path)
 
-**Priority Links (MUST include 6+):**
+**Natural Linking Strategy (8-15 total links):**
 
-- **[Bitcoin](/posts/what-is-bitcoin)**
-- **[Ethereum](/posts/what-is-ethereum)**
-- **[DeFi](/posts/what-is-defi)**
-- **[Crypto Staking](/posts/crypto-staking)** or **[Proof-of-Stake](/posts/what-is-proof-of-stake)**
-- **[How To Store Crypto](/posts/how-to-store-crypto)**
-- **[How to Avoid Crypto Scams](/posts/how-to-avoid-crypto-scams)**
+**DO Link When:**
+
+- **Exchange comparisons**: Use relevant exchanges from the database that make sense contextually (e.g., "compare with [Coinbase](/exchanges/coinbase) for US users" or "similar to [KuCoin](/exchanges/kucoin) for altcoin trading")
+- **Core concepts in context**: "trading [Bitcoin](/posts/what-is-bitcoin) and [Ethereum](/posts/what-is-ethereum)"
+- **Essential safety content**: "learn [how to store crypto](/posts/how-to-store-crypto) safely"
+- **Educational opportunities**: "understanding [DeFi](/posts/what-is-defi) protocols"
+- **Founders when relevant**: "founded by [Vitalik Buterin](/crypto-ogs/vitalik-buterin)"
+
+**DON'T Link:**
+
+- Every mention of common terms (blockchain, volatility, taxes, airdrops)
+- With forced phrases like "see our guide on..." or "read more about..."
+- Multiple links in the same sentence
+- As keyword stuffing or SEO manipulation
+- When it interrupts reading flow
 
 **Link Validation Rules**:
 
@@ -48,16 +57,25 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Concepts**: **[Title](/posts/{slug})** - Use exact slug from posts database
 - **Tools**: **[Tool](/tools/{slug})** - Use exact slug from tools database
 
-**Distribute links** evenly across ALL sections, not clustered.
+**Exchange Comparison Guidelines**:
+
+- **Choose contextually relevant exchanges** from the database, not the same ones every time
+- **Consider the exchange type**: CEX vs DEX, US-based vs global, specialized vs general
+- **Match the context**: If discussing US compliance, mention US exchanges; if discussing altcoins, mention altcoin-focused exchanges
+- **Use 1-2 exchanges maximum** per comparison to avoid clutter
+- **Make comparisons meaningful**: "similar to [Coinbase](/exchanges/coinbase) for regulatory compliance" vs generic "compare with [Binance](/exchanges/binance)"
+
+**GOAL**: Natural, helpful linking that enhances user experience without feeling intrusive. Links should feel like natural recommendations, not mandatory reading assignments.
 
 ## Writing Standards
 
 - **Specific Numbers**: "200+ cryptocurrencies", "700+ trading pairs", "95%+ cold storage" (NOT "many" or "most")
 - **Historical Context**: Include founding year, major incidents with dates, regulatory milestones
-- **Risk Warnings**: MUST include for derivatives, custodial risks, regulatory uncertainties
+- **Risk Context**: Include relevant risk information naturally when discussing specific features (derivatives, custody, regulatory issues)
 - **Balanced Tone**: Acknowledge strengths AND limitations objectively
 - **Actionable Advice**: "Points to Consider" must be specific and useful
 - **Natural Voice**: Avoid AI-like filler, vary sentence length, use occasional short sentences
+- **Avoid Excessive Disclaimers**: Don't add generic risk warnings or legal disclaimers unless contextually relevant to specific features being discussed
 
 ## Opening Descriptor Examples
 
@@ -86,14 +104,14 @@ Choose positioning based on exchange type:
 - "Regulatory Compliance and Licensing"
 - "Decentralization and the Regulatory Landscape" (for DEX)
 
-## Risk Warning Templates
+## Natural Risk Context
 
-Include in appropriate sections:
+Include risk information naturally when relevant:
 
-- **Derivatives**: "Trading derivatives, especially with high leverage, carries extreme risk and can result in the loss of your entire position rapidly."
-- **Custodial**: "Assets held on [exchange] are under [exchange]'s custody; assess counterparty risk and consider self-custody for long-term storage."
-- **Regulatory**: "Users must verify the legality and availability of [exchange] in their country..."
-- **Impermanent Loss** (for DEX): "Providing liquidity involves significant risk, including impermanent loss..."
+- **Derivatives**: When discussing leverage or derivatives, naturally mention risks: "While leverage can amplify profits, it also increases potential losses"
+- **Custodial**: When discussing custody, mention considerations: "Users should consider self-custody for long-term storage"
+- **Regulatory**: When discussing compliance, mention geographic considerations: "Availability varies by jurisdiction"
+- **DEX Risks**: When discussing liquidity provision, mention impermanent loss naturally
 
 ## Bullet Point Structure
 
@@ -148,13 +166,16 @@ Before finalizing:
 - [ ] Section 2 header adapted to exchange type
 - [ ] Conclusion ends with verdict sentence
 
-**Links (CRITICAL)**
+**Links (NATURAL FLOW)**
 
-- [ ] 15-20 internal links distributed across ALL sections
+- [ ] 8-15 internal links flowing naturally with content
 - [ ] ALL links use **[Text](/path)** bold format
-- [ ] Includes 6+ priority links (Bitcoin, Ethereum, DeFi, Staking, Store Crypto, Avoid Scams)
+- [ ] Links feel like natural recommendations, not forced assignments
+- [ ] Exchange comparisons when relevant using contextually appropriate exchanges from database
+- [ ] Core concepts linked in context (Bitcoin, Ethereum, DeFi, staking)
+- [ ] Essential safety content linked naturally
 - [ ] Verified all links exist in database (used exact keys)
-- [ ] NO guessed URLs or broken links
+- [ ] NO forced phrases like "see our guide on..." or "read more about..."
 
 **Images**
 
@@ -167,7 +188,7 @@ Before finalizing:
 
 - [ ] 1,200+ words minimum
 - [ ] Specific numbers throughout (e.g., "200+ cryptocurrencies")
-- [ ] Risk warnings for derivatives/custody/regulatory
+- [ ] Risk information included naturally when relevant to specific features
 - [ ] **Bold** formatting for ALL sub-categories
 - [ ] Balanced tone (strengths AND limitations)
 - [ ] ExchangeButton at the very end

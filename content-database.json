@@ -2,215 +2,173 @@
   "crypto_ogs": {
     "satoshi nakamoto": {
       "slug": "satoshi-nakamoto",
-      "title": "Satoshi Nakamoto",
-      "order": 1
+      "title": "Satoshi Nakamoto"
     },
     "vitalik buterin": {
       "slug": "vitalik-buterin",
-      "title": "Vitalik Buterin",
-      "order": 2
+      "title": "Vitalik Buterin"
     },
     "changpeng zhao": {
       "slug": "changpeng-zhao",
-      "title": "Changpeng Zhao",
-      "order": 3
+      "title": "Changpeng Zhao"
     },
     "michael saylor": {
       "slug": "michael-saylor",
-      "title": "Michael Saylor",
-      "order": 4
+      "title": "Michael Saylor"
     },
     "brian armstrong": {
       "slug": "brian-armstrong",
-      "title": "Brian Armstrong",
-      "order": 5
+      "title": "Brian Armstrong"
     },
     "gavin wood": {
       "slug": "gavin-wood",
-      "title": "Gavin Wood",
-      "order": 6
+      "title": "Gavin Wood"
     },
     "elon musk": {
       "slug": "elon-musk",
-      "title": "Elon Musk",
-      "order": 7
+      "title": "Elon Musk"
     },
     "sam bankman": {
       "slug": "sam-bankman",
-      "title": "Sam Bankman",
-      "order": 8
+      "title": "Sam Bankman"
     },
     "charles hoskinson": {
       "slug": "charles-hoskinson",
-      "title": "Charles Hoskinson",
-      "order": 9
+      "title": "Charles Hoskinson"
     },
     "billy markus": {
       "slug": "billy-markus",
-      "title": "Billy Markus",
-      "order": 10
+      "title": "Billy Markus"
     },
     "jackson palmer": {
       "slug": "jackson-palmer",
-      "title": "Jackson Palmer",
-      "order": 11
+      "title": "Jackson Palmer"
     },
     "snoop dogg": {
       "slug": "snoop-dogg",
-      "title": "Snoop Dogg",
-      "order": 12
+      "title": "Snoop Dogg"
     },
     "yi he": {
       "slug": "yi-he",
-      "title": "Yi He",
-      "order": 13
+      "title": "Yi He"
     },
     "anatoly yakovenko": {
       "slug": "anatoly-yakovenko",
-      "title": "Anatoly Yakovenko",
-      "order": 14
+      "title": "Anatoly Yakovenko"
     },
     "justin sun": {
       "slug": "justin-sun",
-      "title": "Justin Sun",
-      "order": 15
+      "title": "Justin Sun"
     },
     "vasily shapovalov": {
       "slug": "vasily-shapovalov",
-      "title": "Vasily Shapovalov",
-      "order": 16
+      "title": "Vasily Shapovalov"
     },
     "pavel durov": {
       "slug": "pavel-durov",
-      "title": "Pavel Durov",
-      "order": 17
+      "title": "Pavel Durov"
     },
     "nayib bukele": {
       "slug": "nayib-bukele",
-      "title": "Nayib Bukele",
-      "order": 18
+      "title": "Nayib Bukele"
     },
     "sergey nazarov": {
       "slug": "sergey-nazarov",
-      "title": "Sergey Nazarov",
-      "order": 19
+      "title": "Sergey Nazarov"
     },
     "charlie lee": {
       "slug": "charlie-lee",
-      "title": "Charlie Lee",
-      "order": 20
+      "title": "Charlie Lee"
     },
     "donald trump": {
       "slug": "donald-trump",
-      "title": "Donald Trump",
-      "order": 21
+      "title": "Donald Trump"
     },
     "ruja ignatova": {
       "slug": "ruja-ignatova",
-      "title": "Ruja Ignatova",
-      "order": 22
+      "title": "Ruja Ignatova"
     },
     "hal finney": {
       "slug": "hal-finney",
-      "title": "Hal Finney",
-      "order": 23
+      "title": "Hal Finney"
     },
     "roger ver": {
       "slug": "roger-ver",
-      "title": "Roger Ver",
-      "order": 24
+      "title": "Roger Ver"
     },
     "hayden adams": {
       "slug": "hayden-adams",
-      "title": "Hayden Adams",
-      "order": 25
+      "title": "Hayden Adams"
     }
   },
   "exchanges": {
     "crypto.com": {
       "slug": "cryptocom",
-      "title": "Crypto.com",
-      "order": 1
+      "title": "Crypto.com"
     },
     "coinbase": {
       "slug": "coinbase",
-      "title": "Coinbase",
-      "order": 2
+      "title": "Coinbase"
     },
     "nexo": {
       "slug": "nexo",
-      "title": "Nexo",
-      "order": 3
+      "title": "Nexo"
     },
     "binance": {
       "slug": "binance",
-      "title": "Binance",
-      "order": 4
+      "title": "Binance"
     },
     "kucoin": {
       "slug": "kucoin",
-      "title": "KuCoin",
-      "order": 5
+      "title": "KuCoin"
     },
     "coinex": {
       "slug": "coinex",
-      "title": "CoinEx",
-      "order": 6
+      "title": "CoinEx"
     },
     "bitpanda": {
       "slug": "bitpanda",
-      "title": "Bitpanda",
-      "order": 7
+      "title": "Bitpanda"
     },
     "whitebit": {
       "slug": "whitebit",
-      "title": "WhiteBIT",
-      "order": 8
+      "title": "WhiteBIT"
     },
     "kraken": {
       "slug": "kraken",
-      "title": "Kraken",
-      "order": 9
+      "title": "Kraken"
     },
     "bybit": {
       "slug": "bybit",
-      "title": "Bybit",
-      "order": 10
+      "title": "Bybit"
     },
     "trade republic": {
       "slug": "trade-republic",
-      "title": "Trade Republic",
-      "order": 11
+      "title": "Trade Republic"
     },
     "okx": {
       "slug": "okx",
-      "title": "OKX",
-      "order": 12
+      "title": "OKX"
     },
     "uniswap": {
       "slug": "uniswap",
-      "title": "Uniswap",
-      "order": 13
+      "title": "Uniswap"
     },
     "gemini": {
       "slug": "gemini",
-      "title": "Gemini",
-      "order": 14
+      "title": "Gemini"
     },
     "upbit": {
       "slug": "upbit",
-      "title": "Upbit",
-      "order": 15
+      "title": "Upbit"
     },
     "bitget": {
       "slug": "bitget",
-      "title": "Bitget",
-      "order": 16
+      "title": "Bitget"
     },
     "gate": {
       "slug": "gate",
-      "title": "Gate",
-      "order": 17
+      "title": "Gate"
     }
   },
   "posts": {

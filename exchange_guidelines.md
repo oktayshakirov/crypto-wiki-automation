@@ -40,7 +40,7 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 **Link Validation Rules**:
 
 - ONLY use links from the provided database (crypto_ogs, posts, exchanges, tools)
-- Database format: `key|slug|title` or `key|slug|title|order`
+- Database format: `key|slug|title`
 - Search database for relevant entries (e.g., "bitcoin", "ethereum", "defi", "staking", "nft")
 - Check variations: "nft" vs "non-fungible tokens", "crypto scams" vs "scams", "store crypto" vs "storage"
 - **Founders**: **[Name](/crypto-ogs/{slug})** - ONLY if name exists in crypto_ogs database

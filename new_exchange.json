@@ -177,7 +177,7 @@
           "value": "crypto-wiki-automation",
           "mode": "name"
         },
-        "filePath": "=drafts/exchanges/{{$json.filePath}}",
+        "filePath": "=content/exchanges/{{$json.filePath}}",
         "fileContent": "={{$json.mdx}}",
         "commitMessage": "={{$json.commitMessage}}"
       },

@@ -146,19 +146,16 @@ After writing review, provide JSON with social links AND description:
 
 **Requirements:**
 
-- Minimum 8 social platforms (research official accounts only)
+- Minimum 5 social platforms (research official accounts only, quality over quantity)
 - Description: 80-120 characters, SPECIFIC with unique differentiator (NOT generic)
 - Required social: website, twitter, app stores (apple/android)
 
 **Social Media Research Guidelines:**
 
-- **Research the exchange's official website** to find their actual social media links
-- **Look for social media icons/links** in the website footer, header, or contact page
-- **Verify links exist** before including them in the JSON
-- **Use exact URLs** from the official website, not guessed URLs
-- **Common platforms to look for**: Twitter/X, YouTube, LinkedIn, Facebook, Instagram, Telegram, Discord, Reddit, TikTok, Medium, GitHub
-- **App store links**: Search for "Download" or "App" sections on their website
-- **Wikipedia**: Only include if the exchange has an official Wikipedia page
+- **Research official website** for actual social links (footer/header)
+- **Only include verified URLs** - NO guessing or generic patterns
+- **Quality over quantity**: 5 verified links > 10 broken ones
+- **App stores**: Search "Download" or "App" sections
 
 **Description Quality:**
 ❌ BAD: "comprehensive cryptocurrency trading services with advanced features"  

@@ -147,7 +147,7 @@ After writing review, provide JSON with social links AND description:
 **Requirements:**
 
 - Minimum 8 social platforms (research official accounts only)
-- Description: 150-160 characters, SPECIFIC with unique differentiator (NOT generic)
+- Description: 80-120 characters, SPECIFIC with unique differentiator (NOT generic)
 - Required social: website, twitter, app stores (apple/android)
 
 **Social Media Research Guidelines:**
@@ -162,8 +162,8 @@ After writing review, provide JSON with social links AND description:
 
 **Description Quality:**
 ❌ BAD: "comprehensive cryptocurrency trading services with advanced features"  
-✅ GOOD: "Leading US-based crypto exchange offering secure trading, staking and educational resources"  
-✅ GOOD: "Korea's largest crypto exchange in terms of trading volume and customers"
+✅ GOOD: "Binance offers advanced trading services, staking, and DeFi opportunities, making it a global leader in crypto."  
+✅ GOOD: "Crypto.com simplifies trading, staking and DeFi, bringing digital assets into your everyday life."
 
 ## Quality Checklist
 
@@ -202,4 +202,4 @@ Before finalizing:
 - [ ] **Bold** formatting for ALL sub-categories
 - [ ] Balanced tone (strengths AND limitations)
 - [ ] ExchangeButton at the very end
-- [ ] Description is specific and unique (not generic)
+- [ ] Description is 80-120 characters, specific and unique (not generic)

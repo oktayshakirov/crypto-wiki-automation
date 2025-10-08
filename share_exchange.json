@@ -18,7 +18,7 @@
           "string": [
             {
               "name": "slug",
-              "value": "nexo"
+              "value": "bitpanda"
             }
           ]
         },
@@ -176,7 +176,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map(item => {\n  // Get the name from the Parse Frontmatter step (from the original data)\n  const name = $('Parse Frontmatter').item.json.name || \"Exchange\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/exchanges\";\n  // Get the slug from the Set Slug step\n  const slug = $('Set Slug').item.json.slug || \"exchange\";\n\n  const variants = [\n    `Check out our latest ${name} review 🔎 Features, pros & cons for crypto traders. 👉 {{link}} #CryptoExchange #CryptoTrading`,\n    `Curious about ${name}? Our review covers fees, security & usability — all you need before trading digital assets. 👉 {{link}} #CryptoTrading`,\n    `We reviewed ${name} so you don't have to. Key insights on this crypto exchange 👉 {{link}} #Crypto`,\n    `Thinking about trading on ${name}? Our review explores its strengths & weaknesses to help you decide. 👉 {{link}} #CryptoExchange`,\n    `${name} under review 🔍 From security to fees, here's what every trader should know before using this exchange. 👉 {{link}} #Crypto #CryptoTrading`,\n    `Is ${name} the right platform for your crypto journey? 🚀 Our latest review breaks down the essentials. 👉 {{link}} #CryptoExchange`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n\n  // Get the original image URL from the Parse Frontmatter step\n  const originalImageUrl = $('Parse Frontmatter').item.json.image || \"\";\n\n  // Construct GitHub raw URL for Instagram using the slug\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/exchanges/${slug}.png`;\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      originalImageUrl: originalImageUrl,\n      link: link\n    }\n  };\n});"
+        "jsCode": "return $input.all().map(item => {\n  const name = $('Parse Frontmatter').item.json.name || \"Exchange\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/exchanges\";\n  const slug = $('Set Slug').item.json.slug || \"exchange\";\n\n  const variants = [\n    `Check out our latest ${name} review 🔎 Features, pros & cons for crypto traders. 👉 {{link}}`,\n    `Curious about ${name}? Our review covers fees, security & usability — all you need before trading digital assets. 👉 {{link}}`,\n    `We reviewed ${name} so you don't have to. Key insights on this crypto exchange 👉 {{link}}`,\n    `Thinking about trading on ${name}? Our review explores its strengths & weaknesses to help you decide. 👉 {{link}}`,\n    `${name} under review 🔍 From security to fees, here's what every trader should know before using this exchange. 👉 {{link}}`,\n    `Is ${name} the right platform for your crypto journey? 🚀 Our latest review breaks down the essentials. 👉 {{link}}`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/exchanges/${slug}.png`;\n    const binary = $('Download APITemplate Image').item.binary || {};\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      link: link\n    },\n    binary\n  };\n});"
       },
       "id": "3c61028b-f60f-497c-8875-0486f204cc21",
       "name": "Format Social Post",
@@ -186,26 +186,6 @@
         -1008,
         128
       ]
-    },
-    {
-      "parameters": {
-        "text": "={{$json.twitter}}",
-        "additionalFields": {}
-      },
-      "id": "73a3e903-7522-4ea3-b089-2fac97ab877e",
-      "name": "Create Tweet",
-      "type": "n8n-nodes-base.twitter",
-      "typeVersion": 2,
-      "position": [
-        -656,
-        -80
-      ],
-      "credentials": {
-        "twitterOAuth2Api": {
-          "id": "QT8bLYGAdrhMNYdJ",
-          "name": "X account"
-        }
-      }
     },
     {
       "parameters": {
@@ -335,6 +315,66 @@
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.twitter.com/1.1/media/upload.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth1Api",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "media",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -736,
+        -64
+      ],
+      "id": "f5b83d99-e877-49ad-b95e-811004ad8482",
+      "name": "Upload Media to Twitter",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "QT8bLYGAdrhMNYdJ",
+          "name": "X account"
+        },
+        "twitterOAuth1Api": {
+          "id": "gG2OhuzCvK3obxs2",
+          "name": "X OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Format Social Post').item.json.twitter }}\n",
+        "additionalFields": {
+          "attachments": "={{ $json.media_id_string }}"
+        }
+      },
+      "id": "ac442f7b-002e-41fe-a8f7-23048ba75c08",
+      "name": "Create Tweet1",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        -544,
+        -128
+      ],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "QT8bLYGAdrhMNYdJ",
+          "name": "X account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -430,12 +470,12 @@
             "index": 0
           },
           {
-            "node": "Create Tweet",
+            "node": "Facebook Post",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Facebook Post",
+            "node": "Upload Media to Twitter",
             "type": "main",
             "index": 0
           }
@@ -452,13 +492,24 @@
           }
         ]
       ]
+    },
+    "Upload Media to Twitter": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "4ebfee96-a2e3-4498-b6c5-7cb3f51ccbcc",
+  "versionId": "b7fc02a2-df66-47cd-9041-7d693dc4dca0",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"

@@ -1,107 +1,137 @@
 # AI Crypto OG Biography Guidelines
 
-## Structure (7 Core Sections + OGProfileLinks)
+## Structure (Flexible 6-8 Core Sections + OGProfileLinks)
 
-1. **## [Name]: [Descriptor/Title]**  
-   Open with a concise, compelling summary — who this person is, their biggest crypto contribution, and what they represent.  
-   Mention founding year(s), nationality if relevant, and how they became known in the crypto space.
+**FLEXIBLE STRUCTURE**: Adapt sections based on the person's story. The following are common patterns, but not rigid requirements:
 
-2. **## Early Life and Background**  
-   Give short but informative context — where they grew up, their studies, first exposure to technology or finance, and traits that shaped their later crypto journey.
+1. **## [Name]: [Engaging Descriptor/Title]** – Start with a compelling, narrative introduction that immediately establishes who they are, their most significant crypto role, and why they matter. Use specific details, founding years, or defining moments. Make it engaging and story-driven.
 
-3. **## Entry into Crypto**  
-   Explain when and how they entered the crypto world.  
-   What drew them to it — technical curiosity, ideological motives, or business opportunity.  
-   Mention early projects, writings, or collaborations.
+2. **## Early Life and Background** – Provide meaningful context about their origins, education, or pre-crypto work that connects to their later impact. Keep it relevant and concise.
 
-4. **## Major Contributions and Projects**  
-   Focus on the highlights that define their career:  
-   - Companies or protocols they founded  
-   - Key innovations or moments of influence  
-   - Specific milestones with dates  
-   - Measurable impact (user base, market cap, adoption, etc.)  
-   Use **bold internal links** naturally to connect to related OGs, posts, or exchanges.
+3. **## Entry into Crypto** – Describe their discovery of crypto/blockchain, early experiences, motivations, or involvement in early communities. Include specific dates and turning points.
 
-5. **## Controversies and Criticism**  
-   Cover challenges, lawsuits, bans, or controversies with a neutral, fact-driven tone.  
-   Explain the background and how the crypto community perceives those moments.
+4. **## Major Contributions and Projects** – Highlight their biggest achievements, roles, and innovations with specific years, companies, and measurable outcomes. This is often the longest section.
 
-6. **## Philosophy and Vision**  
-   Describe what drives them — decentralization, privacy, financial freedom, mass adoption, or technological progress.  
-   Include notable quotes or ideas that reflect their worldview.
+   - Add 1 image strategically within this section
+   - Use **bold internal links** to other OGs, posts, or exchanges naturally
 
-7. **## Legacy and Influence**  
-   Wrap up with their overall impact on the crypto space.  
-   Mention other figures they influenced and what their story represents in crypto’s evolution.  
-   End with a strong, balanced sentence that sums up their mark on blockchain history.
+5. **## [Contextual Section]** – Add relevant sections based on the person:
 
-8. **OGProfileLinks Component (MANDATORY)**  
-   Add at the very end:  
-   ```jsx
-   <OGProfileLinks website="{website}" name="{Name}" />
-   ```
+   - **Controversies and Criticism** (if applicable)
+   - **Philosophy and Vision** (if they have notable views)
+   - **Key Developments** (for ongoing projects)
+   - **Public Persona** (for high-profile figures)
+   - **Technical Contributions** (for developers)
+
+6. **## Legacy and Influence** – Summarize their long-term impact, influence on the industry, and current standing. End with a balanced, concluding sentence.
+
+**IMAGE PLACEMENT**: Place 2 images strategically throughout the article where they enhance the narrative, not rigidly after specific sections.
 
 ---
 
 ## Content Requirements
 
-- **Length**: 1,200–1,800 words  
-- **Images**: 2 total  
-  - 1 after “Major Contributions and Projects”  
-  - 1 after “Philosophy and Vision” or before “Legacy and Influence”  
-- **Internal Links**: 8–15 total, all **bold** and natural  
-- **Tone**: Engaging, storytelling, factual, and balanced — same voice as existing OGs  
-- **SEO keywords**: naturally include “crypto pioneer”, “blockchain innovator”, “Bitcoin”, “Ethereum”, “decentralization”, “founder”, etc.  
-- **Consistency**: Avoid generic phrases like “in conclusion”; keep it readable and human.  
+- **Length:** 1,200–2,000 words (longer for more complex figures)
+- **Images:** Exactly 2, placed strategically to enhance narrative flow
+- **Internal Links:** 8–15 total, using **[Text](/path)** in bold, flowing naturally
+- **Tone:** Narrative, engaging, and story-driven — like reading a compelling biography
+- **Keywords:** Include terms like "crypto pioneer", "blockchain innovator", "decentralization", "Bitcoin", "Ethereum" naturally
+- **Readability:** Vary sentence length, use engaging transitions, avoid dry encyclopedia style
 
 ---
 
-## Internal Linking (NATURAL FLOW)
+## Internal Linking Rules
 
-**Always use bold:** **[Text](/path)**  
+**Format:** Always use **bold** — **[Text](/path)**
 
-**When to link:**
-- To other **crypto-ogs** when comparing or referencing (e.g., “like **[Vitalik Buterin](/crypto-ogs/vitalik-buterin)**, he pushed boundaries of decentralized tech”).  
-- To **posts** when referring to a concept (e.g., “helped shape the concept of **[DeFi](/posts/what-is-defi)**”).  
-- To **exchanges** when relevant (e.g., “founded **[Binance](/exchanges/binance)**”).  
-- To **tools** if they created or inspired specific products.
+**Natural Linking Strategy (8-15 total links):**
 
-**When not to link:**
-- Every mention of Bitcoin or blockchain  
-- Filler phrases like “read more about”  
-- Repeated links to the same article  
+**DO Link When:**
 
-**Path format:**  
-- `/crypto-ogs/{slug}` for people  
-- `/posts/{slug}` for concepts  
-- `/exchanges/{slug}` for platforms  
-- `/tools/{slug}` for tools  
+- **Other crypto OGs**: When naturally mentioning them in context (e.g., "working alongside **[Vitalik Buterin](/crypto-ogs/vitalik-buterin)**")
+- **Core concepts in context**: When explaining their work (e.g., "building on **[Ethereum](/posts/what-is-ethereum)**")
+- **Exchanges they founded/worked with**: When relevant to their story (e.g., "launched **[Coinbase](/exchanges/coinbase)**")
+- **Technologies they developed**: When explaining their contributions
+- **Educational content**: When it helps readers understand concepts (e.g., "understanding **[smart contracts](/posts/smart-contracts-and-industries-beyond-crypto)**")
+
+**DON'T Link:**
+
+- Every mention of common terms (blockchain, crypto, trading, etc.)
+- With forced phrases like "see our guide on..." or "read more about..."
+- Multiple links in the same sentence
+- As keyword stuffing or SEO manipulation
+- When it interrupts the narrative flow
+
+**Path format:**
+
+- `/crypto-ogs/{slug}` for people
+- `/posts/{slug}` for concepts
+- `/exchanges/{slug}` for platforms
+- `/tools/{slug}` for tools
+
+**GOAL**: Links should feel like natural recommendations that enhance understanding, not mandatory reading assignments.
+
+## Opening Style Examples
+
+**Effective Opening Patterns:**
+
+- **Mystery/Intrigue**: "Satoshi Nakamoto is the universally recognized **pseudonym** for the individual, or group of individuals, who developed the original **[Bitcoin](/posts/what-is-bitcoin)** protocol..."
+- **Achievement Focus**: "Vitalik Buterin, a Russian-Canadian programmer and writer born in 1994, is widely recognized as the primary visionary and a key co-founder of **[Ethereum](/posts/what-is-ethereum)**..."
+- **Impact Statement**: "Elon Musk, the high-profile entrepreneur leading Tesla, SpaceX, and the social media platform X (formerly Twitter), occupies a unique and often controversial position within the cryptocurrency sphere..."
+- **Historical Context**: "Harold 'Hal' Finney (1956–2014) was a highly respected American computer scientist and a pioneering cryptographer, celebrated within the **[Blockchain](/posts/what-is-blockchain)** community as one of the earliest and most crucial contributors to **[Bitcoin](/posts/what-is-bitcoin)**..."
+
+**Avoid**: Generic openings like "John Doe is a crypto entrepreneur who founded..."
+
+## Quote Integration Patterns
+
+**Effective Quote Usage:**
+
+- **Opening Hook**: Use a compelling quote right after the opening paragraph
+- **Section Breaks**: Place quotes between major sections to add personality
+- **Supporting Evidence**: Use quotes to support claims about their philosophy or vision
+- **Historical Context**: Include quotes that capture the era or their mindset
+
+**Quote Format:**
+
+```markdown
+> "Quote text here that adds value to the narrative." – Name (Context if needed)
+```
+
+**Examples from existing articles:**
+
+- Opening quotes that establish their vision
+- Technical quotes that explain their approach
+- Philosophical quotes that reveal their thinking
+- Historical quotes that capture important moments
 
 ---
 
 ## Writing Standards
 
-- **Use specific numbers & years:** “Founded Binance in 2017”, “Bitcoin reached $60,000 in 2021.”  
-- **Balanced storytelling:** Achievements + controversies + vision.  
-- **Natural flow:** Short and medium sentences alternating; minimal bullet lists.  
-- **No speculation or unverifiable rumors.**  
-- **Engaging readability:** Write as if narrating an interesting true story, not a Wikipedia entry.  
+- **Specific Details**: Use exact dates, numbers, and measurable impact (e.g., "founded in 2012", "raised $18 million", "1 million BTC")
+- **Balanced Perspective**: Include both achievements and criticisms objectively
+- **Narrative Flow**: Vary sentence length, use engaging transitions, create story momentum
+- **Factual Accuracy**: Avoid speculation, exaggeration, or unverifiable claims
+- **Consistent Voice**: Match the engaging, authoritative tone of existing OG articles
+- **Paragraph Structure**: Prefer narrative paragraphs over bullet lists, use bullets only for lists of facts
+- **Quote Integration**: Use quotes strategically throughout to add personality and authority
+- **Engaging Openings**: Start with compelling details that immediately establish importance
 
 ---
 
-## SEO & E-E-A-T
+## SEO & E‑E‑A‑T
 
-- Expert, fact-checked tone.  
-- Write for readers first — SEO follows naturally.  
-- Include full names, key dates, and crypto milestones.  
-- Avoid keyword stuffing.  
-- Mention real impact: innovations, influence, criticism, or public statements.  
+- **Expert Authority**: Demonstrate deep knowledge through specific details and context
+- **Factual Foundation**: Include verified historical facts, names, dates, and events
+- **Natural Keywords**: Use terms like "crypto pioneer", "blockchain innovator", "decentralization" naturally within the narrative
+- **Balanced Coverage**: Mention both contributions and criticisms with proper context
+- **Engaging Content**: Write compelling stories that people want to read and share
 
 ---
 
-## JSON Output (REQUIRED)
+## Final JSON Output (REQUIRED)
 
-At the end, output a separate JSON object:
+After writing the biography, provide a JSON object with verified social links and a short description:
 
 ```json
 {
@@ -111,34 +141,45 @@ At the end, output a separate JSON object:
     "linkedin": "https://linkedin.com/in/name",
     "wikipedia": "https://en.wikipedia.org/wiki/Name"
   },
-  "description": "Co-founder of Ethereum and one of the most influential voices shaping blockchain and decentralized technology."
+  "description": "Founder of Ethereum and one of the most influential figures shaping blockchain innovation and decentralization."
 }
 ```
 
-**Rules**
-- Minimum 3 verified social links  
-- Only official/verified sources — no guesses  
-- Description 100–150 characters, concise and specific  
+**Rules:**
+
+- Minimum 3 verified social links (website, Twitter, LinkedIn, Wikipedia preferred)
+- Only verified sources — no guesses or placeholders
+- Description: 100–150 characters, factual and specific
 
 ---
 
 ## Quality Checklist
 
 **Structure**
-- [ ] All 7 sections + OGProfileLinks component  
-- [ ] 2 descriptive images placed correctly  
+
+- [ ] Engaging opening that immediately establishes importance
+- [ ] Flexible section structure adapted to the person's story
+- [ ] OGProfileLinks component added at the end
+- [ ] 2 images placed strategically to enhance narrative
 
 **Links**
-- [ ] 8–15 natural bold internal links  
-- [ ] All verified slugs  
-- [ ] Links flow smoothly  
+
+- [ ] 8–15 internal links in bold format
+- [ ] Links feel natural and enhance understanding
+- [ ] No forced phrases or repetitive linking
+- [ ] Links flow with the narrative, not against it
 
 **Content**
-- [ ] 1,200–1,800 words  
-- [ ] Balanced tone and factual accuracy  
-- [ ] Proper narrative pacing (no filler)  
+
+- [ ] 1,200–2,000 words (longer for complex figures)
+- [ ] Story-driven narrative with engaging flow
+- [ ] Specific dates, numbers, and measurable details
+- [ ] Balanced coverage of achievements and criticisms
+- [ ] Quotes integrated naturally throughout
+- [ ] Matches the engaging tone of existing OG pages
 
 **JSON**
-- [ ] Social + description only  
-- [ ] 3+ valid social URLs  
-- [ ] Description is unique, under 150 characters  
+
+- [ ] Social + description provided
+- [ ] At least 3 valid social links
+- [ ] Description 100–150 characters, specific and factual

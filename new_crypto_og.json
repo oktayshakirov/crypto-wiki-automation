@@ -7,10 +7,7 @@
       "name": "Manual Trigger",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [
-        192,
-        -144
-      ]
+      "position": [192, -144]
     },
     {
       "parameters": {
@@ -19,10 +16,6 @@
             {
               "name": "name",
               "value": "Vitalik Buterin"
-            },
-            {
-              "name": "website",
-              "value": "https://vitalik.ca/"
             }
           ]
         },
@@ -32,10 +25,7 @@
       "name": "Set OG Data",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
-      "position": [
-        400,
-        -144
-      ]
+      "position": [400, -144]
     },
     {
       "parameters": {
@@ -59,10 +49,7 @@
       "name": "Get content-database.json",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        592,
-        -256
-      ],
+      "position": [592, -256],
       "webhookId": "c26dd364-7931-4db8-999f-21d5562c6923",
       "credentials": {
         "githubApi": {
@@ -93,10 +80,7 @@
       "name": "Get Guidelines",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        592,
-        -48
-      ],
+      "position": [592, -48],
       "webhookId": "a88b1978-9617-4191-ad28-3bfe461bcae3",
       "credentials": {
         "githubApi": {
@@ -113,23 +97,17 @@
       "name": "Merge DB + Guidelines",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 1,
-      "position": [
-        800,
-        -144
-      ]
+      "position": [800, -144]
     },
     {
       "parameters": {
-        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name, website } = $node[\"Set OG Data\"].json;\n\nfunction formatDbCompact(dbObj, category) {\n  return Object.entries(dbObj || {})\n    .map(([key, val]) => {\n      const fullSlug = `/${category}/${val.slug}`;\n      return [key, fullSlug, val.title].join('|');\n    })\n    .join('\\n');\n}\n\nconst compactOgs = formatDbCompact(db.crypto_ogs, 'crypto-ogs');\nconst compactPosts = formatDbCompact(db.posts, 'posts');\nconst compactExchanges = formatDbCompact(db.exchanges, 'exchanges');\nconst compactTools = formatDbCompact(db.tools, 'tools');\n\nreturn [{\n  json: {\n    db,\n    guidelinesText,\n    name,\n    website,\n    compactOgs,\n    compactPosts,\n    compactExchanges,\n    compactTools\n  }\n}];"
+        "functionCode": "function decodeFile(nodeName, parseJson=false) {\n  const node = $node[nodeName].json;\n  if (!node.content) throw new Error(`${nodeName} has no json.content`);\n  const buff = Buffer.from(node.content, 'base64');\n  const text = buff.toString('utf-8');\n  return parseJson ? JSON.parse(text) : text;\n}\n\nconst db = decodeFile(\"Get content-database.json\", true);\nconst guidelinesText = decodeFile(\"Get Guidelines\", false);\nconst { name } = $node[\"Set OG Data\"].json;\n\nfunction formatDbCompact(dbObj, category) {\n  return Object.entries(dbObj || {})\n    .map(([key, val]) => {\n      const fullSlug = `/${category}/${val.slug}`;\n      return [key, fullSlug, val.title].join('|');\n    })\n    .join('\\n');\n}\n\nconst compactOgs = formatDbCompact(db.crypto_ogs, 'crypto-ogs');\nconst compactPosts = formatDbCompact(db.posts, 'posts');\nconst compactExchanges = formatDbCompact(db.exchanges, 'exchanges');\nconst compactTools = formatDbCompact(db.tools, 'tools');\n\nreturn [{\n  json: {\n    db,\n    guidelinesText,\n    name,\n    compactOgs,\n    compactPosts,\n    compactExchanges,\n    compactTools\n  }\n}];"
       },
       "id": "f1520097-3f39-4688-acb9-cc05c66849e5",
       "name": "Parse & Prepare Data",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        992,
-        -144
-      ]
+      "position": [992, -144]
     },
     {
       "parameters": {
@@ -139,10 +117,10 @@
           "messages": [
             {
               "role": "system",
-              "content": "You are an expert crypto historian writing detailed, balanced, and SEO-optimized biographies for Crypto Wiki. Follow all provided guidelines strictly."
+              "content": "You are an expert crypto historian creating comprehensive crypto OG biographies for Crypto Wiki.\n\nIMPORTANT:\n- Follow the provided guidelines exactly\n- Write ONLY the Markdown body (no frontmatter)\n- Use ONLY the provided internal link databases\n- Generate professional, balanced, expert-level content\n- Use 8-15 internal links that flow naturally with the content\n- Links should feel like natural recommendations, not forced assignments\n- Include social media links in your response as a separate JSON object"
             },
             {
-              "content": "Crypto OG: {{$json.name}}  \nWebsite: {{$json.website}}  \n\nINTERNAL LINK DATABASES (format: key|slug|title):  \n\nCRYPTO_OGS:\n{{$json.compactOgs}}\n\nPOSTS:\n{{$json.compactPosts}}\n\nEXCHANGES:\n{{$json.compactExchanges}}\n\nTOOLS:\n{{$json.compactTools}}\n\n=== GUIDELINES ===  \n{{$json.guidelinesText}}\n\nIMPORTANT: After writing the biography, provide a JSON object with:\n1. social: verified social URLs (website, twitter, linkedin, wikipedia, etc.)\n2. description: 100–150 character summary specific to the person."
+              "content": "Crypto OG: {{$json.name}}  \n\nINTERNAL LINK DATABASES (format: key|slug|title):  \n\nCRYPTO_OGS:\n{{$json.compactOgs}}\n\nPOSTS:\n{{$json.compactPosts}}\n\nEXCHANGES:\n{{$json.compactExchanges}}\n\nTOOLS:\n{{$json.compactTools}}\n\n=== GUIDELINES ===  \n{{$json.guidelinesText}}\n\nIMPORTANT: After writing the crypto OG biography, provide a JSON object with:\n1. social: Research the person's official sources to find their actual social media links. Use ONLY verified, existing URLs. NO guessing or generic patterns. If you can't find a social platform, don't include it. Quality over quantity.\n2. description: 100–150 character frontmatter description (SPECIFIC with unique differentiator, NOT generic)\n\nExample JSON format:\n{\n  \"social\": { \"twitter\": \"...\", \"linkedin\": \"...\", \"wikipedia\": \"...\" },\n  \"description\": \"Co-founder of Ethereum and one of the most influential figures shaping blockchain innovation and decentralization.\"\n}"
             }
           ]
         },
@@ -153,10 +131,7 @@
       "id": "bb6c55d7-a3d1-454b-9802-037e25adf613",
       "name": "OpenAI: Generate Body",
       "type": "n8n-nodes-base.openAi",
-      "position": [
-        1216,
-        -144
-      ],
+      "position": [1216, -144],
       "typeVersion": 1.1,
       "credentials": {
         "openAiApi": {
@@ -167,16 +142,13 @@
     },
     {
       "parameters": {
-        "functionCode": "const meta = $node[\"Parse & Prepare Data\"].json;\nconst ai = $node[\"OpenAI: Generate Body\"].json;\n\nconst slug = meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');\nconst isoDate = new Date().toISOString().split('T')[0];\nconst order = meta.db.next_orders.crypto_ogs;\n\nlet socialLinks = { website: meta.website };\nlet description = '';\n\nconst aiContent = ai.choices?.[0]?.message?.content || ai.content || '';\nconst jsonMatch = aiContent.match(/\\{[\\s\\S]*\"social\"[\\s\\S]*\\}/);\nif (jsonMatch) {\n  const jsonString = jsonMatch[0];\n  try {\n    const parsed = JSON.parse(jsonString);\n    if (parsed.social) socialLinks = { ...socialLinks, ...parsed.social };\n    if (parsed.description) description = parsed.description;\n  } catch (e) {\n    console.log('JSON parsing error:', e.message);\n  }\n}\n\nconst socialSection = Object.entries(socialLinks)\n  .map(([k, v]) => `  ${k}: ${v}`)\n  .join('\\n');\n\nconst frontmatter = [\n  '---',\n  `title: \"${meta.name}\"`,\n  `image: \"/images/crypto-ogs/${slug}.png\"`,\n  `description: \"${description}\"`,\n  `date: ${isoDate}`,\n  `order: ${order}`,\n  `authors: [\"Crypto Wiki Team\"]`,\n  `social:`,\n  socialSection,\n  '---'\n].join('\\n');\n\nconst body = aiContent.replace(/\\n\\{[\\s\\S]*\\}\\s*$/, '').trim();\n\nreturn [{\n  json: {\n    mdx: `${frontmatter}\\n\\n${body}`,\n    slug,\n    name: meta.name,\n    website: meta.website,\n    isoDate,\n    order,\n    db: meta.db,\n    socialLinks\n  }\n}];"
+        "functionCode": "const meta = $node[\"Parse & Prepare Data\"].json;\nconst ai = $node[\"OpenAI: Generate Body\"].json;\n\nconst slug = meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');\nconst isoDate = new Date().toISOString().split('T')[0];\nconst order = meta.db.next_orders.crypto_ogs;\n\n// Extract social media links and description from AI response\nlet socialLinks = {};\nlet description = '';\nlet jsonFound = false;\n\n// Function to validate social media URLs\nfunction isValidSocialUrl(url, platform) {\n  if (!url || typeof url !== 'string') return false;\n  \n  // Basic URL validation\n  try {\n    new URL(url);\n  } catch {\n    return false;\n  }\n  \n  // Platform-specific validation patterns\n  const patterns = {\n    twitter: /^https:\\/\\/(twitter\\.com|x\\.com)\\//,\n    linkedin: /^https:\\/\\/(www\\.)?linkedin\\.com\\/(in|company)\\//,\n    facebook: /^https:\\/\\/(www\\.)?facebook\\.com\\//,\n    instagram: /^https:\\/\\/(www\\.)?instagram\\.com\\//,\n    youtube: /^https:\\/\\/(www\\.)?youtube\\.com\\//,\n    telegram: /^https:\\/\\/t\\.me\\//,\n    discord: /^https:\\/\\/discord\\.(com|gg)\\//,\n    reddit: /^https:\\/\\/(www\\.)?reddit\\.com\\//,\n    tiktok: /^https:\\/\\/(www\\.)?tiktok\\.com\\//,\n    apple: /^https:\\/\\/apps\\.apple\\.com\\//,\n    android: /^https:\\/\\/play\\.google\\.com\\//,\n    wikipedia: /^https:\\/\\/(en\\.)?wikipedia\\.org\\//,\n    github: /^https:\\/\\/github\\.com\\//,\n    medium: /^https:\\/\\/(medium\\.com|.*\\.medium\\.com)\\//\n  };\n  \n  return patterns[platform] ? patterns[platform].test(url) : true;\n}\n\n// Function to filter out generic/guessed URLs\nfunction filterGenericUrls(socialObj) {\n  const filtered = {};\n  \n  for (const [platform, url] of Object.entries(socialObj)) {\n    if (platform === 'website') {\n      filtered[platform] = url; // Always keep website\n      continue;\n    }\n    \n    // Skip if URL looks generic/guessed\n    const genericPatterns = [\n      new RegExp(`https://${platform}\\.com/${meta.name.toLowerCase()}`),\n      new RegExp(`https://${platform}\\.com/company/${meta.name.toLowerCase()}`),\n      new RegExp(`https://${platform}\\.com/@${meta.name.toLowerCase()}`),\n      new RegExp(`https://${platform}\\.com/in/${meta.name.toLowerCase()}`)\n    ];\n    \n    const isGeneric = genericPatterns.some(pattern => pattern.test(url));\n    \n    if (!isGeneric && isValidSocialUrl(url, platform)) {\n      filtered[platform] = url;\n    } else {\n      console.log(`Filtered out generic/invalid ${platform} URL: ${url}`);\n    }\n  }\n  \n  return filtered;\n}\n\ntry {\n  const aiContent = ai.choices?.[0]?.message?.content || ai.content || '';\n  console.log('AI Response length:', aiContent.length);\n  \n  // Look for JSON object in the response - try multiple patterns\n  let jsonMatch = null;\n  \n  // Try different JSON patterns\n  const jsonPatterns = [\n    /\\{[\\s\\S]*?\"social\"[\\s\\S]*?\\}/g,\n    /\\{[\\s\\S]*?\"description\"[\\s\\S]*?\\}/g,\n    /\\{[\\s\\S]*?\"social\"[\\s\\S]*?\"description\"[\\s\\S]*?\\}/g,\n    /\\{[\\s\\S]*?\"description\"[\\s\\S]*?\"social\"[\\s\\S]*?\\}/g\n  ];\n  \n  for (const pattern of jsonPatterns) {\n    const matches = aiContent.match(pattern);\n    if (matches && matches.length > 0) {\n      jsonMatch = matches;\n      break;\n    }\n  }\n  \n  if (jsonMatch && jsonMatch.length > 0) {\n    console.log('Found JSON match:', jsonMatch[0].substring(0, 200));\n    \n    // Clean up the JSON string before parsing\n    let jsonString = jsonMatch[0];\n    \n    // Fix common JSON issues\n    jsonString = jsonString\n      .replace(/,(s*[}\\]])/g, '$1') // Remove trailing commas\n      .replace(/([^,{}\\s])(s*[}\\]])/g, '$1$2') // Ensure proper comma placement\n      .replace(/([^,{}\\s])(s*\"[a-zA-Z_][a-zA-Z0-9_]*\"s*:)/g, '$1,$2'); // Add missing commas before properties\n    \n    try {\n      const aiData = JSON.parse(jsonString);\n      \n      // Extract social links\n      if (aiData.social) {\n        socialLinks = { ...socialLinks, ...aiData.social };\n        console.log('Extracted social links:', Object.keys(aiData.social));\n        \n        // Filter out generic/guessed URLs\n        socialLinks = filterGenericUrls(socialLinks);\n        console.log('Filtered social links:', Object.keys(socialLinks));\n        \n        jsonFound = true;\n      }\n      \n      // Extract description\n      if (aiData.description) {\n        description = aiData.description;\n        console.log('Extracted description:', description);\n      }\n    } catch (jsonError) {\n      console.log('JSON parsing failed, trying manual extraction:', jsonError.message);\n      \n      // Manual extraction as fallback - search in the full content\n      const socialMatch = aiContent.match(/\"social\"\\s*:\\s*\\{([^}]+)\\}/);\n      const descMatch = aiContent.match(/\"description\"\\s*:\\s*\"([^\"]+)\"/);\n      \n      if (socialMatch) {\n        // Extract individual social links manually\n        const socialText = socialMatch[1];\n        const linkMatches = socialText.matchAll(/\"([^\"]+)\"\\s*:\\s*\"([^\"]+)\"/g);\n        \n        for (const match of linkMatches) {\n          socialLinks[match[1]] = match[2];\n        }\n        \n        // Filter out generic/guessed URLs\n        socialLinks = filterGenericUrls(socialLinks);\n        \n        jsonFound = true;\n        console.log('Manual extraction successful:', Object.keys(socialLinks));\n      }\n      \n      if (descMatch) {\n        description = descMatch[1];\n        console.log('Manual description extraction:', description);\n      }\n    }\n  } else {\n    console.log('No JSON found in AI response, trying to extract from content...');\n    \n    // Try to extract social links and description from the content itself\n    const socialMatch = aiContent.match(/\"social\"\\s*:\\s*\\{([^}]+)\\}/);\n    const descMatch = aiContent.match(/\"description\"\\s*:\\s*\"([^\"]+)\"/);\n    \n    if (socialMatch) {\n      // Extract individual social links manually\n      const socialText = socialMatch[1];\n      const linkMatches = socialText.matchAll(/\"([^\"]+)\"\\s*:\\s*\"([^\"]+)\"/g);\n      \n      for (const match of linkMatches) {\n        socialLinks[match[1]] = match[2];\n      }\n      \n      // Filter out generic/guessed URLs\n      socialLinks = filterGenericUrls(socialLinks);\n      \n      jsonFound = true;\n      console.log('Manual extraction successful:', Object.keys(socialLinks));\n    }\n    \n    if (descMatch) {\n      description = descMatch[1];\n      console.log('Manual description extraction:', description);\n    }\n  }\n  \n  // Validate we got the required data\n  if (!jsonFound) {\n    throw new Error('AI did not return required JSON with social links. Manual review needed.');\n  }\n  \n  if (!description) {\n    throw new Error('AI did not return required description. Manual review needed.');\n  }\n  \n  // Check if we have minimum required social links\n  const socialCount = Object.keys(socialLinks).length;\n  if (socialCount < 3) {\n    console.log(`Warning: Only ${socialCount} social links found. Consider manual review.`);\n  }\n  \n} catch (e) {\n  console.log('ERROR parsing AI response:', e.message);\n  throw new Error(`Failed to extract data from AI response: ${e.message}. Please check AI output format.`);\n}\n\n// Build social media section for frontmatter\nconst socialSection = Object.entries(socialLinks)\n  .filter(([key, value]) => value && value.trim())\n  .map(([key, value]) => `  ${key}: ${value}`)\n  .join('\\n');\n\nconst frontmatter = [\n  '---',\n  `title: \"${meta.name}\"`,\n  `image: \"/images/crypto-ogs/${slug}.png\"`,\n  `description: \"${description}\"`,\n  `date: ${isoDate}`,\n  `order: ${order}`,\n  `authors: [\"Crypto Wiki Team\"]`,\n  `social:`,\n  socialSection,\n  '---'\n].join('\\n');\n\n// Extract just the markdown body (remove any JSON at the end)\nlet body = ai.choices?.[0]?.message?.content || ai.content || '';\n// Remove JSON object if it exists at the end\nbody = body.replace(/\\n\\{[\\s\\S]*\"social\"[\\s\\S]*\\}$/, '').trim();\n\nreturn [{\n  json: {\n    mdx: `${frontmatter}\\n\\n${body}`,\n    slug,\n    name: meta.name,\n    isoDate,\n    order,\n    db: meta.db,\n    socialLinks\n  }\n}];"
       },
       "id": "e028f1d4-5ea8-44b6-a842-13bd596593fb",
       "name": "Build Frontmatter + MDX",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        1408,
-        -144
-      ]
+      "position": [1408, -144]
     },
     {
       "parameters": {
@@ -186,10 +158,7 @@
       "name": "Prepare File Data",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        1616,
-        -144
-      ]
+      "position": [1616, -144]
     },
     {
       "parameters": {
@@ -212,10 +181,7 @@
       "name": "Write New OG MDX",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        1808,
-        -144
-      ],
+      "position": [1808, -144],
       "webhookId": "9375c184-2cdb-451c-bf7d-c5c6e535afac",
       "credentials": {
         "githubApi": {
@@ -232,10 +198,7 @@
       "name": "Update Database",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [
-        2000,
-        -144
-      ]
+      "position": [2000, -144]
     },
     {
       "parameters": {
@@ -259,10 +222,7 @@
       "name": "Write Updated DB JSON",
       "type": "n8n-nodes-base.github",
       "typeVersion": 1,
-      "position": [
-        2208,
-        -144
-      ],
+      "position": [2208, -144],
       "webhookId": "0b5db4dd-bb1c-4fa5-8714-d88162758079",
       "credentials": {
         "githubApi": {

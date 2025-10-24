@@ -99,6 +99,10 @@
     "hayden adams": {
       "slug": "hayden-adams",
       "title": "Hayden Adams"
+    },
+    "ray.chan": {
+      "slug": "ray-chan",
+      "title": "Ray Chan"
     }
   },
   "exchanges": {
@@ -384,7 +388,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 26,
+    "crypto_ogs": 27,
     "exchanges": 19,
     "posts": null
   }

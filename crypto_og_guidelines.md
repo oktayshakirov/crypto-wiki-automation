@@ -1,6 +1,6 @@
 # AI Crypto OG Biography Guidelines
 
-## Structure (Flexible 6-8 Core Sections + OGProfileLinks)
+## Structure (Flexible 6-8 Core Sections)
 
 **FLEXIBLE STRUCTURE**: Adapt sections based on the person's story. The following are common patterns, but not rigid requirements:
 
@@ -136,10 +136,13 @@ After writing the biography, provide a JSON object with verified social links an
 ```json
 {
   "social": {
-    "website": "https://officialsite.com",
-    "twitter": "https://twitter.com/name",
-    "linkedin": "https://linkedin.com/in/name",
-    "wikipedia": "https://en.wikipedia.org/wiki/Name"
+    "twitter": "https://twitter.com/username",
+    "linkedin": "https://linkedin.com/in/username",
+    "wikipedia": "https://en.wikipedia.org/wiki/Name",
+    "instagram": "https://instagram.com/username",
+    "youtube": "https://youtube.com/@username",
+    "github": "https://github.com/username",
+    "website": "https://officialsite.com"
   },
   "description": "Founder of Ethereum and one of the most influential figures shaping blockchain innovation and decentralization."
 }
@@ -147,8 +150,10 @@ After writing the biography, provide a JSON object with verified social links an
 
 **Rules:**
 
-- Minimum 3 verified social links (website, Twitter, LinkedIn, Wikipedia preferred)
-- Only verified sources — no guesses or placeholders
+- Research and find ACTUAL social media profiles for the person
+- Include as many verified social links as possible (Twitter, LinkedIn, Wikipedia, Instagram, YouTube, GitHub, etc.)
+- Only include links that actually exist — no guessing or placeholders
+- If a platform doesn't exist for the person, don't include it
 - Description: 100–150 characters, factual and specific
 
 ---
@@ -159,7 +164,6 @@ After writing the biography, provide a JSON object with verified social links an
 
 - [ ] Engaging opening that immediately establishes importance
 - [ ] Flexible section structure adapted to the person's story
-- [ ] OGProfileLinks component added at the end
 - [ ] 2 images placed strategically to enhance narrative
 
 **Links**

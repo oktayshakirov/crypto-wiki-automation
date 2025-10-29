@@ -1,0 +1,477 @@
+{
+  "name": "Crypto Wiki: Share Post",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "769483eb-5574-42c4-b2d0-1df457ad3683",
+      "name": "Manual Trigger (Social Share)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-2096, 128]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "slug",
+              "value": "what-is-bitcoin"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ce358ff-6528-460a-bb8d-3f14dd0d1037",
+      "name": "Set Slug",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [-1952, 128]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki",
+          "mode": "name"
+        },
+        "filePath": "=content/posts/{{$json.slug}}.mdx",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "11e6c5ab-cf38-4226-944d-c1c9c841cf0c",
+      "name": "Get Post MDX",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [-1808, 128],
+      "webhookId": "9378457c-322a-4fbe-862f-fa2358a685cb",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json.content;\nconst decoded = Buffer.from(raw, 'base64').toString('utf8');\nconst match = /---([\\s\\S]*?)---/.exec(decoded);\nconst fm = {};\nif (match && match[1]) {\n  match[1].split('\\n').forEach(line => {\n    const [key, ...rest] = line.split(':');\n    if (key && rest.length > 0) {\n      fm[key.trim()] = rest.join(':').trim().replace(/^\\\"|\\\"$|'/g, '');\n    }\n  });\n}\nconst slug = $('Set Slug').item.json.slug;\nreturn [{ json: {\n  name: fm.title || \"Post\",\n  image: fm.image ? `https://www.thecrypto.wiki${fm.image}` : \"\",\n  description: fm.description || \"\",\n  link: `http://thecrypto.wiki/posts/${slug}`\n}}];"
+      },
+      "id": "eeb67566-efa5-4cc6-9d25-135ed66c785a",
+      "name": "Parse Frontmatter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-1648, 128]
+    },
+    {
+      "parameters": {
+        "imageTemplateId": "fc877b23efe45548",
+        "overridesUi": {
+          "overrideValues": [
+            {
+              "propertiesUi": {
+                "propertyValues": [
+                  {
+                    "key": "image.src",
+                    "value": "={{$json.image}}"
+                  },
+                  {
+                    "key": "title.text",
+                    "value": "={{$json.name}}"
+                  },
+                  {
+                    "key": "description.text",
+                    "value": "={{$json.description}}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "id": "286681ed-313f-44ea-881a-0c2a98947dc1",
+      "name": "Create an image",
+      "type": "n8n-nodes-base.apiTemplateIo",
+      "typeVersion": 1,
+      "position": [-1504, 128],
+      "credentials": {
+        "apiTemplateIoApi": {
+          "id": "vNIrPpfU5KGJggDq",
+          "name": "APITemplate.io account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{$json.download_url_png || $json.download_url || $json.url || $json.image_url || $json.image}}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "6f31dc62-57d8-49c8-a41f-49140507ad84",
+      "name": "Download APITemplate Image",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1344, 128]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "oktayshakirov",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "crypto-wiki-automation",
+          "mode": "name"
+        },
+        "filePath": "=images/posts/{{$('Set Slug').item.json.slug}}.png",
+        "binaryData": true,
+        "commitMessage": "new automated image"
+      },
+      "id": "8e61defe-18e1-4195-9f09-7fffc0cd6cb7",
+      "name": "Upload to GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [-1168, 128],
+      "webhookId": "077f29d7-8e40-4b35-927b-da35e335485e",
+      "credentials": {
+        "githubApi": {
+          "id": "PGPD26vSgTS2AeM8",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const description = $('Parse Frontmatter').item.json.description || \"\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/posts\";\n  const slug = $('Set Slug').item.json.slug || \"post\";\n\n  const variants = [\n    `${description}  Read more: 👉 {{link}}`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/posts/${slug}.png`;\n    const binary = $('Download APITemplate Image').item.binary || {};\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      link: link\n    },\n    binary\n  };\n});\n"
+      },
+      "id": "3c61028b-f60f-497c-8875-0486f204cc21",
+      "name": "Format Social Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [-1008, 128]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "image_url",
+                "value": "={{$json.imageUrl}}"
+              },
+              {
+                "name": "caption",
+                "value": "={{$json.instagramCaption}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "7fc8a3c6-52bd-4707-addb-2080902b02f7",
+      "name": "Instagram Create Media",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [-784, 128],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{$json.facebook}}"
+              },
+              {
+                "name": "link",
+                "value": "={{$json.link}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "cc7323d9-56bb-4215-81d9-86c88ce66279",
+      "name": "Facebook Post",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [-768, -272],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{$json.id}}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "1291ec34-5efb-4322-a752-10e28cf98929",
+      "name": "Instagram Post",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [-560, 128],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "@thecryptowiki",
+        "file": "={{$json.imageUrl}}",
+        "additionalFields": {
+          "caption": "={{$json.twitter}}"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [-656, 320],
+      "id": "c87bcd39-b7d7-4724-b360-3a63638d2eae",
+      "name": "Telegram Post",
+      "webhookId": "5451a267-98bb-425d-9640-76c1afb4791e",
+      "credentials": {
+        "telegramApi": {
+          "id": "uVLOnoo4RVLvHhIs",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://upload.twitter.com/1.1/media/upload.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth1Api",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "media",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-736, -64],
+      "id": "f5b83d99-e877-49ad-b95e-811004ad8482",
+      "name": "Upload Media to Twitter",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "QT8bLYGAdrhMNYdJ",
+          "name": "X account"
+        },
+        "twitterOAuth1Api": {
+          "id": "gG2OhuzCvK3obxs2",
+          "name": "X OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Format Social Post').item.json.twitter }}\n",
+        "additionalFields": {
+          "attachments": "={{ $json.media_id_string }}"
+        }
+      },
+      "id": "ac442f7b-002e-41fe-a8f7-23048ba75c08",
+      "name": "Create Tweet1",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [-544, -128],
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "QT8bLYGAdrhMNYdJ",
+          "name": "X account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger (Social Share)": {
+      "main": [
+        [
+          {
+            "node": "Set Slug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slug": {
+      "main": [
+        [
+          {
+            "node": "Get Post MDX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Post MDX": {
+      "main": [
+        [
+          {
+            "node": "Parse Frontmatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Frontmatter": {
+      "main": [
+        [
+          {
+            "node": "Create an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an image": {
+      "main": [
+        [
+          {
+            "node": "Download APITemplate Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download APITemplate Image": {
+      "main": [
+        [
+          {
+            "node": "Upload to GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to GitHub": {
+      "main": [
+        [
+          {
+            "node": "Format Social Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Social Post": {
+      "main": [
+        [
+          {
+            "node": "Telegram Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Create Media",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload Media to Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Create Media": {
+      "main": [
+        [
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Media to Twitter": {
+      "main": [
+        [
+          {
+            "node": "Create Tweet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b7fc02a2-df66-47cd-9041-7d693dc4dca0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"
+  },
+  "id": "KYJga45bwixvg8DY",
+  "tags": []
+}

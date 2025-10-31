@@ -177,6 +177,10 @@
     "mexc": {
       "slug": "mexc",
       "title": "MEXC"
+    },
+    "htx": {
+      "slug": "htx",
+      "title": "HTX"
     }
   },
   "posts": {
@@ -389,7 +393,7 @@
   },
   "next_orders": {
     "crypto_ogs": 27,
-    "exchanges": 19,
+    "exchanges": 20,
     "posts": null
   }
 }

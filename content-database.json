@@ -103,6 +103,10 @@
     "joseph.lubin": {
       "slug": "joseph-lubin",
       "title": "Joseph Lubin"
+    },
+    "jesse.powell": {
+      "slug": "jesse-powell",
+      "title": "Jesse Powell"
     }
   },
   "exchanges": {
@@ -392,7 +396,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 27,
+    "crypto_ogs": 28,
     "exchanges": 20,
     "posts": null
   }

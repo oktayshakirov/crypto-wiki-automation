@@ -367,6 +367,10 @@
     "bitcoin price control": {
       "slug": "who-controls-bitcoins-price",
       "title": "Who Controls Bitcoin's Price"
+    },
+    "send.and.receive.crypto.safely": {
+      "slug": "send-and-receive-crypto-safely",
+      "title": "How to Send and Receive Crypto Safely"
     }
   },
   "tools": {
@@ -398,6 +402,6 @@
   "next_orders": {
     "crypto_ogs": 28,
     "exchanges": 20,
-    "posts": null
+    "posts": 1
   }
 }

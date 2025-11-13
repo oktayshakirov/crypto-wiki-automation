@@ -10,6 +10,15 @@
 
 **FLEXIBILITY**: Add contextual sections as needed (e.g., "Security Considerations", "Future Outlook", "Comparison with Alternatives").
 
+For **"How to..."** and beginner-focused guides, aim for this typical flow:
+
+- **Engaging introduction (2–3 paragraphs)** – relatable scenario, acknowledge reader concerns, set expectations
+- **Why this matters / stakes** – what can go wrong or what value is unlocked
+- **Core concepts / basics** – minimal theory needed to understand the steps
+- **Step‑by‑step / practical section** – clear actions, checklists supported by narrative
+- **Common mistakes / FAQs / troubleshooting** – show, don’t just tell, how things go wrong in practice
+- **Conclusion** – reinforce key takeaways, build confidence, and suggest safe next steps
+
 ## Content Requirements
 
 - **Length**: 1,200-2,500 words
@@ -57,6 +66,15 @@
 - **Actionable Content**: Provide practical advice with context, explain "why" not just "what"
 - **Natural Voice**: Vary sentence length, avoid AI-like filler ("In conclusion", "Furthermore" - use sparingly), write conversationally but professionally
 - **Beginner-Friendly**: Explain technical terms on first use when concept is central, link to foundational content when appropriate
+- **Concrete Examples & Mini Case Studies**: Where helpful (especially for security, scams, “how to”, and risk topics), include at least 2 short real-world scenarios or anonymized mini case studies that illustrate what happens when things go right vs. wrong.
+
+### Narrative & Engagement
+
+- **Directly address the reader**: Use “you”/“your” to speak to the reader and acknowledge their worries, curiosity, and goals.
+- **Use rhetorical questions sparingly but effectively**: e.g., “Wondering why confirmations matter so much?” to open sections and guide attention.
+- **Leverage analogies and metaphors**: Explain complex ideas with simple comparisons (e.g., “Think of sending crypto like sending a package—you need the exact address, the right carrier (network), and proper labeling (memo/tag)”).
+- **Balance narrative and checklists**: Use bullet lists for clarity, but **always surround them with short narrative paragraphs** that explain why each step/section matters. Avoid posts that feel like pure checklists or manuals.
+- **Encouraging, reassuring tone**: Especially for beginners and security topics, combine honest risk discussion with reassurance that, by following a clear process, the reader can act safely and confidently.
 
 ## Category Selection (MANDATORY - Use ONLY These Categories)
 
@@ -99,7 +117,25 @@ Generate 8-15 SEO-focused tags covering:
 - **Question Hook**: "Are NFTs dead? While the speculative frenzy has cooled, the underlying **[Blockchain](/posts/what-is-blockchain)** technology is far from obsolete."
 - **Historical Context**: "Since [Bitcoin's launch in 2009](/posts/what-is-bitcoin)..." - Connect to current relevance
 
-**Requirements**: Establish importance in first 2-3 sentences, include ONE natural link when appropriate, avoid generic phrases ("This article will explain..."), set expectations about what readers learn.
+**Requirements**:
+
+- Start with **2–3 short paragraphs**, not a bullet list.
+- Use at least one of:
+  - A **relatable scenario** (“You’ve just bought your first Bitcoin and want to send it to a friend…”),
+  - A **question hook** (“Heard about Bitcoin but not sure where to start?”),
+  - A **short context or historical hook** tied to today.
+- Explicitly **acknowledge the reader’s situation and concerns** (e.g., anxiety about making mistakes, confusion as a beginner).
+- Clearly state **what they will learn** and **why it matters now**.
+- Include ONE natural internal link where it adds context (not forced).
+- Avoid starting with dense warnings or raw definitions alone—lead with connection, then explain.
+
+## Conclusion Style
+
+- Every post MUST end with a **Conclusion section** using a clear heading, e.g., `## Conclusion: [Short Benefit-Oriented Phrase]` or `## Conclusion`.
+- The conclusion should be **2–3 paragraphs**, not just a bullet checklist.
+- Summarize the **key takeaways in plain language** and restate why the topic matters.
+- **Reinforce confidence**: make it clear that by following the outlined concepts/steps, the reader can act more safely or make better decisions.
+- Where relevant, suggest **1–2 practical next steps** (e.g., which related guide to read next, or what small action to take first), linking internally in a natural way.
 
 ## Frontmatter Requirements
 
@@ -126,9 +162,23 @@ Generate 8-15 SEO-focused tags covering:
 
 **Tags**: Array of 8-15 relevant keywords
 
-**Crypto OGs (Optional)**: Only when founder/creator mentioned - use database keys (lowercase with dots): "satoshi nakamoto"
+**Crypto OGs (Optional)**: Only when founder/creator mentioned - use proper capitalization in frontmatter: "Satoshi Nakamoto", "Vitalik Buterin"
 
-**Exchanges (Optional)**: Only when recommending services - use database keys (lowercase with dots): "coinbase", "binance"
+**Exchanges (Optional)**: Only when recommending services - use proper capitalization in frontmatter: "Coinbase", "Binance", "Kraken"
+
+**IMPORTANT - Capitalization**:
+
+- ALWAYS use proper capitalization for crypto-ogs and exchanges in BOTH frontmatter and content (e.g., "Satoshi Nakamoto", "Vitalik Buterin", "Coinbase", "Kraken", "Uniswap")
+- This ensures consistency and readability across all articles
+
+## Content Restrictions
+
+**DO NOT Include:**
+
+- References section at the end (e.g., "References for deeper learning", "Further reading", etc.)
+- Bibliography or citation lists
+- External links to other websites (only use internal links from provided database)
+- Any closing sections that list related articles - links should be integrated naturally throughout the content
 
 ## Final JSON Output (REQUIRED)
 
@@ -146,8 +196,8 @@ After writing the post, provide JSON:
   ],
   "description": "Bitcoin is the world's first cryptocurrency. Learn about its history, how it works, and why it's considered digital gold. Perfect for beginners looking to understand the foundation of the crypto world.",
   "categories": ["Beginners", "Technology", "Blockchain", "Bitcoin"],
-  "crypto_ogs": ["satoshi nakamoto"],
-  "exchanges": ["coinbase", "binance", "kraken"]
+  "crypto_ogs": ["Satoshi Nakamoto"],
+  "exchanges": ["Coinbase", "Binance", "Kraken"]
 }
 ```
 

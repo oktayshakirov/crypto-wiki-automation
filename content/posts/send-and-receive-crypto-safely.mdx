@@ -4,8 +4,8 @@ description: "Step-by-step safeguards for sending and receiving crypto: network 
 date: 2025-11-07
 image: "/images/posts/send-and-receive-crypto-safely.png"
 categories: ["Beginners", "Security", "Blockchain"]
-crypto-ogs: ["satoshi nakamoto", "vitalik buterin"]
-exchanges: ["coinbase", "kraken", "uniswap"]
+crypto-ogs: ["Satoshi Nakamoto", "Vitalik Buterin"]
+exchanges: ["Coinbase", "Kraken", "Uniswap"]
 authors: ["Crypto Wiki Team"]
 tags:
   [
@@ -23,7 +23,7 @@ tags:
     "confirmations",
     "memos and tags",
     "self-custody",
-    "crypto taxes"
+    "crypto taxes",
   ]
 draft: false
 ---
@@ -59,39 +59,48 @@ If you plan to use an exchange for either side of the transfer, learn how they w
 Use this checklist every time—especially when sending to a new recipient, chain, or platform.
 
 - **Identify the exact asset and network**
+
   - Match token and chain precisely (e.g., “USDT on Ethereum ERC‑20” vs “USDT on BNB Smart Chain BEP‑20”).
   - Never assume compatibility. An ERC‑20 address (0x…) is not valid for Solana, XRP, or Bitcoin.
 
 - **Collect the recipient details from the source**
+
   - Copy-paste the address from the intended app or exchange deposit page. Prefer QR scanning when possible to reduce typos.
   - If the destination is an exchange wallet that requires a memo/tag (XRP, XLM, ATOM, BNB Beacon), copy both the address and memo/tag exactly.
 
 - **Validate the address format**
+
   - Ethereum/EVM-style: 0x… (42 characters). Bitcoin: bech32 “bc1…”, P2SH “3…”, legacy “1…”. Solana: base58, 32+ chars.
   - If the format doesn’t match expectations, stop and re-check with the recipient.
 
 - **Confirm network support on both ends**
+
   - Verify the sending wallet supports the chosen chain and the receiving platform supports deposits on that exact chain.
   - On exchanges, the deposit page explicitly lists supported networks for each asset.
 
 - **Send a small test transaction first (1–5% of total)**
+
   - For a new destination or chain, send a small “test” first. Confirm receipt, then send the remainder.
   - Keep the test proportion meaningful enough to confirm memos/tags and fees without risking the full amount.
 
 - **Review fees and speed trade-offs**
+
   - Bitcoin fees are quoted in sat/vB and vary with mempool congestion; target low-fee windows for non-urgent sends.
   - Ethereum gas is priced in gwei; under typical conditions in 2024–2025, 5–30 gwei is common, but can spike above 100 gwei during peak demand.
   - Avoid “max fee” or “fastest” presets unless time-critical.
 
 - **Double-check address characters**
+
   - Verify the first 6 and last 6 characters, ideally using a read-aloud check or a second person.
   - Watch for address-poisoning attacks where your history shows attacker-controlled addresses similar to your real contacts. Cross-verify with the recipient’s QR or a signed message when in doubt. For more on this attack class, revisit **[Crypto Scams: How to Spot and Avoid Them](/posts/how-to-avoid-crypto-scams)**.
 
 - **Add the correct memo/tag when required**
+
   - Exchanges often require a tag for account crediting. Missing tags can lead to delays or unrecoverable funds.
   - If you forgot, contact the exchange’s support immediately with your TXID/hash. Recovery is not guaranteed and may incur a fee.
 
 - **Wait for confirmations/finality before sending the remainder**
+
   - See the “Confirmations and Finality” section below for chain-specific numbers.
 
 - **Save your TXID and receipts**
@@ -100,15 +109,19 @@ Use this checklist every time—especially when sending to a new recipient, chai
 ## How to Receive Crypto Safely
 
 - **Generate a fresh address when privacy matters**
+
   - For UTXO coins like Bitcoin, avoid address reuse. HD wallets derive new addresses automatically.
 
 - **Provide the exact network and any memo/tag**
+
   - When receiving to an exchange account, share both the address and the required tag, making it clear which is which.
 
 - **Prefer QR codes over manual typing**
+
   - Share a QR that encodes address + tag (if supported by the platform). Confirm the text version matches the QR content.
 
 - **Never send seed phrases or private keys**
+
   - You only need to share a public address. Anyone asking for your seed, “for verification,” is scamming you.
 
 - **Confirm arrival and status**
@@ -119,6 +132,7 @@ Use this checklist every time—especially when sending to a new recipient, chai
 Different networks secure transactions differently, so “safe” varies by chain and value. Two major examples:
 
 - **Bitcoin (launched 2009 by **[Satoshi Nakamoto](/crypto-ogs/satoshi-nakamoto)**)** uses Proof‑of‑Work. One block averages ~10 minutes. For typical retail amounts:
+
   - 1–2 confirmations: low to moderate risk (~10–20 minutes).
   - 3 confirmations: commonly acceptable for consumer transfers (~30 minutes).
   - 6 confirmations: industry standard for high-value settlement (~60 minutes). Learn the mechanics in **[What is Proof-of-Work (PoW)?](/posts/what-is-proof-of-work)** and the currency itself in **[What is Bitcoin? A Beginner’s Guide](/posts/what-is-bitcoin)**.
@@ -129,15 +143,18 @@ Different networks secure transactions differently, so “safe” varies by chai
   - Finality: typically after 2 epochs (~12.8 minutes). Many wallets/exchanges credit after fewer blocks for UX, but for large values, wait for finality. Explore the network in **[What is Ethereum? A Beginner's Guide](/posts/what-is-ethereum)**.
 
 As a practical rule:
+
 - Low-value, peer-to-peer amounts can be considered received after the platform’s stated confirmation threshold.
 - For large or business transfers, wait for the higher end (e.g., BTC 6 conf, ETH finality). When in doubt, align with the stricter party’s policy.
 
 ## Fees, Timing, and Reducing Costs
 
 - **Bitcoin**
+
   - Fees are dynamic. If you’re not in a hurry, wait for off-peak times (e.g., weekends or overnight UTC). Use “low” fee presets and RBF (Replace-By-Fee) when available to bump later if needed.
 
 - **Ethereum/EVM**
+
   - Gas surges during NFT mints or hot token launches. If your transfer isn’t urgent, target lower base fee periods (often late-night UTC). Under typical conditions, 5–30 gwei is common; spikes over 100 gwei happen during hype.
 
 - **General Tips**
@@ -147,10 +164,12 @@ As a practical rule:
 ## Sending To/From Exchanges and DEXs
 
 - **Centralized exchanges (CEX)**
+
   - Examples include **[Coinbase](/exchanges/coinbase)** and **[Kraken](/exchanges/kraken)**. Each asset has a deposit page showing supported networks, deposit minimums, and required memos/tags. Withdrawal fees and minimums are published per asset/network.
   - Whitelist withdrawal addresses and enable withdrawal holds/alerts. Don’t withdraw immediately after changing security settings—wait the platform’s cooling period.
 
 - **Decentralized exchanges (DEX)**
+
   - On DEX front ends like **[Uniswap](/exchanges/uniswap)**, you trade from your own wallet. Funds never leave your custody unless you approve a contract. Review token approvals and revoke unlimited allowances periodically, especially for higher-risk contracts.
 
 - **CEX-to-wallet vs. wallet-to-CEX**
@@ -182,12 +201,15 @@ As a practical rule:
 ## Quick Troubleshooting
 
 - **I sent to the wrong network. What now?**
+
   - If both addresses are in wallets you control and the chain is EVM-compatible, recovery may be possible by adding the missing network and importing the key. For exchange deposits on the wrong network, open a ticket immediately; recovery is not guaranteed and may require a fee.
 
 - **I forgot the memo/tag.**
+
   - Provide the exchange with your TXID, address, amount, and timestamp. Some platforms can manually credit. Expect delays.
 
 - **I don’t see my funds after “success.”**
+
   - Check block explorer status on the correct chain, confirm confirmation count, and ensure you’re viewing the right asset contract in your wallet.
 
 - **Fees look abnormally high.**
@@ -203,14 +225,3 @@ As a practical rule:
 - Send the remainder and archive the TXID.
 
 With a consistent process, safe crypto transfers are straightforward. Slow down, test first, and always match network, asset, and destination details precisely.
-
----
-
-References for deeper learning:
-- **[What is Bitcoin? A Beginner's Guide](/posts/what-is-bitcoin)**
-- **[What is Ethereum? A Beginner's Guide](/posts/what-is-ethereum)**
-- **[What is Proof-of-Work (PoW)?](/posts/what-is-proof-of-work)**
-- **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)**
-- **[How to Safely Store Your Cryptocurrency](/posts/how-to-store-crypto)**
-- **[Crypto Scams: How to Spot and Avoid Them](/posts/how-to-avoid-crypto-scams)**
-- **[Understanding Cryptocurrency Taxes](/posts/understanding-crypto-taxes)**

@@ -185,6 +185,11 @@
     "htx": {
       "slug": "htx",
       "title": "HTX"
+    },
+    "bitfinex": {
+      "slug": "/exchanges/bitfinex",
+      "title": "Bitfinex",
+      "order": 20
     }
   },
   "posts": {
@@ -401,7 +406,7 @@
   },
   "next_orders": {
     "crypto_ogs": 28,
-    "exchanges": 20,
+    "exchanges": 21,
     "posts": 1
   }
 }

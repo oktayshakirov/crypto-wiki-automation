@@ -1,5 +1,11 @@
 # AI Exchange Review Guidelines
 
+## ⚠️ CRITICAL: Internal Linking Requirement
+
+**ALL exchange reviews MUST include 8-15 internal links using the format: **[Text](/path)**. Articles without proper internal linking are INCOMPLETE and will be rejected.**
+
+See the "Internal Linking" section below for detailed requirements and examples.
+
 ## Structure (7 Core Sections + ExchangeButton)
 
 1. **## [Exchange]: [Specific Descriptor]** - Opening with founding year, founder(s) if notable, headquarters, 1-2 positioning sentences highlighting uniqueness
@@ -24,11 +30,13 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Tone**: Professional, balanced, expert-level, E-E-A-T compliant
 - **SEO**: Include naturally 'cryptocurrency exchange', 'crypto trading', 'digital assets'
 
-## Internal Linking (NATURAL FLOW - ALWAYS USE BOLD)
+## Internal Linking (MANDATORY - NATURAL FLOW - ALWAYS USE BOLD)
+
+**⚠️ CRITICAL REQUIREMENT: Internal linking is MANDATORY. Articles without 8-15 internal links are INCOMPLETE and will be rejected.**
 
 **MANDATORY FORMAT**: **[Text](/path)** NOT [Text](/path)
 
-**Natural Linking Strategy (8-15 total links):**
+**Natural Linking Strategy (8-15 total links - REQUIRED):**
 
 **DO Link When:**
 
@@ -66,6 +74,40 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Make comparisons meaningful**: "similar to [Coinbase](/exchanges/coinbase) for regulatory compliance" vs generic "compare with [Binance](/exchanges/binance)"
 
 **GOAL**: Natural, helpful linking that enhances user experience without feeling intrusive. Links should feel like natural recommendations, not mandatory reading assignments.
+
+**Concrete Examples of Where to Add Links:**
+
+1. **Opening Section:**
+
+   - Founders: "Founded by **[Name](/crypto-ogs/slug)**"
+   - Core assets: "trading **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)**"
+
+2. **Core Services Section:**
+
+   - Trading concepts: "spot trading of **[altcoins](/posts/what-are-altcoins)**"
+   - Technology: "built on **[blockchain](/posts/what-is-blockchain)** technology"
+   - Features: "supports **[staking](/posts/crypto-staking)** for **[Proof-of-Stake](/posts/what-is-proof-of-stake)** coins"
+   - DeFi: "access to **[DeFi](/posts/what-is-defi)** protocols"
+
+3. **Security Section:**
+
+   - Best practices: "learn **[how to store crypto](/posts/how-to-store-crypto)** safely"
+   - Safety: "avoid **[crypto scams](/posts/how-to-avoid-crypto-scams)**"
+
+4. **User Experience Section:**
+
+   - Education: "understanding **[crypto exchanges](/posts/understanding-crypto-exchanges)**"
+   - Beginners: "**[crypto for beginners](/posts/crypto-for-beginners)** guide"
+
+5. **Comparison Context:**
+
+   - "similar to **[Coinbase](/exchanges/coinbase)** for regulatory compliance"
+   - "compare with **[Binance](/exchanges/binance)** for global reach"
+   - "alternative to **[Kraken](/exchanges/kraken)** for US users"
+
+6. **Conclusion:**
+   - "ideal for users new to **[crypto trading](/posts/crypto-trading-vs-holding)**"
+   - "supports various **[digital assets](/posts/what-are-altcoins)**"
 
 ## Writing Standards
 
@@ -173,16 +215,19 @@ Before finalizing:
 - [ ] Section 2 header adapted to exchange type
 - [ ] Conclusion ends with verdict sentence
 
-**Links (NATURAL FLOW)**
+**Links (MANDATORY - NATURAL FLOW)**
 
-- [ ] 8-15 internal links flowing naturally with content
-- [ ] ALL links use **[Text](/path)** bold format
+- [ ] **8-15 internal links REQUIRED** - Articles with fewer than 8 links are INCOMPLETE
+- [ ] ALL links use **[Text](/path)** bold format (NOT [Text](/path))
 - [ ] Links feel like natural recommendations, not forced assignments
-- [ ] Exchange comparisons when relevant using contextually appropriate exchanges from database
-- [ ] Core concepts linked in context (Bitcoin, Ethereum, DeFi, staking)
-- [ ] Essential safety content linked naturally
-- [ ] Verified all links exist in database (used exact keys)
+- [ ] Exchange comparisons when relevant using contextually appropriate exchanges from database (1-2 per article)
+- [ ] Core concepts linked in context (Bitcoin, Ethereum, DeFi, staking, blockchain, altcoins)
+- [ ] Essential safety content linked naturally (how to store crypto, avoiding scams)
+- [ ] Educational content linked when relevant (understanding exchanges, crypto for beginners)
+- [ ] Founders linked if they exist in crypto_ogs database
+- [ ] Verified all links exist in database (used exact slugs from provided databases)
 - [ ] NO forced phrases like "see our guide on..." or "read more about..."
+- [ ] Links distributed throughout the article, not clustered in one section
 
 **Images**
 

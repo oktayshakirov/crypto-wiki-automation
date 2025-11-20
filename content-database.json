@@ -190,6 +190,11 @@
       "slug": "/exchanges/bitfinex",
       "title": "Bitfinex",
       "order": 20
+    },
+    "bingx": {
+      "slug": "/exchanges/bingx",
+      "title": "BingX",
+      "order": 21
     }
   },
   "posts": {
@@ -406,7 +411,7 @@
   },
   "next_orders": {
     "crypto_ogs": 28,
-    "exchanges": 21,
+    "exchanges": 22,
     "posts": 1
   }
 }

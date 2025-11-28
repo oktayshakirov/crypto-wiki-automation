@@ -18,7 +18,7 @@
           "string": [
             {
               "name": "slug",
-              "value": "how-to-buy-your-first-crypto"
+              "value": "the-future-of-crypto"
             }
           ]
         },
@@ -117,7 +117,7 @@
       "credentials": {
         "apiTemplateIoApi": {
           "id": "vNIrPpfU5KGJggDq",
-          "name": "APITemplate.io account"
+          "name": "APITemplate.io (CryptoWiki)"
         }
       }
     },
@@ -176,7 +176,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map(item => {\n  const description = $('Parse Frontmatter').item.json.description || \"\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/posts\";\n  const slug = $('Set Slug').item.json.slug || \"post\";\n\n  const variants = [\n    `${description}  Read more: 👉 {{link}}`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"{{link}}\", \"Read more at thecrypto.wiki\");\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/posts/${slug}.png`;\n    const binary = $('Download APITemplate Image').item.binary || {};\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      link: link\n    },\n    binary\n  };\n});\n"
+        "jsCode": "return $input.all().map(item => {\n  const description = $('Parse Frontmatter').item.json.description || \"\";\n  const link = $('Parse Frontmatter').item.json.link || \"http://thecrypto.wiki/posts\";\n  const slug = $('Set Slug').item.json.slug || \"post\";\n\n  const variants = [\n    `${description}  Read more: 👉 {{link}}`\n  ];\n\n  const variant = variants[Math.floor(Math.random() * variants.length)];\n  const fbTwPost = variant.replace(\"{{link}}\", link);\n  const igPost = variant.replace(\"Read more: 👉 {{link}}\", \"👉 Read more at thecrypto.wiki\");\n  const instagramImageUrl = `https://raw.githubusercontent.com/oktayshakirov/crypto-wiki-automation/refs/heads/main/images/posts/${slug}.png`;\n    const binary = $('Download APITemplate Image').item.binary || {};\n\n  return {\n    json: {\n      ...item.json,\n      facebook: fbTwPost,\n      twitter: fbTwPost,\n      instagramCaption: igPost,\n      imageUrl: instagramImageUrl,\n      link: link\n    },\n    binary\n  };\n});\n"
       },
       "id": "c9f628f9-5080-434a-aa28-3a8d34705de3",
       "name": "Format Social Post",
@@ -219,7 +219,7 @@
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -255,7 +255,7 @@
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -287,7 +287,7 @@
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -312,7 +312,7 @@
       "credentials": {
         "telegramApi": {
           "id": "uVLOnoo4RVLvHhIs",
-          "name": "Telegram account"
+          "name": "Telegram (CryptoWiki)"
         }
       }
     },
@@ -346,11 +346,11 @@
       "credentials": {
         "twitterOAuth2Api": {
           "id": "QT8bLYGAdrhMNYdJ",
-          "name": "X account"
+          "name": "X OAuth 2.0 (CryptoWiki)"
         },
         "twitterOAuth1Api": {
           "id": "gG2OhuzCvK3obxs2",
-          "name": "X OAuth account"
+          "name": "X OAuth 1.0 (CryptoWiki)"
         }
       }
     },
@@ -372,7 +372,7 @@
       "credentials": {
         "twitterOAuth2Api": {
           "id": "QT8bLYGAdrhMNYdJ",
-          "name": "X account"
+          "name": "X OAuth 2.0 (CryptoWiki)"
         }
       }
     }
@@ -509,7 +509,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8f9cfea7-170d-4f9e-890d-8991c7013f93",
+  "versionId": "b13390bf-98d8-4234-afc1-848f0cd1c21a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"

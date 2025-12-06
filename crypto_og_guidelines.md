@@ -38,6 +38,18 @@
 - **Keywords:** Include terms like "crypto pioneer", "blockchain innovator", "decentralization", "Bitcoin", "Ethereum" naturally
 - **Readability:** Vary sentence length, use engaging transitions, avoid dry encyclopedia style
 
+## ArticleAd Placement (MANDATORY)
+
+**Format**: `<ArticleAd />` on its own line with blank lines above and below
+
+**Placement Rules:**
+
+- **After complete sections only** - Place after a full section/subsection concludes, never mid-section
+- **Avoid image proximity** - Never place immediately before or after images (maintain at least one complete section between ads and images)
+- **Even distribution** - Distribute 2-5 ads evenly throughout (2-3 for shorter bios, 3-5 for longer/complex figures)
+- **Natural breaks** - Place at transition points between topics, after opening section, between major sections (Early Life, Entry into Crypto, Major Contributions), before Conclusion (not immediately before)
+- **Pattern**: First ad after opening, subsequent ads after major biographical sections, last ad before Conclusion
+
 ---
 
 ## Internal Linking Rules
@@ -181,6 +193,14 @@ After writing the biography, provide a JSON object with verified social links an
 - [ ] Balanced coverage of achievements and criticisms
 - [ ] Quotes integrated naturally throughout
 - [ ] Matches the engaging tone of existing OG pages
+
+**ArticleAd Placement**
+
+- [ ] 2-5 ArticleAd components placed throughout article
+- [ ] All ads placed after complete sections (never mid-section)
+- [ ] No ads immediately before or after images
+- [ ] Ads evenly distributed across article length
+- [ ] First ad after opening section, last ad before Conclusion
 
 **JSON**
 

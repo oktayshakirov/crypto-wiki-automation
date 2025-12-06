@@ -29,6 +29,18 @@ For **"How to..."** and beginner-focused guides, aim for this typical flow:
 - **Formatting**: ## for main headings, **bold** for ALL sub-categories in bullet points
 - **Tone**: Professional, educational, expert-level, E-E-A-T compliant, accessible to beginners when possible
 
+## ArticleAd Placement (MANDATORY)
+
+**Format**: `<ArticleAd />` on its own line with blank lines above and below
+
+**Placement Rules:**
+
+- **After complete sections only** - Place after a full section/subsection concludes, never mid-section
+- **Avoid image proximity** - Never place immediately before or after images (maintain at least one complete section between ads and images)
+- **Even distribution** - Distribute 2-6 ads evenly throughout (2-3 for <100 lines, 3-4 for 100-150 lines, 4-6 for 150+ lines)
+- **Natural breaks** - Place at transition points between topics, after introduction section, between major sections, before conclusion (not immediately before)
+- **Pattern**: First ad after introduction, subsequent ads after major sections, last ad before final section
+
 ## Internal Linking (ALWAYS USE BOLD FORMAT)
 
 **MANDATORY FORMAT**: **[Text](/path)** NOT [Text](/path)
@@ -207,3 +219,34 @@ After writing the post, provide JSON:
 - **Description**: EXACTLY 150-160 characters, SPECIFIC with unique differentiator
 - **Categories**: 1-4 from allowed list: Investing, Beginners, Regulation, Bitcoin, Adoption, Blockchain, Technology, Web3, Predictions, Security, Politics, Sustainability, Gaming, Nfts, Ai
 - **Crypto OGs/Exchanges**: Optional, only when contextually relevant
+
+## Quality Checklist
+
+**Structure**
+
+- [ ] Engaging opening (2-3 paragraphs) with hook and reader acknowledgment
+- [ ] All core sections present with ## headers
+- [ ] Conclusion section (2-3 paragraphs) with key takeaways
+- [ ] 1,200-2,500 words
+
+**ArticleAd Placement**
+
+- [ ] 2-6 ArticleAd components placed throughout article
+- [ ] All ads placed after complete sections (never mid-section)
+- [ ] No ads immediately before or after images
+- [ ] Ads evenly distributed across article length
+- [ ] First ad after introduction section, last ad before Conclusion
+
+**Links & Images**
+
+- [ ] 8-15 internal links using **[Text](/path)** bold format
+- [ ] Links flow naturally, no forced phrases
+- [ ] Exactly 2 images with descriptive alt text
+- [ ] Image paths use `/images/posts/`
+
+**Content**
+
+- [ ] Specific numbers and data (avoid vague terms)
+- [ ] Historical context with dates
+- [ ] Balanced tone (strengths and weaknesses)
+- [ ] **Bold** formatting for ALL sub-categories in bullet points

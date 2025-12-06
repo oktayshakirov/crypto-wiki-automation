@@ -30,6 +30,18 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Tone**: Professional, balanced, expert-level, E-E-A-T compliant
 - **SEO**: Include naturally 'cryptocurrency exchange', 'crypto trading', 'digital assets'
 
+## ArticleAd Placement (MANDATORY)
+
+**Format**: `<ArticleAd />` on its own line with blank lines above and below
+
+**Placement Rules:**
+
+- **After complete sections only** - Place after a full section/subsection concludes, never mid-section
+- **Avoid image proximity** - Never place immediately before or after images (maintain at least one complete section between ads and images)
+- **Even distribution** - Distribute 2-6 ads evenly throughout (2-3 for medium articles, 4-6 for longer articles)
+- **Natural breaks** - Place at transition points between topics, after opening section, between major sections, before conclusion (not immediately before)
+- **Pattern**: First ad after opening, subsequent ads after Core Services/Security/User Experience sections, last ad before Conclusion
+
 ## Internal Linking (MANDATORY - NATURAL FLOW - ALWAYS USE BOLD)
 
 **⚠️ CRITICAL REQUIREMENT: Internal linking is MANDATORY. Articles without 8-15 internal links are INCOMPLETE and will be rejected.**
@@ -245,3 +257,11 @@ Before finalizing:
 - [ ] Balanced tone (strengths AND limitations)
 - [ ] ExchangeButton at the very end
 - [ ] Description is 80-120 characters, specific and unique (not generic)
+
+**ArticleAd Placement**
+
+- [ ] 3-6 ArticleAd components placed throughout article
+- [ ] All ads placed after complete sections (never mid-section)
+- [ ] No ads immediately before or after images
+- [ ] Ads evenly distributed across article length
+- [ ] First ad after opening section, last ad before Conclusion

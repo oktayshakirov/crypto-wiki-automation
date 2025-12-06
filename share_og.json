@@ -117,7 +117,7 @@
       "credentials": {
         "apiTemplateIoApi": {
           "id": "vNIrPpfU5KGJggDq",
-          "name": "APITemplate.io account"
+          "name": "APITemplate.io (CryptoWiki)"
         }
       }
     },
@@ -205,7 +205,7 @@
       "credentials": {
         "twitterOAuth2Api": {
           "id": "QT8bLYGAdrhMNYdJ",
-          "name": "X account"
+          "name": "X OAuth 2.0 (CryptoWiki)"
         }
       }
     },
@@ -241,7 +241,7 @@
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -277,7 +277,7 @@
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -303,13 +303,13 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        -320,
+        -192,
         528
       ],
       "credentials": {
         "facebookGraphApi": {
           "id": "CGGakNGphccGvIDc",
-          "name": "Facebook Graph account"
+          "name": "Facebook Graph (CryptoWiki)"
         }
       }
     },
@@ -334,7 +334,7 @@
       "credentials": {
         "telegramApi": {
           "id": "uVLOnoo4RVLvHhIs",
-          "name": "Telegram account"
+          "name": "Telegram (CryptoWiki)"
         }
       }
     },
@@ -368,13 +368,27 @@
       "credentials": {
         "twitterOAuth2Api": {
           "id": "QT8bLYGAdrhMNYdJ",
-          "name": "X account"
+          "name": "X OAuth 2.0 (CryptoWiki)"
         },
         "twitterOAuth1Api": {
           "id": "gG2OhuzCvK3obxs2",
-          "name": "X OAuth account"
+          "name": "X OAuth 1.0 (CryptoWiki)"
         }
       }
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -368,
+        528
+      ],
+      "id": "1a872182-a068-4105-8c85-38c522c19d7e",
+      "name": "Wait",
+      "webhookId": "9f3d6e45-546f-4045-96a1-55ca04a14e1e"
     }
   ],
   "pinData": {},
@@ -486,7 +500,7 @@
       "main": [
         [
           {
-            "node": "Instagram Post",
+            "node": "Wait",
             "type": "main",
             "index": 0
           }
@@ -503,13 +517,24 @@
           }
         ]
       ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Instagram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e77f5abb-181b-4b40-b695-aaf67722a1c3",
+  "versionId": "087b17ee-a6e4-441f-a09a-71d0c277d7e8",
   "meta": {
     "instanceId": "002b5e092f04f4d75aa57fd214532db5fa3d65fe608d265bda2ed541d575f595"
   },

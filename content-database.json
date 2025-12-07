@@ -381,6 +381,10 @@
     "send.and.receive.crypto.safely": {
       "slug": "send-and-receive-crypto-safely",
       "title": "How to Send and Receive Crypto Safely"
+    },
+    "decentralized.ai.can.ai.run.on.the.blockchain": {
+      "slug": "decentralized-ai-can-ai-run-on-the-blockchain",
+      "title": "Decentralized AI: Can AI Run on the Blockchain?"
     }
   },
   "tools": {
@@ -412,6 +416,6 @@
   "next_orders": {
     "crypto_ogs": 28,
     "exchanges": 22,
-    "posts": 1
+    "posts": 2
   }
 }

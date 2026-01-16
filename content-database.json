@@ -199,6 +199,10 @@
       "slug": "/exchanges/bingx",
       "title": "BingX",
       "order": 21
+    },
+    "bitmart": {
+      "slug": "bitmart",
+      "title": "BitMart"
     }
   },
   "posts": {
@@ -419,7 +423,7 @@
   },
   "next_orders": {
     "crypto_ogs": 29,
-    "exchanges": 22,
+    "exchanges": 23,
     "posts": 2
   }
 }

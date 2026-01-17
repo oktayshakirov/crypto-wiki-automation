@@ -393,6 +393,10 @@
     "decentralized.ai.can.ai.run.on.the.blockchain": {
       "slug": "decentralized-ai-can-ai-run-on-the-blockchain",
       "title": "Decentralized AI: Can AI Run on the Blockchain?"
+    },
+    "a.bear.market.in.crypto": {
+      "slug": "a-bear-market-in-crypto",
+      "title": "What Is a Bear Market in Crypto?"
     }
   },
   "tools": {
@@ -424,6 +428,6 @@
   "next_orders": {
     "crypto_ogs": 29,
     "exchanges": 23,
-    "posts": 2
+    "posts": 3
   }
 }

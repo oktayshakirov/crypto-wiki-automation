@@ -79,6 +79,7 @@ For **"How to..."** and beginner-focused guides: Engaging introduction (2–3 pa
 
 ## Writing Standards
 
+- **Capitalization (MANDATORY)**: ALWAYS capitalize every word in crypto OGs and exchange names every time they appear in content. Examples: "Satoshi Nakamoto" not "satoshi nakamoto", "Coinbase" not "coinbase", "Vitalik Buterin" not "vitalik buterin". Treat as proper nouns throughout the article.
 - **Specific Numbers & Data**: Use exact numbers "200+ cryptocurrencies", "99.9% reduction", "2,700-4,000 TPS" - AVOID vague terms like "many", "most", "several"
 - **Historical Context**: Include founding years, launch dates, key events with dates
 - **Risk Context**: Include naturally when discussing features (e.g., "While leverage can amplify profits, it also increases potential losses")
@@ -97,19 +98,13 @@ Choose 1-4 categories from this EXACT list: **Investing**, **Beginners**, **Regu
 
 **Guidelines**: Choose 2-3 optimal categories, match to post's primary focus (not just mentioned terms), quality over quantity.
 
-## Tag Generation
-
-Generate 8-15 SEO-focused tags covering: Primary topic/asset, Technology/concept, Action/use case, Audience, Related topics
-
 ## Opening Style
 
 **Requirements:**
 
-- Start with **2–3 short paragraphs**, not a bullet list
-- Use at least one: relatable scenario, question hook, or historical context
-- Explicitly acknowledge reader's situation and concerns
-- Clearly state what they will learn and why it matters now
-- Include ONE natural internal link where it adds context
+- Start directly with a **## heading** (main topic heading), not introductory paragraphs before the first heading
+- The first heading should introduce the topic (e.g., "## Understanding Cryptocurrency Volatility" or "## Essential Cryptocurrency Terms Explained")
+- After the heading, begin with 2–3 short paragraphs that: use relatable scenarios/questions/historical context, acknowledge reader's situation, state what they'll learn, include ONE natural internal link
 
 ## Conclusion Style
 
@@ -134,23 +129,11 @@ Generate 8-15 SEO-focused tags covering: Primary topic/asset, Technology/concept
 
 **Categories**: Array of 1-4 from allowed list
 
-**Tags**: Array of 8-15 relevant keywords
+**Crypto OGs (Optional)**: Only when founder/creator mentioned - capitalize every word: `crypto-ogs: ["Satoshi Nakamoto", "Vitalik Buterin"]`
 
-**Crypto OGs (Optional)**: Only when founder/creator mentioned - **MANDATORY: Always capitalize**
+**Exchanges (Optional)**: Only when recommending services - capitalize every word: `exchanges: ["Coinbase", "Binance", "Kraken"]`
 
-- ✅ CORRECT: `crypto-ogs: ["Satoshi Nakamoto", "Vitalik Buterin"]`
-- ❌ WRONG: `crypto-ogs: ["satoshi nakamoto", "vitalik buterin"]`
-
-**Exchanges (Optional)**: Only when recommending services - **MANDATORY: Always capitalize**
-
-- ✅ CORRECT: `exchanges: ["Coinbase", "Binance", "Kraken"]`
-- ❌ WRONG: `exchanges: ["coinbase", "binance", "kraken"]`
-
-**IMPORTANT - Capitalization (MANDATORY):**
-
-- ALWAYS use proper capitalization for crypto-ogs and exchanges in BOTH frontmatter and content
-- ❌ NEVER lowercase: "satoshi nakamoto", "coinbase"
-- ✅ ALWAYS proper case: "Satoshi Nakamoto", "Coinbase"
+**Capitalization (MANDATORY)**: Capitalize every word in crypto OGs and exchanges in both frontmatter and content. Examples: "Satoshi Nakamoto" not "satoshi nakamoto", "Coinbase" not "coinbase". Apply to all mentions throughout the article.
 
 ## Content Restrictions
 
@@ -167,14 +150,6 @@ After writing the post, provide JSON:
 
 ```json
 {
-  "tags": [
-    "bitcoin",
-    "cryptocurrency",
-    "blockchain",
-    "digital gold",
-    "crypto investing",
-    "crypto basics"
-  ],
   "description": "Bitcoin is the world's first cryptocurrency. Learn about its history, how it works, and why it's considered digital gold. Perfect for beginners looking to understand the foundation of the crypto world.",
   "categories": ["Beginners", "Technology", "Blockchain", "Bitcoin"],
   "crypto_ogs": ["Satoshi Nakamoto"],
@@ -184,14 +159,13 @@ After writing the post, provide JSON:
 
 **Requirements:**
 
-- **Tags**: 8-15 SEO-focused keywords
 - **Description**: EXACTLY 150-160 characters, SPECIFIC with unique differentiator
 - **Categories**: 1-4 from allowed list
-- **Crypto OGs/Exchanges**: Optional, only when contextually relevant, ALWAYS capitalized
+- **Crypto OGs/Exchanges**: Optional, only when contextually relevant, capitalize every word
 
 ## Quality Checklist
 
-**Structure**: Engaging opening (2-3 paragraphs), all core sections with ## headers, conclusion (2-3 paragraphs), 1,200-2,500 words
+**Structure**: Start with ## heading, engaging opening paragraphs after heading, all core sections with ## headers, conclusion (2-3 paragraphs), 1,200-2,500 words
 
 **ArticleAd Placement**: 2-6 ads evenly distributed, after complete sections only, avoid image proximity, first after introduction, last before conclusion
 

@@ -203,6 +203,10 @@
     "bitmart": {
       "slug": "bitmart",
       "title": "BitMart"
+    },
+    "lbank": {
+      "slug": "lbank",
+      "title": "LBank"
     }
   },
   "posts": {
@@ -427,7 +431,7 @@
   },
   "next_orders": {
     "crypto_ogs": 29,
-    "exchanges": 23,
+    "exchanges": 24,
     "posts": 3
   }
 }

@@ -401,6 +401,10 @@
     "a.bear.market.in.crypto": {
       "slug": "a-bear-market-in-crypto",
       "title": "What Is a Bear Market in Crypto?"
+    },
+    "what.it.actually.takes.to.prove.someone.is.satoshi.nakamoto": {
+      "slug": "what-it-actually-takes-to-prove-someone-is-satoshi-nakamoto",
+      "title": "What it actually takes to prove someone is Satoshi Nakamoto"
     }
   },
   "tools": {
@@ -432,6 +436,6 @@
   "next_orders": {
     "crypto_ogs": 29,
     "exchanges": 24,
-    "posts": 3
+    "posts": 4
   }
 }

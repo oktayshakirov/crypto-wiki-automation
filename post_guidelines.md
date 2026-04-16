@@ -79,13 +79,14 @@ For **"How to..."** and beginner-focused guides: Engaging introduction (2–3 pa
 
 ## Writing Standards
 
-- **Capitalization (MANDATORY)**: ALWAYS capitalize every word in crypto OGs and exchange names every time they appear in content. Examples: "Satoshi Nakamoto" not "satoshi nakamoto", "Coinbase" not "coinbase", "Vitalik Buterin" not "vitalik buterin". Treat as proper nouns throughout the article.
+- **Capitalization (MANDATORY)**: Title Case every word in crypto OG and exchange names in body, JSON, and frontmatter (e.g. Satoshi Nakamoto, Nick Szabo). Never lowercase, slugs, or dot-keys like nick.szabo.
 - **Specific Numbers & Data**: Use exact numbers "200+ cryptocurrencies", "99.9% reduction", "2,700-4,000 TPS" - AVOID vague terms like "many", "most", "several"
 - **Historical Context**: Include founding years, launch dates, key events with dates
 - **Risk Context**: Include naturally when discussing features (e.g., "While leverage can amplify profits, it also increases potential losses")
 - **Balanced Tone**: Acknowledge strengths AND weaknesses objectively
 - **Actionable Content**: Provide practical advice with context, explain "why" not just "what"
 - **Natural Voice**: Vary sentence length, avoid AI-like filler ("In conclusion", "Furthermore" - use sparingly), write conversationally but professionally
+- **Punctuation**: Avoid em-dash asides (`X—Y`); use spaced hyphen `X - Y` (reads less like generic AI).
 - **Beginner-Friendly**: Explain technical terms on first use when concept is central, link to foundational content when appropriate. Make complex topics accessible without dumbing down.
 - **Concrete Examples**: Include 2 short real-world scenarios or anonymized mini case studies (especially for security, scams, "how to", and risk topics)
 - **Directly address reader**: Use "you"/"your" to acknowledge their concerns and goals
@@ -129,11 +130,9 @@ Choose 1-4 categories from this EXACT list: **Investing**, **Beginners**, **Regu
 
 **Categories**: Array of 1-4 from allowed list
 
-**Crypto OGs (Optional)**: Only when founder/creator mentioned - capitalize every word: `crypto-ogs: ["Satoshi Nakamoto", "Vitalik Buterin"]`
+**Crypto OGs (Optional)**: Only when founder/creator mentioned: `crypto-ogs: ["Satoshi Nakamoto", "Hal Finney"]` (same Title Case as body; see Capitalization above).
 
-**Exchanges (Optional)**: Only when recommending services - capitalize every word: `exchanges: ["Coinbase", "Binance", "Kraken"]`
-
-**Capitalization (MANDATORY)**: Capitalize every word in crypto OGs and exchanges in both frontmatter and content. Examples: "Satoshi Nakamoto" not "satoshi nakamoto", "Coinbase" not "coinbase". Apply to all mentions throughout the article.
+**Exchanges (Optional)**: Only when recommending services: `exchanges: ["Coinbase", "Binance"]` (Title Case; see Capitalization above).
 
 ## Content Restrictions
 
@@ -161,7 +160,7 @@ After writing the post, provide JSON:
 
 - **Description**: EXACTLY 150-160 characters, SPECIFIC with unique differentiator
 - **Categories**: 1-4 from allowed list
-- **Crypto OGs/Exchanges**: Optional, only when contextually relevant, capitalize every word
+- **Crypto OGs/Exchanges**: Optional if relevant; Title Case display names (not slugs).
 
 ## Quality Checklist
 
@@ -171,4 +170,4 @@ After writing the post, provide JSON:
 
 **Links & Images**: 8-15 internal links using **[Text](/path)** bold format, exactly 2 images with descriptive alt text, paths use `/images/posts/`
 
-**Content**: Specific numbers/data, historical context with dates, balanced tone, **bold** formatting for sub-categories, prose paragraphs preferred, no repetitive explanations, technical terms explained naturally, narrative flow
+**Content**: Specific numbers/data, historical context with dates, balanced tone, **bold** sub-categories, prose preferred, no repetition, narrative flow, `X - Y` not `X—Y` for asides

@@ -4,7 +4,7 @@ description: "Proving Satoshi Nakamoto requires cryptographic proof: signed mess
 date: 2026-04-16
 image: "/images/posts/what-it-actually-takes-to-prove-someone-is-satoshi-nakamoto.png"
 categories: ["Bitcoin", "Security", "Technology"]
-crypto-ogs: ["satoshi nakamoto", "hal finney", "nick.szabo"]
+crypto-ogs: ["Satoshi Nakamoto", "Hal Finney", "Nick Szabo"]
 authors: ["Crypto Wiki Team"]
 tags:
   [
@@ -49,7 +49,7 @@ Across the community and among cryptographers, there’s remarkably strong agree
 
 - **Move Early Coins**: Spend or even just move a small portion of coins from addresses strongly attributed to Satoshi’s early mining activity (the “Patoshi pattern”), estimated at roughly 1.0–1.1 million BTC mined between January 2009 and early 2010. A single controlled move from a Satoshi-attributed coinbase could be enough, given the chain’s public auditability and decades of attribution research grounded in timing and nonce patterns.
 - **Sign A Fresh Message With Early Keys**: Publish a verifiable ECDSA signature over a fresh, time-stamped message using a private key for an address linked to Satoshi’s 2009 activity. The message should be unambiguous (e.g., “I am Satoshi Nakamoto. This message is signed on 2026-04-16 for public verification.”), and anyone should be able to validate it with standard tools.
-- **Corroborate With Reproducible Procedure**: Release a short, documented procedure that others can follow to reproduce verification—ideally including multiple signatures across several well-attributed addresses to rule out key-specific edge cases.
+- **Corroborate With Reproducible Procedure**: Release a short, documented procedure that others can follow to reproduce verification - ideally including multiple signatures across several well-attributed addresses to rule out key-specific edge cases.
 - **Optional, But Helpful—Legacy Footprints**: If keys are inaccessible, verifiable control of a PGP key or account cryptographically tied to public posts from 2009–2010 could contribute. But on its own, that’s weaker than a Bitcoin-key signature and must be treated as supporting, not decisive, evidence.
 
 Two important notes: first, the genesis block (mined on January 3, 2009) has no spendable output, so it cannot be used to prove control. Second, moving coins is not strictly required if a signature from a well-attributed address is produced; a valid ECDSA signature over a fresh message is just as strong from a proof standpoint.

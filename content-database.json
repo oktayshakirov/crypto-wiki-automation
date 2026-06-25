@@ -211,6 +211,10 @@
     "bithumb": {
       "slug": "bithumb",
       "title": "Bithumb"
+    },
+    "bitstamp": {
+      "slug": "bitstamp",
+      "title": "Bitstamp"
     }
   },
   "posts": {
@@ -439,7 +443,7 @@
   },
   "next_orders": {
     "crypto_ogs": 29,
-    "exchanges": 25,
+    "exchanges": 26,
     "posts": 4
   }
 }

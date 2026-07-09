@@ -417,6 +417,10 @@
     "what.it.actually.takes.to.prove.someone.is.satoshi.nakamoto": {
       "slug": "what-it-actually-takes-to-prove-someone-is-satoshi-nakamoto",
       "title": "What it actually takes to prove someone is Satoshi Nakamoto"
+    },
+    "what.are.stablecoins": {
+      "slug": "what-are-stablecoins",
+      "title": "What Are Stablecoins?"
     }
   },
   "tools": {
@@ -448,6 +452,6 @@
   "next_orders": {
     "crypto_ogs": 30,
     "exchanges": 26,
-    "posts": 4
+    "posts": 5
   }
 }

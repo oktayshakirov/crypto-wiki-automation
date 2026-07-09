@@ -111,6 +111,10 @@
     "nick.szabo": {
       "slug": "nick-szabo",
       "title": "Nick Szabo"
+    },
+    "do.kwon": {
+      "slug": "do-kwon",
+      "title": "Do Kwon"
     }
   },
   "exchanges": {
@@ -442,7 +446,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 29,
+    "crypto_ogs": 30,
     "exchanges": 26,
     "posts": 4
   }

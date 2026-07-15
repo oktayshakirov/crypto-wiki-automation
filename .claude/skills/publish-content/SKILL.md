@@ -7,10 +7,13 @@ description: Publish content to thecrypto.wiki or Tinnitus Help via the local n8
 
 Full agent loop: **suggest topics → user picks → generate via n8n → quality gate → stage locally → user reviews + adds main image → push (deploy gate) → share → verify.**
 
+**Repo paths (absolute; this skill works from any directory):** automation repos `/Users/oktayshakirov/Coding/crypto-wiki-automation` and `/Users/oktayshakirov/Coding/tinnitus-help-automation`; site (production) repos `/Users/oktayshakirov/Coding/crypto-wiki` and `/Users/oktayshakirov/Coding/tinnitus-blog`. The `.n8n-api-key`, `.n8n-backups/`, and workflow-editing all live in `crypto-wiki-automation`.
+
 ## Prerequisites
 - **n8n must be running** at `http://localhost:5678` (user starts it manually with `n8n`; it is NOT always on). If unreachable, ask the user to start it.
-- Prefer the `mcp__n8n-local__*` MCP tools. If they're not loaded in this session, call the MCP endpoint directly with curl: POST `http://127.0.0.1:5678/mcp-server/http` (JSON-RPC `tools/call`), auth `Authorization: Bearer <token>` - read the token from the `n8n-local` server entry in `~/.claude.json`. Poll executions via REST: `http://127.0.0.1:5678/api/v1/executions/<id>?includeData=true` with header `X-N8N-API-KEY` from the gitignored `.n8n-api-key` at this repo root.
-- `git pull` all relevant repos first: this repo + `../tinnitus-help-automation` + site repos `../crypto-wiki` / `../tinnitus-blog`.
+- Prefer the `mcp__n8n-local__*` MCP tools. If they're not loaded in this session, call the MCP endpoint directly with curl: POST `http://127.0.0.1:5678/mcp-server/http` (JSON-RPC `tools/call`), auth `Authorization: Bearer <token>` - read the token from the `n8n-local` server entry in `~/.claude.json`. Poll executions via REST: `http://127.0.0.1:5678/api/v1/executions/<id>?includeData=true` with header `X-N8N-API-KEY` from the gitignored `/Users/oktayshakirov/Coding/crypto-wiki-automation/.n8n-api-key`.
+- `git pull` all relevant repos first (all under `/Users/oktayshakirov/Coding/`): the two automation repos + the two site repos.
+- Workflow-edit gotcha: the n8n public-API PUT rejects `settings.binaryMode`; filter `settings` to allowed keys (executionOrder, callerPolicy, availableInMCP, ...) or the PUT 400s.
 
 ## Workflow registry (Form Triggers; run with `inputs: {type:"form", formData:{...}}`)
 | Site | Action | Workflow ID | formData |

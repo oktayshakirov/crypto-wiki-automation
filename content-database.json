@@ -421,6 +421,10 @@
     "what.are.stablecoins": {
       "slug": "what-are-stablecoins",
       "title": "What Are Stablecoins?"
+    },
+    "what.are.layer.2.blockchains": {
+      "slug": "what-are-layer-2-blockchains",
+      "title": "What Are Layer 2 Blockchains"
     }
   },
   "tools": {
@@ -452,6 +456,6 @@
   "next_orders": {
     "crypto_ogs": 30,
     "exchanges": 26,
-    "posts": 5
+    "posts": 6
   }
 }

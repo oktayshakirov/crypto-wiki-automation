@@ -34,12 +34,12 @@ Under the hood, Layer 2s aim to keep heavy computation and frequent state update
 - **State Channels**: Two or more parties lock funds on L1, then transact off-chain instantly. Only the opening and closing states touch L1 unless there is a dispute.
 - **Validiums And Commit-Chains**: Use ZK proofs for computation integrity but keep most data off L1 to lower costs further. This boosts throughput, but data availability depends on external committees or operators.
 
-Rollups are the dominant approach for general-purpose smart contracts because they preserve Ethereum’s security model while enabling low fees and high throughput. Channels excel for high-frequency, recurring interactions between a small set of parties, like payments or gaming matches. Validiums trade some trust assumptions for lower cost ceilings. Crucially, the base chain remains the source of truth. The rollup or channel posts enough data or proofs back to L1 to let anyone reconstruct state or challenge fraud.
+Rollups are the dominant approach for general-purpose smart contracts because they preserve Ethereum's security model while enabling low fees and high throughput. Channels excel for high-frequency, recurring interactions between a small set of parties, like payments or gaming matches. Validiums trade some trust assumptions for lower cost ceilings. Crucially, the base chain remains the source of truth. The rollup or channel posts enough data or proofs back to L1 to let anyone reconstruct state or challenge fraud.
 
 ![Layer 2 rollups compress transactions off-chain and anchor security on the base chain.](/images/posts/blockchain-technology.jpg)
 
 ## Security Models And Trade-offs
-Every Layer 2 inherits some but not all of its base layer’s guarantees. Understanding what changes is essential before you bridge assets.
+Every Layer 2 inherits some but not all of its base layer's guarantees. Understanding what changes is essential before you bridge assets.
 
 - Rollups that publish transaction data on L1 inherit L1 data availability. Anyone can verify state and produce fraud or validity proofs. This keeps censorship and data withholding risks low.
 - Optimistic rollups rely on honest watchers to challenge fraud within the dispute window. If watchers fail, invalid state can stand. In practice, major rollups operate multiple independent watchers and offer economic incentives to monitor.
@@ -54,14 +54,14 @@ In all cases, bridges connecting L1 and L2 are critical trust boundaries. Smart-
 ## Real-World Examples And Timelines
 Layer 2 is not theoretical. Several networks process millions of transactions daily and continue to mature.
 
-- Bitcoin’s Lightning Network was proposed in 2015 and went live on mainnet in 2018. It uses payment channels to enable instant, low-fee micro-payments with sub-cent to few-cent costs. The approach aligns with Bitcoin’s conservative base layer and vision started by **[Satoshi Nakamoto](/crypto-ogs/satoshi-nakamoto)**.
-- Ethereum’s optimistic rollups launched in 2021. Arbitrum One went live in 2021 with its Nitro upgrade in August 2022, and Optimism launched mainnet in 2021 with ongoing upgrades to its OP Stack.
+- Bitcoin's Lightning Network was proposed in 2015 and went live on mainnet in 2018. It uses payment channels to enable instant, low-fee micro-payments with sub-cent to few-cent costs. The approach aligns with Bitcoin's conservative base layer and vision started by **[Satoshi Nakamoto](/crypto-ogs/satoshi-nakamoto)**.
+- Ethereum's optimistic rollups launched in 2021. Arbitrum One went live in 2021 with its Nitro upgrade in August 2022, and Optimism launched mainnet in 2021 with ongoing upgrades to its OP Stack.
 - ZK-rollups scaled in 2021-2023. StarkNet began alpha in 2021, zkSync Era opened mainnet in March 2023, and multiple teams are building ZK EVMs that support existing Solidity contracts.
-- Polygon’s PoS chain, launched in 2020, is often called L2 but is better described as a sidechain or commit-chain to Ethereum. It offers low fees and high throughput, with different security assumptions from rollups.
+- Polygon's PoS chain, launched in 2020, is often called L2 but is better described as a sidechain or commit-chain to Ethereum. It offers low fees and high throughput, with different security assumptions from rollups.
 - Base, an optimistic rollup incubated by Coinbase, launched in August 2023 and uses the OP Stack. It targets consumer apps with lower fees and familiar exchange on-ramps.
 - The 2024 Dencun upgrade on Ethereum introduced data blobs (EIP-4844), cutting rollup data costs by roughly 5x-10x on many networks in the first months after launch. That pushed fees for simple L2 transfers into the 2-50 cent range, even during moderate congestion.
 
-Ethereum’s rollup-centric roadmap, led by researchers around **[Vitalik Buterin](/crypto-ogs/vitalik-buterin)**, expects further upgrades to reduce costs and improve decentralization at the L2 and L3 layers.
+Ethereum's rollup-centric roadmap, led by researchers around **[Vitalik Buterin](/crypto-ogs/vitalik-buterin)**, expects further upgrades to reduce costs and improve decentralization at the L2 and L3 layers.
 
 <ArticleAd />
 
@@ -106,4 +106,4 @@ Layer 2s exist to make blockchains usable at global scale while keeping settleme
 
 You do not need to master every proof system to benefit. Start small on a reputable L2, use official bridges, and treat security like your first priority. As wallets and infrastructure mature, you will spend less time thinking about layers and more time simply using applications.
 
-If you are new to these concepts, take a short detour through our friendly **[crypto for beginners](/posts/crypto-for-beginners)** guide, then come back ready to test a small transaction on an L2 you trust. The skills you build now will carry forward as scaling evolves from today’s rollups to tomorrow’s modular stacks.
+If you are new to these concepts, take a short detour through our friendly **[crypto for beginners](/posts/crypto-for-beginners)** guide, then come back ready to test a small transaction on an L2 you trust. The skills you build now will carry forward as scaling evolves from today's rollups to tomorrow's modular stacks.

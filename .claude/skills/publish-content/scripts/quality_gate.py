@@ -97,6 +97,36 @@ def main():
     record(PASS if not invalid else FAIL, "slugs valid vs DB",
            "ok" if not invalid else "invalid: " + ", ".join(invalid))
 
+    # --- frontmatter crypto-ogs / exchanges must actually be linked in the body ---
+    linked = {u for _, u in internal}
+
+    def fm_list(field):
+        m2 = re.search(r"^%s:\s*\[(.*?)\]" % re.escape(field), fm, re.M)
+        if not m2:
+            return []
+        return [x.strip().strip("\"'") for x in m2.group(1).split(",") if x.strip()]
+
+    def slug_for(section, name):
+        want = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+        for v in db.get(section, {}).values():
+            slug = (v.get("slug") or "").lstrip("/").split("/")[-1]
+            title = (v.get("title") or "").strip().lower()
+            if title == name.strip().lower() or slug == want:
+                return slug
+        return None
+
+    orphans = []
+    for field, section, prefix in (("crypto-ogs", "crypto_ogs", "/crypto-ogs/"),
+                                   ("exchanges", "exchanges", "/exchanges/")):
+        for name in fm_list(field):
+            s = slug_for(section, name)
+            if s is None:
+                orphans.append(f"{name} (not in DB)")
+            elif prefix + s not in linked:
+                orphans.append(f"{name} (no body link)")
+    record(PASS if not orphans else FAIL, "frontmatter ogs/exchanges linked in body",
+           "ok" if not orphans else "; ".join(orphans))
+
     # --- body images: exactly 2, in archive, != main image ---
     body_imgs = re.findall(r"!\[[^\]]*\]\((/images/[^)]+)\)", body)
     record(PASS if len(body_imgs) == 2 else FAIL, "exactly 2 body images",

@@ -173,12 +173,48 @@ Include risk information naturally when relevant:
 - **Sub-categories**: **Bold** with details → **Spot Trading:** specific features and numbers
 - ALWAYS use **bold** for ALL sub-categories consistently
 
+## FAQs (MANDATORY)
+
+**⚠️ Every exchange review MUST include 4-5 FAQs. The site template renders them as a visible FAQ section AND generates FAQPage structured data from the same frontmatter array. An article without `faqs` is INCOMPLETE.**
+
+**Purpose**: Exchange pages rank for question-style searches ("is coinex legit", "is upbit safe", "trade republic crypto fees") but historically did not answer them directly. These FAQs target that intent, and are also the content most used by AI Overviews and featured snippets.
+
+> Note: Google restricted FAQ **rich snippets** to authoritative government/health sites in August 2023, so do NOT expect FAQ rich results. The value here is intent coverage and answer-engine citation, not snippet display.
+
+**Required question archetypes** (use 4-5, adapted to the exchange):
+
+1. **"What is [Exchange]?"** - founding year, founder, HQ, what it actually does
+2. **"Is [Exchange] safe?"** / **"Is [Exchange] legit?"** - security posture, custody model, AND any real incidents or regulatory actions
+3. **"What are [Exchange]'s fees?"** - the fee model in general terms, ending with a pointer to the official fee page
+4. **"Does [Exchange] serve US customers?"** or regional availability - restricted jurisdictions
+5. **One exchange-specific question** - native token, ownership, a notable hack, a rebrand, or a unique product
+
+**Answer rules:**
+
+- **2-4 sentences**, plain text (no markdown links or bold - answers are also stripped into JSON-LD)
+- **Factually accurate and balanced** - this is YMYL content. State known hacks, settlements and restrictions plainly; never omit them to make the exchange look better
+- **Never quote exact fee percentages or coin counts** that go stale - describe the model and point to the official page
+- **Always name the custody model** in the safety answer (custodial = the user does not control their private keys)
+- **No marketing language.** "X is the best exchange for..." is a rejection
+
+**DEX exception**: For decentralized exchanges (Uniswap etc.), replace archetypes 2 and 4 with non-custodial framing - no account or KYC, self-custody, smart-contract and scam-token risk, gas fees, impermanent loss.
+
 ## Final JSON Output (REQUIRED)
 
-After writing review, provide JSON with social links AND description:
+After writing review, provide JSON with social links, description AND faqs:
 
 ```json
 {
+  "faqs": [
+    {
+      "question": "What is Example Exchange?",
+      "answer": "Example is a global cryptocurrency exchange founded in 2017, offering spot and derivatives trading alongside staking products."
+    },
+    {
+      "question": "Is Example Exchange safe?",
+      "answer": "Example keeps most assets in cold storage and publishes proof-of-reserves. It suffered a hot-wallet breach in 2021 and reimbursed affected users. It remains a custodial exchange, so you do not control your private keys."
+    }
+  ],
   "social": {
     "website": "https://exchange.com",
     "twitter": "https://twitter.com/exchange",
@@ -203,6 +239,7 @@ After writing review, provide JSON with social links AND description:
 - Minimum 5 social platforms (research official accounts only, quality over quantity)
 - Description: 80-120 characters, SPECIFIC with unique differentiator (NOT generic)
 - Required social: website, twitter, app stores (apple/android)
+- **faqs: 4-5 entries**, each with `question` and `answer` keys (see the FAQs section above)
 
 **Social Media Research Guidelines:**
 
@@ -257,6 +294,16 @@ Before finalizing:
 - [ ] Balanced tone (strengths AND limitations)
 - [ ] ExchangeButton at the very end
 - [ ] Description is 80-120 characters, specific and unique (not generic)
+
+**FAQs (MANDATORY)**
+
+- [ ] **4-5 FAQs present** in the JSON output - an article without `faqs` is INCOMPLETE
+- [ ] Covers the required archetypes: what is it, is it safe, fees, regional availability, plus one exchange-specific
+- [ ] Safety answer names the custody model and does not omit known hacks, settlements or restrictions
+- [ ] Fee answer describes the model and points to the official fee page (no exact percentages that go stale)
+- [ ] Answers are 2-4 sentences, plain text, no markdown links or bold
+- [ ] No marketing language ("best exchange for...")
+- [ ] DEX reviews use non-custodial framing instead of archetypes 2 and 4
 
 **ArticleAd Placement**
 

@@ -5,7 +5,7 @@ description: Publish content to thecrypto.wiki or Tinnitus Help via the local n8
 
 # Publish Content
 
-Full agent loop: **suggest topics → user picks → generate via n8n → quality gate → stage locally → user reviews + adds main image → push (deploy gate) → share → verify.**
+Full agent loop: **suggest topics → user picks → generate via n8n → quality gate → stage locally → fetch main-image candidates (user picks) → user reviews → push (deploy gate) → share → verify.**
 
 **Repo paths (absolute; this skill works from any directory):** automation repos `/Users/oktayshakirov/Coding/crypto-wiki-automation` and `/Users/oktayshakirov/Coding/tinnitus-help-automation`; site (production) repos `/Users/oktayshakirov/Coding/crypto-wiki` and `/Users/oktayshakirov/Coding/tinnitus-blog`. The `.n8n-api-key`, `.n8n-backups/`, and workflow-editing all live in `crypto-wiki-automation`.
 
@@ -13,6 +13,7 @@ Full agent loop: **suggest topics → user picks → generate via n8n → qualit
 - **n8n must be running** at `http://localhost:5678` (user starts it manually with `n8n`; it is NOT always on). If unreachable, ask the user to start it.
 - Prefer the `mcp__n8n-local__*` MCP tools. If they're not loaded in this session, call the MCP endpoint directly with curl: POST `http://127.0.0.1:5678/mcp-server/http` (JSON-RPC `tools/call`), auth `Authorization: Bearer <token>` - read the token from the `n8n-local` server entry in `~/.claude.json`. Poll executions via REST: `http://127.0.0.1:5678/api/v1/executions/<id>?includeData=true` with header `X-N8N-API-KEY` from the gitignored `/Users/oktayshakirov/Coding/crypto-wiki-automation/.n8n-api-key`.
 - `git pull` all relevant repos first (all under `/Users/oktayshakirov/Coding/`): the two automation repos + the two site repos.
+- **Main-image fetch (Step 4)** needs a free Pexels key at `crypto-wiki-automation/.pexels-api-key` (gitignored). If missing, ask the user to create it from `https://www.pexels.com/api/`. Only `sips` + `cwebp` are available locally (no ImageMagick); `sips` does the resize/JPEG re-encode.
 - Workflow-edit gotcha: the n8n public-API PUT rejects `settings.binaryMode`; filter `settings` to allowed keys (executionOrder, callerPolicy, availableInMCP, ...) or the PUT 400s.
 
 ## Workflow registry (Form Triggers; run with `inputs: {type:"form", formData:{...}}`)
@@ -41,10 +42,22 @@ Most violations are auto-fixed by the Build node now - if one slips through, fix
 Per-type conventions:
 - **Crypto post**: starts `## Heading`; `<ArticleAd />`; images `![alt](/images/posts/x.jpg)`; main image ≠ body images; frontmatter `categories` (fixed list) + optional `crypto-ogs`/`exchanges` (Title Case) + `draft: false`; description 150-160 chars. Proactively link relevant existing crypto-OGs. Avoid brand-heavy/ad-like archive images.
 - **Crypto OG**: `## **Bold Heading**`; quotes `> "..." - Name`; social block in frontmatter (verify links via WebSearch; drop unverified); no tags; ISO date + order. Fact-check recent events (GPT-5 may miss them, e.g. verdicts/sentencings).
-- **Tinnitus post**: opens `<Blockquote>` → main `<Image>` → intro; `## <Highlighter>Heading</Highlighter>`; `<AdComponent />`; first body image = main image (`/images/{slug}.jpg` flat); 2-3 lowercase tags from fixed vocab; description 120-135 chars.
+- **Tinnitus post**: opens `<Blockquote>` → main `<Image>` → intro; `## <Highlighter>Heading</Highlighter>`; `<AdComponent />`; first body image = main image (`/images/{slug}.jpg` flat); standalone sub-group labels that head a bullet list use `##### ` (h5); 2-3 lowercase tags from fixed vocab; description 120-135 chars (hard max 140). Title is auto-derived from the slug (Title Cased, small words lowercased, acronyms preserved via a map in the Build node) - the AI does not write it; spot-check any new acronym (add it to the `acronyms` map in the Build node if it comes out wrong, e.g. `cbt`/`tmj`/`airpods`).
 
-## Step 4 - Stage locally
-Copy the MDX to the site repo (`crypto-wiki/content/{posts|exchanges|crypto-ogs}/` or `tinnitus-blog/content/posts/`) - do NOT commit. Ask the user to add the main image (<200 KB) at the exact frontmatter path and review (offer dev server). Fold their feedback into guidelines/workflow so the next run is right by default.
+## Step 4 - Stage locally + pick the main image
+Copy the MDX to the site repo (`crypto-wiki/content/{posts|exchanges|crypto-ogs}/` or `tinnitus-blog/content/posts/`) - do NOT commit.
+
+**Main image (posts only - auto-fetched from Pexels).** Applies to crypto posts and tinnitus posts, whose main image is conceptual/topical stock imagery. **Skip for crypto-OGs and exchanges** - those need a specific person's photo or a brand logo, which stock search can't supply; ask the user to drop those in manually at the frontmatter path (OGs are 500px PNGs, ~500px wide).
+
+Flow for a post:
+1. Derive a concrete visual search query from the topic (e.g. `What Are Layer 2 Blockchains` -> `blockchain network technology abstract`; avoid brand-heavy/ad-like results, matching the "no brand-heavy archive images" rule).
+2. Run `scripts/pick_main_image.py --query "<query>" --slug <slug> --out <scratchpad>/imgpick [--width 800]` (script dir is this skill's folder; default width 800 for posts). It downloads 3 candidates, resizes each to the standard width, re-encodes JPEG < 200 KB, and prints a JSON manifest (file path, KB, photographer, Pexels URL).
+3. `open` the three `candidate_*.jpg` so the user sees them, and ask which to use (offer a re-roll: re-run with `--page 2`, or a new `--query`).
+4. On pick, copy the chosen candidate to the exact frontmatter path (`crypto-wiki/public/images/posts/<slug>.jpg` or `tinnitus-blog/public/images/<slug>.jpg`) and delete the preview dir. Pexels needs no attribution, but the manifest keeps the photographer/URL if the user ever wants to credit.
+
+Site standards: posts ~800px wide JPG (existing archive is 800-900px, ~70 KB); crypto-OGs 500px. The script already keeps every candidate < 200 KB.
+
+Then let the user review (offer dev server). Fold their feedback into guidelines/workflow so the next run is right by default.
 
 ## Step 5 - Push (only on explicit approval)
 Commit post + ALL new images (check `git status` for untracked images - a missing image ships a broken page) to the site repo, push. Then **DEPLOY GATE**: poll the production article URL AND main-image URL (follow redirects; both sites 301 to www) until both return 200. Never share before this passes - the banner generator fetches the main image from production (black-spot banner otherwise).
@@ -56,5 +69,5 @@ Run the matching Share workflow. It posts to Telegram (binary upload), Instagram
 
 ## Safety
 - Never push or share without the user's explicit go for that step.
-- Secrets: `.n8n-api-key` (REST) and the MCP bearer token (in `~/.claude.json`) - never commit or echo them.
+- Secrets: `.n8n-api-key` (REST), `.pexels-api-key` (Step 4 images), and the MCP bearer token (in `~/.claude.json`) - never commit or echo them.
 - Workflow edits: backup JSON to `.n8n-backups/` first; verify the PUT response.

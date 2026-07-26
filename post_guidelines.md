@@ -124,6 +124,8 @@ Choose 1-4 categories from this EXACT list: **Investing**, **Beginners**, **Regu
 
 **Title Formats:** "What is [Topic]?", "How to [Action]", "Understanding [Topic]", "[Topic]: [Subtitle]", or question format
 
+**Question marks (MANDATORY):** If the title is a question, it MUST end with "?" - this is how every past article was built, so it is a consistency requirement, not a preference. Applies to interrogative openers: What / Why / Is / Are / Can / Should / Do / Does / Who / When / Where / Which (e.g. "What Is the Bitcoin Halving?", "Are NFTs Dead?"). It does NOT apply to instructional "How to [Action]" titles, which are directions rather than questions (e.g. "How to Buy Your First Cryptocurrency" stays as-is). When the title has a subtitle, the "?" goes on the question part, not the end: "What is Bitcoin? A Beginner's Guide".
+
 **Description (CRITICAL - EXACTLY 150-160 characters):**
 
 - VERY SPECIFIC with unique differentiators (NOT generic)

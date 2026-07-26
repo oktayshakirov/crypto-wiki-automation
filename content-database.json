@@ -268,11 +268,11 @@
     },
     "web3": {
       "slug": "what-is-web3",
-      "title": "What is Web3: The Decentralized Web of the Future"
+      "title": "What is Web3? The Decentralized Web of the Future"
     },
     "gamefi": {
       "slug": "what-is-gamefi",
-      "title": "What is GameFi (Game Finance)"
+      "title": "What is GameFi (Game Finance)?"
     },
     "crypto scams": {
       "slug": "how-to-avoid-crypto-scams",
@@ -428,11 +428,11 @@
     },
     "real.world.asset.tokenization": {
       "slug": "real-world-asset-tokenization",
-      "title": "What Is Real World Asset Tokenization"
+      "title": "What Is Real World Asset Tokenization?"
     },
     "the.bitcoin.halving": {
       "slug": "the-bitcoin-halving",
-      "title": "What Is the Bitcoin Halving"
+      "title": "What Is the Bitcoin Halving?"
     }
   },
   "tools": {

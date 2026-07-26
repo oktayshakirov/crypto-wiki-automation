@@ -429,6 +429,10 @@
     "real.world.asset.tokenization": {
       "slug": "real-world-asset-tokenization",
       "title": "What Is Real World Asset Tokenization"
+    },
+    "the.bitcoin.halving": {
+      "slug": "the-bitcoin-halving",
+      "title": "What Is the Bitcoin Halving"
     }
   },
   "tools": {
@@ -460,6 +464,6 @@
   "next_orders": {
     "crypto_ogs": 30,
     "exchanges": 26,
-    "posts": 7
+    "posts": 8
   }
 }

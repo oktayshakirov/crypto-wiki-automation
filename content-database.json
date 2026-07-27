@@ -115,6 +115,10 @@
     "do.kwon": {
       "slug": "do-kwon",
       "title": "Do Kwon"
+    },
+    "jack dorsey": {
+      "slug": "jack-dorsey",
+      "title": "Jack Dorsey"
     }
   },
   "exchanges": {
@@ -462,7 +466,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 30,
+    "crypto_ogs": 31,
     "exchanges": 26,
     "posts": 8
   }

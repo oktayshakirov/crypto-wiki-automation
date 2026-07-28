@@ -223,6 +223,10 @@
     "bitstamp": {
       "slug": "bitstamp",
       "title": "Bitstamp"
+    },
+    "hyperliquid": {
+      "slug": "hyperliquid",
+      "title": "Hyperliquid"
     }
   },
   "posts": {
@@ -467,7 +471,7 @@
   },
   "next_orders": {
     "crypto_ogs": 31,
-    "exchanges": 26,
+    "exchanges": 27,
     "posts": 8
   }
 }

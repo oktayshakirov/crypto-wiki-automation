@@ -48,6 +48,8 @@ def main():
     ap.add_argument("--type", default=None,
                     choices=["post", "exchange", "og"],
                     help="content type; inferred from the path when omitted")
+    ap.add_argument("--reuse-limit", type=int, default=3,
+                    help="warn when a body image already appears in this many other posts")
     a = ap.parse_args()
     if a.type is None:
         p = a.mdx.replace(os.sep, "/")
@@ -166,6 +168,23 @@ def main():
     record(PASS if main_img and main_img not in body_imgs else FAIL,
            "main image != body images",
            main_img or "no main image in frontmatter")
+
+    # --- body-image overuse across the whole content dir ---
+    # The Build node keeps reaching for the same few archive files: audiologist.jpg
+    # ended up as the body image in 8 posts, three of them consecutive. Warn once a
+    # file is already carrying more than its share so it gets swapped at review time.
+    content_dir = os.path.dirname(os.path.abspath(a.mdx))
+    counts = {}
+    for fn in os.listdir(content_dir):
+        if not fn.endswith(".mdx") or fn == os.path.basename(a.mdx):
+            continue
+        other = open(os.path.join(content_dir, fn), encoding="utf-8", errors="ignore").read()
+        for p in set(re.findall(r"/images/[\w./-]+\.(?:jpg|jpeg|png|webp)", other)):
+            counts[p] = counts.get(p, 0) + 1
+    heavy = [(p, counts.get(p, 0)) for p in body_imgs if counts.get(p, 0) >= a.reuse_limit]
+    record(PASS if not heavy else WARN, "body images not overused",
+           "ok" if not heavy else
+           ", ".join(f"{os.path.basename(p)} already in {n} other posts" for p, n in heavy))
 
     # --- dashes / curly quotes (body + user-facing description) ---
     desc = m.group(1) if m else ""

@@ -45,8 +45,15 @@ def main():
     ap.add_argument("mdx")
     ap.add_argument("--db", default=DEFAULT_DB)
     ap.add_argument("--archive", default=DEFAULT_ARCHIVE)
-    ap.add_argument("--type", default="post")
+    ap.add_argument("--type", default=None,
+                    choices=["post", "exchange", "og"],
+                    help="content type; inferred from the path when omitted")
     a = ap.parse_args()
+    if a.type is None:
+        p = a.mdx.replace(os.sep, "/")
+        a.type = ("exchange" if "/exchanges/" in p
+                  else "og" if "/crypto-ogs/" in p
+                  else "post")
 
     text = open(a.mdx, encoding="utf-8").read()
     parts = text.split("---", 2)
@@ -62,14 +69,33 @@ def main():
     record(PASS if 1200 <= words <= 2500 else WARN, "word count",
            f"{words} (target 1,200-2,500)")
 
-    # --- description length (crypto post: 150-160) ---
+    # --- description length ---
+    # Posts run long (SEO meta). Exchange cards wrap the description in a fixed
+    # tile: past ~125 chars it spills to a 5th row and looks off next to the
+    # rest of the grid, so exchanges target the existing pages' 90-125 band
+    # (26 pages: min 77, median 107, max 138).
+    # OG pages sit in the same card grid and measure the same way
+    # (30 pages: min 66, median 103, max 147).
+    desc_range = {"post": (150, 160),
+                  "exchange": (90, 125),
+                  "og": (90, 125)}[a.type]
     m = re.search(r'description:\s*"(.*)"', fm)
     if m:
         dl = len(m.group(1))
-        record(PASS if 150 <= dl <= 160 else WARN, "description length",
-               f"{dl} chars (target 150-160)")
+        lo, hi = desc_range
+        record(PASS if lo <= dl <= hi else WARN, "description length",
+               f"{dl} chars (target {lo}-{hi} for {a.type})")
     else:
         record(FAIL, "description", "missing description in frontmatter")
+
+    # --- exchange-only frontmatter blocks ---
+    # Both render in layouts/ExchangeSingle.js, and faqs also feeds the
+    # faqSchema() JSON-LD, so a missing block silently costs the rich result.
+    if a.type == "exchange":
+        for block in ("quickFacts", "faqs"):
+            record(PASS if re.search(rf"^{block}:", fm, re.M) else FAIL,
+                   f"{block} present",
+                   "ok" if re.search(rf"^{block}:", fm, re.M) else "missing")
 
     # --- author ---
     record(PASS if "Oktay Shakirov" in fm else FAIL, "author",

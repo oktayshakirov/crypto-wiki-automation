@@ -13,6 +13,7 @@ Currently implements the crypto **post** checklist (the richest one); pass
 --type to relax post-only rules for other content types later.
 """
 import argparse, json, os, re, sys
+from datetime import datetime
 
 DEFAULT_DB = "/Users/oktayshakirov/Coding/crypto-wiki-automation/content-database.json"
 DEFAULT_ARCHIVE = "/Users/oktayshakirov/Coding/crypto-wiki/public/images/posts"
@@ -48,8 +49,9 @@ def main():
     ap.add_argument("--type", default=None,
                     choices=["post", "exchange", "og"],
                     help="content type; inferred from the path when omitted")
-    ap.add_argument("--reuse-limit", type=int, default=3,
-                    help="warn when a body image already appears in this many other posts")
+    ap.add_argument("--recent-window", type=int, default=5,
+                    help="how many of the most recent other posts to check for "
+                         "repeated body images (reuse is fine, just not back to back)")
     a = ap.parse_args()
     if a.type is None:
         p = a.mdx.replace(os.sep, "/")
@@ -169,22 +171,51 @@ def main():
            "main image != body images",
            main_img or "no main image in frontmatter")
 
-    # --- body-image overuse across the whole content dir ---
-    # The Build node keeps reaching for the same few archive files: audiologist.jpg
-    # ended up as the body image in 8 posts, three of them consecutive. Warn once a
-    # file is already carrying more than its share so it gets swapped at review time.
+    # --- body images not repeated in nearby posts ---
+    # Reusing an archive image is fine and expected. What is not fine is reusing it
+    # in posts published close together, because someone reading a few in a row sees
+    # the same picture twice (audiologist.jpg was the body image on three consecutive
+    # tinnitus posts). So this compares only against the N most recent OTHER posts,
+    # by frontmatter date, not against the archive as a whole.
+    def post_date(txt):
+        d = re.search(r"^date:\s*['\"]?([^'\"\n]+)['\"]?\s*$", txt, re.M)
+        if not d:
+            return None
+        raw = d.group(1).strip()
+        for fmt in ("%Y-%m-%d", "%B %d, %Y", "%b %d, %Y"):
+            try:
+                return datetime.strptime(raw, fmt)
+            except ValueError:
+                continue
+        return None
+
+    # Crypto posts use markdown ![](), tinnitus posts use <Image src="" />, so
+    # collect both. The main image is slug-specific and never shared, so drop it.
+    def imgs_in(txt):
+        return set(re.findall(r"!\[[^\]]*\]\((/images/[^)\s]+)\)", txt)) | \
+               set(re.findall(r'<Image\s[^>]*src="(/images/[^"]+)"', txt))
+
+    mine = imgs_in(body) - {main_img}
     content_dir = os.path.dirname(os.path.abspath(a.mdx))
-    counts = {}
+    others = []
     for fn in os.listdir(content_dir):
-        if not fn.endswith(".mdx") or fn == os.path.basename(a.mdx):
+        if not fn.endswith(".mdx") or fn == os.path.basename(a.mdx) or fn.startswith("_"):
             continue
-        other = open(os.path.join(content_dir, fn), encoding="utf-8", errors="ignore").read()
-        for p in set(re.findall(r"/images/[\w./-]+\.(?:jpg|jpeg|png|webp)", other)):
-            counts[p] = counts.get(p, 0) + 1
-    heavy = [(p, counts.get(p, 0)) for p in body_imgs if counts.get(p, 0) >= a.reuse_limit]
-    record(PASS if not heavy else WARN, "body images not overused",
-           "ok" if not heavy else
-           ", ".join(f"{os.path.basename(p)} already in {n} other posts" for p, n in heavy))
+        txt = open(os.path.join(content_dir, fn), encoding="utf-8", errors="ignore").read()
+        dt = post_date(txt)
+        if dt:
+            others.append((dt, fn, txt))
+    others.sort(reverse=True)
+
+    recent = others[:a.recent_window]
+    clashes = []
+    for dt, fn, txt in recent:
+        used = imgs_in(txt)
+        for p in sorted(mine & used):
+            clashes.append(f"{os.path.basename(p)} also in {fn[:-4]} ({dt:%Y-%m-%d})")
+    record(PASS if not clashes else WARN,
+           f"body images not reused in last {a.recent_window} posts",
+           "ok" if not clashes else "; ".join(clashes))
 
     # --- dashes / curly quotes (body + user-facing description) ---
     desc = m.group(1) if m else ""

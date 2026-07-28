@@ -1,0 +1,78 @@
+---
+title: "Hyperliquid"
+image: "/images/exchanges/hyperliquid.png"
+description: "Hyperliquid is a non-custodial, on-chain order book perps DEX delivering low-latency matching on a custom L1."
+date: 2026-07-28
+order: 26
+authors: ["Crypto Wiki Team"]
+social:
+  website: https://hyperliquid.xyz
+  twitter: https://twitter.com/HyperliquidX
+  discord: https://discord.gg/hyperliquid
+  docs: https://docs.hyperliquid.xyz
+---
+
+## Hyperliquid: A Decentralized Orderbook Perps Exchange
+Hyperliquid is a decentralized, non-custodial cryptocurrency exchange focused on on-chain perpetual futures. Launched in 2023 by the Hyperliquid Labs team, it runs a custom high-throughput architecture designed to bring central-limit-order-book (CLOB) performance to the blockchain. Rather than a traditional company with a single headquarters, Hyperliquid operates as a protocol with open access, prioritizing speed, transparency, and self-custody for crypto trading across major assets like **[Bitcoin](/posts/what-is-bitcoin)**, **[Ethereum](/posts/what-is-ethereum)**, and an expanding set of **[altcoins](/posts/what-are-altcoins)**.
+
+Its core differentiator is a fully on-chain order book experience rather than an automated market maker (AMM). That means pro-style order types, extremely low-latency matching, and transparent state updates while retaining user control over private keys and collateral.
+
+<ArticleAd />
+
+## Core Protocol: How Hyperliquid Works
+Hyperliquid is purpose-built for derivatives. It emphasizes on-chain performance and risk controls, with a trading experience closer to centralized venues—but without surrendering custody. The protocol centers on perpetual futures with portfolio- and position-level risk management, funding-rate mechanics, and a native matching engine.
+
+- **Trading Model:** On-chain CLOB matching that offers full price-time priority, depth, and transparency. Unlike AMMs such as **[Uniswap](/exchanges/uniswap)**, orders rest on an order book rather than relying on pools and bonding curves.
+- **Market Coverage:** Perpetual contracts reference large-cap assets like **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)** along with a growing set of **[altcoins](/posts/what-are-altcoins)**. Listings evolve with market demand and liquidity.
+- **Collateral and Margin:** Traders post stablecoin collateral to open and maintain positions. Both isolated and cross-margin mechanics are typically available, with liquidations triggered when maintenance thresholds are breached.
+- **Risk Engine and Funding:** A continuous funding-rate system keeps perp prices in line with their underlying index. While leverage can amplify profits, it also increases potential losses—especially in volatile digital assets.
+- **Order Types and Controls:** Limit, market, post-only, reduce-only, and stop orders are standard. The on-chain engine targets sub-second responsiveness, which can matter for professional strategies and hedging.
+- **Architecture:** Built for blockchain-native performance with a focus on throughput and state integrity. The experience will feel familiar to traders coming from centralized derivatives venues like **[Bybit](/exchanges/bybit)**, but without the custodial trade-offs.
+- **Ecosystem Context:** As part of **[DeFi](/posts/what-is-defi)**, Hyperliquid fits into a broader on-chain stack of wallets, bridges, and analytics. For those new to the space, it helps to understand the basics of **[blockchain](/posts/what-is-blockchain)** before engaging with a non-custodial derivatives protocol.
+- **Staking-Aware Markets:** Many perp underlyings are assets secured by validators and staking economics. If you’re comparing yield and opportunity cost, start with this primer on **[staking](/posts/crypto-staking)**.
+
+![Hyperliquid’s on-chain order book UI showing depth, recent trades, and advanced order controls](/images/posts/hyperliquid-orderbook-screenshot.png)
+
+## Security Measures
+As a decentralized exchange, Hyperliquid is non-custodial: users retain control over keys and collateral at all times through compatible wallets. That eliminates centralized custody risk, but it introduces a different set of considerations specific to smart contracts and protocol operations.
+
+- **Smart-Contract Risk:** Protocols can have logic or implementation bugs. Reputable DEXs undergo audits and continuous testing, but no audit can guarantee safety. Only deposit capital you can manage based on your risk tolerance.
+- **Oracle and Liquidation Mechanics:** Perp DEXs rely on index prices and mark-price logic to govern liquidations. Short-lived dislocations can trigger liquidations even when spot prices recover quickly. Manage leverage prudently.
+- **MEV and Transaction Ordering:** While purpose-built architectures can mitigate reordering risks, blockchain-based execution remains transparent and adversarial by default. Avoid chasing thin liquidity with large, marketable orders.
+- **Self-Custody Practices:** Because you control your keys, harden your setup. Consider hardware wallets and robust operational hygiene; review our guide on **[how to store crypto](/posts/how-to-store-crypto)** and stay vigilant against phishing using tips from **[crypto scams](/posts/how-to-avoid-crypto-scams)**.
+- **Market Conditions and Sentiment:** Extreme sentiment can exacerbate volatility and funding rates in perps markets. Monitoring a sentiment gauge like the **[Fear and Greed Index](/tools/fear-and-greed-index)** can add context to risk-taking, though it’s not a trading signal.
+
+<ArticleAd />
+
+## User Experience
+Hyperliquid’s interface is built for derivatives specialists while remaining approachable once you grasp the basics of margins and funding. The UI prioritizes clarity and speed: order tickets are comprehensive, positions and PnL update in real time, and charts integrate common trading indicators.
+
+- **Onboarding:** Connect a compatible wallet, deposit supported collateral, and you’re set. There’s no centralized account creation because the protocol is non-custodial. If you’re new to venues and flows, start with **[understanding crypto exchanges](/posts/understanding-crypto-exchanges)** and our **[crypto for beginners](/posts/crypto-for-beginners)** guide.
+- **Performance and Latency:** Matching aims for near-instant feedback. This matters for strategy execution—especially around funding prints, open interest shifts, and breakout moves.
+- **Order Types and Controls:** Advanced order flags (post-only, reduce-only), conditional stops, and position tools make it easier to manage complex exposures and hedge.
+- **Fees and Funding:** Fees are competitive with on-chain venues and designed for active perp trading; you’ll also pay or receive funding based on long/short imbalances. Exact rates vary by market conditions and liquidity.
+- **APIs and Automation:** While centralized exchanges standardize APIs, non-custodial protocols often rely on community-built connectors and SDKs. Confirm compatibility before deploying bots or signal-driven strategies.
+- **Device Support:** The web app is primary; mobile web typically works well for monitoring. If you trade frequently, test your wallet + browser stack on a small amount before sizing up.
+
+For those deciding between active strategies and long-term allocation, this overview on **[crypto trading vs holding](/posts/crypto-trading-vs-holding)** is a useful framework.
+
+<ArticleAd />
+
+## Decentralization and the Regulatory Landscape
+Hyperliquid is a decentralized protocol rather than a traditional company-run cryptocurrency exchange. It does not take custody of user funds or require KYC to interact with smart contracts. However, availability of the hosted web interface can vary by jurisdiction, and different regions may impose their own rules on access to derivatives. In practice, front-ends sometimes implement geographic restrictions, while the underlying contracts remain permissionless on-chain.
+
+Users remain responsible for complying with applicable local laws, including derivatives regulations. As always in DeFi, evaluate whether your jurisdiction permits access to leveraged products, and consider consulting independent advice if uncertain.
+
+![Conceptual diagram of Hyperliquid’s decentralized architecture: wallets, order book, matching, and on-chain settlement](/images/posts/hyperliquid-network-architecture.png)
+
+## Points to Consider
+- **Who It’s For:** Hyperliquid caters to experienced derivatives traders who want on-chain transparency and self-custody without sacrificing a CLOB experience. If you’re a pure spot buyer, AMMs like **[Uniswap](/exchanges/uniswap)** or fiat on-ramps might be a better fit.
+- **Leverage Discipline:** Perps amplify both gains and losses. Use conservative position sizing and stops, monitor funding, and avoid overexposure to thin markets or event risk.
+- **Fees and Costs:** Expect a taker/maker-style fee schedule plus variable funding. You may also incur bridging or wallet-network costs depending on how you move collateral on-chain.
+- **Liquidity Profile:** Blue-chip markets typically have deeper books and tighter spreads; tail assets can be more volatile with higher slippage. Test execution with small orders before scaling strategies.
+- **Self-Custody Operations:** Since it’s non-custodial, protect seed phrases, verify URLs, and practice revoking obsolete token approvals. Good key management is part of the trading stack in DeFi.
+
+## Conclusion
+Hyperliquid brings a pro-grade order book to DeFi, merging the speed and control of centralized derivatives venues with the transparency of on-chain settlement. It’s best suited to traders who understand margin, funding, and liquidation dynamics and who value self-custody. If you’re exploring a durable on-chain home for perp strategies across major and emerging digital assets, Hyperliquid is compelling—while long-term allocators might still prefer simpler spot rails and a long-view approach to **[the future of crypto](/posts/the-future-of-crypto)**.
+
+<ExchangeButton href="https://hyperliquid.xyz" text="Join Hyperliquid" />

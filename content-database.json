@@ -445,6 +445,10 @@
     "what.happens.to.crypto.when.you.die": {
       "slug": "what-happens-to-crypto-when-you-die",
       "title": "What Happens to Crypto When You Die?"
+    },
+    "how.ai.agents.pay.with.crypto": {
+      "slug": "how-ai-agents-pay-with-crypto",
+      "title": "How AI Agents Pay With Crypto"
     }
   },
   "tools": {
@@ -476,6 +480,6 @@
   "next_orders": {
     "crypto_ogs": 31,
     "exchanges": 27,
-    "posts": 9
+    "posts": 10
   }
 }

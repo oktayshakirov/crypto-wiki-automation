@@ -449,6 +449,10 @@
     "how.ai.agents.pay.with.crypto": {
       "slug": "how-ai-agents-pay-with-crypto",
       "title": "How AI Agents Pay With Crypto"
+    },
+    "a.dao": {
+      "slug": "a-dao",
+      "title": "What Is A DAO?"
     }
   },
   "tools": {
@@ -480,6 +484,6 @@
   "next_orders": {
     "crypto_ogs": 31,
     "exchanges": 27,
-    "posts": 10
+    "posts": 11
   }
 }

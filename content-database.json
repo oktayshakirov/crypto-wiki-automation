@@ -453,6 +453,10 @@
     "what.is.a.dao": {
       "slug": "what-is-a-dao",
       "title": "What Is A DAO?"
+    },
+    "what.are.gas.fees": {
+      "slug": "what-are-gas-fees",
+      "title": "What Are Gas Fees?"
     }
   },
   "tools": {
@@ -484,6 +488,6 @@
   "next_orders": {
     "crypto_ogs": 31,
     "exchanges": 27,
-    "posts": 11
+    "posts": 12
   }
 }

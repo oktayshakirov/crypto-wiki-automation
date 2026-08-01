@@ -119,6 +119,10 @@
     "jack dorsey": {
       "slug": "jack-dorsey",
       "title": "Jack Dorsey"
+    },
+    "paolo.ardoino": {
+      "slug": "paolo-ardoino",
+      "title": "Paolo Ardoino"
     }
   },
   "exchanges": {
@@ -486,7 +490,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 31,
+    "crypto_ogs": 32,
     "exchanges": 27,
     "posts": 12
   }

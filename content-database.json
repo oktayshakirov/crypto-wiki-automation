@@ -461,6 +461,10 @@
     "what.are.gas.fees": {
       "slug": "what-are-gas-fees",
       "title": "What Are Gas Fees?"
+    },
+    "what.is.a.dex": {
+      "slug": "what-is-a-dex",
+      "title": "What Is a DEX?"
     }
   },
   "tools": {
@@ -492,6 +496,6 @@
   "next_orders": {
     "crypto_ogs": 32,
     "exchanges": 27,
-    "posts": 12
+    "posts": 13
   }
 }

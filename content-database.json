@@ -465,6 +465,10 @@
     "what.is.a.dex": {
       "slug": "what-is-a-dex",
       "title": "What Is a DEX?"
+    },
+    "what.is.a.seed.phrase": {
+      "slug": "what-is-a-seed-phrase",
+      "title": "What Is a Seed Phrase?"
     }
   },
   "tools": {
@@ -496,6 +500,6 @@
   "next_orders": {
     "crypto_ogs": 32,
     "exchanges": 27,
-    "posts": 13
+    "posts": 14
   }
 }

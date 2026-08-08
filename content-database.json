@@ -123,6 +123,10 @@
     "paolo.ardoino": {
       "slug": "paolo-ardoino",
       "title": "Paolo Ardoino"
+    },
+    "kris.marszalek": {
+      "slug": "kris-marszalek",
+      "title": "kris marszalek"
     }
   },
   "exchanges": {
@@ -498,7 +502,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 32,
+    "crypto_ogs": 33,
     "exchanges": 27,
     "posts": 14
   }

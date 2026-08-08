@@ -152,7 +152,7 @@ For exchange-related figures you may also use `/images/exchanges/{slug}.png` for
 
 ## Final JSON Output (REQUIRED)
 
-After writing the biography, provide a JSON object with verified social links and a short description:
+After writing the biography, provide a JSON object with verified social links, a short description, quick facts, and FAQs:
 
 ```json
 {
@@ -165,7 +165,20 @@ After writing the biography, provide a JSON object with verified social links an
     "github": "https://github.com/username",
     "website": "https://officialsite.com"
   },
-  "description": "Founder of Ethereum and one of the most influential figures shaping blockchain innovation and decentralization."
+  "description": "Co-founder of Ethereum and the most influential figure shaping blockchain innovation and decentralization.",
+  "quickFacts": {
+    "birthplace": "Kolomyia, Ukraine",
+    "nationality": "Russian-Canadian",
+    "education": "University of Waterloo (dropped out)",
+    "knownFor": "Co-founding Ethereum and inventing smart contract platforms",
+    "role": "Co-founder of Ethereum"
+  },
+  "faqs": [
+    {
+      "question": "Who is Vitalik Buterin?",
+      "answer": "Vitalik Buterin is the programmer and writer who co-founded Ethereum in 2015..."
+    }
+  ]
 }
 ```
 
@@ -175,7 +188,10 @@ After writing the biography, provide a JSON object with verified social links an
 - Include as many verified social links as possible (Twitter, LinkedIn, Wikipedia, Instagram, YouTube, GitHub, etc.)
 - Only include links that actually exist — no guessing or placeholders
 - If a platform doesn't exist for the person, don't include it
-- Description: 100–150 characters, factual and specific
+- Description: 90–125 characters, factual and specific. **Hard max 125** — the OG card is a fixed tile and longer text wraps to an extra row and breaks the grid
+- `quickFacts` is **REQUIRED**: keys `birthplace`, `nationality`, `education`, `knownFor`, `role`. Short factual values, not sentences. Omit an individual key only if genuinely unknown
+- `faqs` is **REQUIRED**: 3–5 `{question, answer}` objects covering who the person is and the specifics readers actually search for. Answers 2–4 sentences, factual, no marketing tone
+- Both `quickFacts` and `faqs` render in `layouts/CryptoOgSingle.js`, and `faqs` feeds the `faqSchema()` JSON-LD — omitting them silently costs the FAQ rich result
 
 ---
 
@@ -215,4 +231,7 @@ After writing the biography, provide a JSON object with verified social links an
 
 - [ ] Social + description provided
 - [ ] At least 3 valid social links
+- [ ] `quickFacts` provided (birthplace, nationality, education, knownFor, role)
+- [ ] `faqs` provided (3–5 question/answer pairs)
+- [ ] Description within 90–125 characters
 - [ ] Description 100–150 characters, specific and factual

@@ -477,6 +477,10 @@
     "what.is.a.seed.phrase": {
       "slug": "what-is-a-seed-phrase",
       "title": "What Is a Seed Phrase?"
+    },
+    "what.is.a.hardware.wallet": {
+      "slug": "what-is-a-hardware-wallet",
+      "title": "What Is a Hardware Wallet?"
     }
   },
   "tools": {
@@ -508,6 +512,6 @@
   "next_orders": {
     "crypto_ogs": 33,
     "exchanges": 28,
-    "posts": 14
+    "posts": 15
   }
 }

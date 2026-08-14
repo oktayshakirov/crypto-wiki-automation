@@ -144,6 +144,12 @@ drifted into using different Telegram operations.
   fine - but **link stickers cannot be set through the Graph API at all**. That
   is a platform limit, not a missing scope, so an automated story is a picture
   with nothing to tap. It was cut for that reason.
+- **Verify a run from the execution, not from the app.** Poll
+  `?workflowId=<id>&limit=1&includeData=true` and check four things: the
+  `Format Video Post` node's `topic` (empty means it fell back to the generic
+  line - fine, but know it happened), the Facebook node's `id`, the Telegram
+  `message_id`, and Telegram's `link_preview_options`. A bare `{url: ...}`
+  there is the card rendering; `{is_disabled: true}` is the bug above.
 - **A form POST that returns `{"status":200}` has already run the workflow.**
   Do not re-POST to "check the response" - that is a second live post. The
   executions list lags and excludes in-flight runs, so an empty list right

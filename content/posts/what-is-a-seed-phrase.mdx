@@ -31,7 +31,7 @@ Put simply, 24 words are roughly 2^128 times stronger than 12 words - an astrono
 
 On networks like **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)**, your wallet uses keys derived from the seed to sign transactions on the underlying **[blockchain](/posts/what-is-blockchain)**. Smart contract interactions - swapping tokens, minting NFTs, deploying contracts - also rely on signatures from these keys. If you are curious about the broader impact of programmable money, see how **[Smart Contracts Are Transforming Industries](/posts/smart-contracts-and-industries-beyond-crypto)** for context.
 
-![A hardware wallet and recovery sheet showing a 24 word seed phrase backup](/images/posts/ledger.jpeg)
+![A brass combination lock on a black leather briefcase](/images/posts/security-combination-lock.jpg)
 
 ## Seed Phrase vs Private Keys vs Wallet Types
 It is helpful to separate three ideas that often get mixed up:
@@ -69,16 +69,16 @@ Finally, think like an attacker. If someone finds your backpack, office drawer, 
 
 <ArticleAd />
 
-## Common Attacks And Real Scenarios
-Phishing, fake support, pre seeded hardware, and cloud leaks are the top culprits in seed related loss. Seeing how they unfold helps you avoid them.
+## Common Attacks And How They Unfold
+Phishing, fake support, pre seeded hardware, and cloud leaks are the top culprits in seed related loss. The three patterns below are composites of how these thefts typically play out, and seeing the shape of them helps you avoid them.
 
-Scenario 1 - The screenshot that cost $18,400: Alex set up a new wallet, snapped a photo of the seed phrase "to finish the backup later," and put $18,400 across BTC and ETH. Months after upgrading phones, an attacker compromised Alex's old cloud account and scraped photos. The funds were drained in minutes. Lesson: treat cloud connected cameras as hostile to secrets.
+Pattern 1 - The screenshot: Someone sets up a new wallet, snaps a photo of the seed phrase "to finish the backup later," and funds it with BTC and ETH. Months after upgrading phones, an attacker compromises the old cloud account and scrapes the photo library. The funds are drained in minutes. Lesson: treat cloud connected cameras as hostile to secrets.
 
-Scenario 2 - The "hardware wallet" that arrived tampered: Maya bought a hardware wallet on a popular marketplace because it shipped 2 days faster than the manufacturer's site. Inside the box was a printed seed "card" with scratch off panels. As instructed, Maya "verified" the seed online, then transferred funds. The wallet was a repackaged device - the attacker already had the seed and swept it days later. Lesson: only buy devices directly from the maker and never trust a pre printed seed.
+Pattern 2 - The tampered device: A buyer picks a hardware wallet from a third party marketplace because it ships faster than the manufacturer's own store. Inside the box is a printed seed "card" with scratch off panels. The buyer "verifies" that seed online and transfers funds. The device was repackaged - the attacker already had the seed and sweeps it days later. Lesson: only buy devices directly from the maker and never trust a pre printed seed.
 
-Scenario 3 - The perfect phishing clone: After a failed swap, Jerome searched for support and found a site that looked identical to his wallet's help center. The agent "confirmed" identity by asking Jerome to enter his seed on a "secure" page. The site was a clone. Funds gone. Lesson: official support will not ask for your seed. Ever.
+Pattern 3 - The phishing clone: After a failed swap, someone searches for support and lands on a site that looks identical to their wallet's help center. The "agent" confirms identity by asking them to enter the seed on a "secure" page. The site is a clone. Funds gone. Lesson: official support will not ask for your seed. Ever.
 
-Pressure and confusion are tools scammers rely on. Avoiding urgency and verifying domains with "type it yourself" habits prevents 80% of these issues. When in doubt, slow down and apply the same healthy skepticism you use when you **[Do Your Own Research](/posts/do-your-own-research)** on a new token.
+Pressure and confusion are tools scammers rely on. Refusing to act under urgency, and typing domains yourself instead of clicking search results, shuts down most of these attacks before they start. When in doubt, slow down and apply the same healthy skepticism you use when you **[Do Your Own Research](/posts/do-your-own-research)** on a new token.
 
 ## Recovery, Migration, And Upgrades
 Restoring a wallet is simple when you understand what is happening. You enter the 12 or 24 words, the wallet derives the seed, and then it rebuilds your accounts and addresses following a derivation path like "44'/0'/0'/…" for legacy Bitcoin accounts or other standards for SegWit and Ethereum. If a restored balance looks incomplete, you might just be on the wrong path or account index. Do not panic - try the correct coin and path combination first.
@@ -87,7 +87,7 @@ When moving to a hardware wallet, you can usually import your existing seed to t
 
 Multisignature (multisig) setups add resilience by requiring, for example, 2 of 3 independent keys to move funds. Done well, a 2 of 3 with geographically separated keys protects against both theft and loss. Multisig adds complexity - more backups, more devices - but can be worth it for higher balances or small teams.
 
-![A person reviewing a written recovery plan and derivation settings before migrating wallets](/images/posts/research.jpg)
+![A man sitting outdoors working on a laptop](/images/posts/man-and-laptop.jpg)
 
 ## Estate Planning, Shared Custody, And Families
 If no one else can access your seed phrase, your crypto may vanish for good if something happens to you. A clear, written plan solves this. Define what you hold, where it lives, the wallet type, whether a BIP39 passphrase is used, and simple instructions to restore. You do not need to reveal balances - only the path to recovery. A trusted executor, sealed envelope in a safe deposit box, or attorney escrow can bridge privacy and practicality. For a broader picture of planning, read **[What Happens to Crypto When You Die?](/posts/what-happens-to-crypto-when-you-die)**.
@@ -109,4 +109,4 @@ While this guide focused on narrative examples, a few rapid clarifications will 
 ## Conclusion: Master Your Keys, Master Your Crypto
 A seed phrase is simple in form and immense in power. Those 12 or 24 words recreate your entire wallet, from Bitcoin addresses to Ethereum accounts, across hardware and software. Understanding how a seed derives keys, why standards like BIP39 and BIP32 exist, and where real world failures happen turns an abstract concept into a concrete security routine you will actually follow.
 
-If you have not reviewed your backups in the last year, take 20 minutes today and do a full dry run - confirm you can read the words, verify whether you use a passphrase, and ensure your storage plan survives fire, water, and theft. Once you are confident, you can focus on learning the systems you use, whether that is exploring **[Crypto for Beginners](/posts/crypto-for-beginners)** or practicing secure transactions with How to Send and Receive Crypto Safely. The rule is simple: protect the words, and the words will protect you.
+If you have not reviewed your backups in the last year, take 20 minutes today and do a full dry run - confirm you can read the words, verify whether you use a passphrase, and ensure your storage plan survives fire, water, and theft. Once you are confident, you can focus on learning the systems you use, whether that is exploring **[Crypto for Beginners](/posts/crypto-for-beginners)** or practicing secure transactions until sending funds feels routine. The rule is simple: protect the words, and the words will protect you.

@@ -4,7 +4,7 @@ description: "Gas fees are blockchain transaction costs. Learn Ethereum's base f
 date: 2026-07-31
 image: "/images/posts/what-are-gas-fees.jpg"
 categories: ["Beginners", "Blockchain", "Technology"]
-crypto-ogs: ["Vitalik Buterin", "Satoshi Nakamoto"]
+crypto-ogs: ["Vitalik Buterin"]
 exchanges: ["Coinbase", "Binance", "Kraken", "Uniswap"]
 authors: ["Oktay Shakirov"]
 draft: false
@@ -58,7 +58,7 @@ The most common question is "what will this cost me right now?" While prices var
 
 A standard ETH transfer costs 21,000 gas. If the base fee is 20 gwei and you set a 2 gwei tip, your effective gas price is 22 gwei. Multiply 21,000 by 22 gwei to get 462,000 gwei, which is 0.000462 ETH. If ETH is $3,000, your fee is about $1.39. The same calculation scales for contract interactions, just with more gas units.
 
-When interacting with smart contracts - swaps, staking, NFT mints - gas units scale with complexity. A token swap on a decentralized exchange like **[Uniswap](/exchanges/uniswap)** might use 120,000 - 200,000 gas. Using our same 22 gwei effective price, that is 0.00264 - 0.0044 ETH, around $7.92 - $13.20 at $3,000/ETH. This is why active DeFi users care about fee conditions. For a grounding in decentralized applications, see **[What is DeFi (Decentralized Finance)?](/posts/what-is-defi)** and how code executes via **[How Smart Contracts Are Transforming Industries](/posts/smart-contracts-and-industries-beyond-crypto)**.
+When interacting with smart contracts - swaps, staking, NFT mints - gas units scale with complexity. A token swap on a decentralized exchange like **[Uniswap](/exchanges/uniswap)** might use 120,000 - 200,000 gas. Using our same 22 gwei effective price, that is 0.00264 - 0.0044 ETH, around $7.92 - $13.20 at $3,000/ETH. This is why active DeFi users care about fee conditions. For a grounding in decentralized applications and the contract calls that drive most of this gas usage, see **[What is DeFi (Decentralized Finance)?](/posts/what-is-defi)**.
 
 Two short scenarios make this concrete:
 - Case study 1 - NFT mint during a hype window: At 9:00 PM UTC, a popular collection opens a mint. Base fee jumps from 25 gwei to 180 gwei within 3 blocks. Alice tries to mint with a low tip, her transaction lags, and she raises her max fee to 260 gwei. She gets included but pays 0.035 ETH in gas for a single mint. Had she waited 30 minutes after the rush, the same mint might have cost her 0.006 ETH. Timing matters for volatile events - if the mint is not first-come-first-served, let the mempool cool.
@@ -78,7 +78,7 @@ If your action is not time sensitive, target off-peak windows. Activity tends to
 
 Wallets estimate gas based on recent blocks, but they might lag during sudden spikes. If you absolutely must be included fast, err slightly high on the priority tip rather than an extreme max fee, because unused max fee is returned while an exaggerated tip is not. Remember that EIP-1559 burns the base fee and only the tip goes to validators, so raising the tip is the lever for speed.
 
-Timing can amplify savings. If you are active, it helps to plan your maintenance moves - claiming rewards, rebalancing, consolidating UTXOs on Bitcoin - during quieter periods. You can also look at market-wide activity proxies to decide whether to act now or wait. For a top-down view of risk appetite that sometimes correlates with heavy on-chain bursts, try the **[Fear and Greed Index](/tools/fear-and-greed-index)**, and for market breadth visibility use the **[Crypto Heatmap](/tools/crypto-heatmap)** as a high-level sentiment check.
+Timing can amplify savings. If you are active, it helps to plan your maintenance moves - claiming rewards, rebalancing, consolidating UTXOs on Bitcoin - during quieter periods. Batch what you can into a single quiet window rather than spreading the same actions across a busy week, and treat any non-urgent claim or consolidation as something that can always wait for a cheaper block.
 
 Finally, practical logistics: to pay gas on Ethereum you need ETH. If you do not have any, you can purchase it on reputable exchanges such as **[Coinbase](/exchanges/coinbase)**, **[Binance](/exchanges/binance)**, or **[Kraken](/exchanges/kraken)** before attempting on-chain actions. New users are often surprised that even swapping one ERC-20 for another still requires a bit of ETH because gas is denominated in ETH.
 
@@ -90,16 +90,16 @@ If you are price sensitive:
 - Bridge once, operate many times, and bridge back in batches to amortize costs.
 - Watch for "paymasters" and account abstraction features that can sponsor fees or let you pay in stablecoins. This is becoming more common with ERC-4337 smart accounts.
 
-Outside the Ethereum family, chains like Solana or other high-throughput networks retain their own execution semantics and fee markets. They can be dramatically cheaper for specific workloads like high-frequency trading or micro-transactions. The tradeoff is different tooling and security models. If you want an overview of how these systems fit into the bigger picture, check What Are Layer 2 Blockchains.
+Outside the Ethereum family, chains like Solana or other high-throughput networks retain their own execution semantics and fee markets. They can be dramatically cheaper for specific workloads like high-frequency trading or micro-transactions. The tradeoff is different tooling and security models, so weigh how much of Ethereum's settlement guarantee you are willing to trade for a cheaper transaction.
 
-![Layer 2 Rollups Lower Costs While Inheriting Ethereum Security](/images/posts/blockchain-technology.jpg)
+![Layer 2 Rollups Lower Costs While Inheriting Ethereum Security](/images/posts/layer-2-blockchain.jpg)
 
 ## FAQs And Common Mistakes About Gas
 People often ask whether gas is a "tax" or a hidden platform fee. It is neither - it is the price to use decentralized compute that anyone can access. Others wonder why fees spike so suddenly. The answer is short blocks and elastic base fees. With Ethereum's ~12 second cadence and EIP-1559's 12.5% per-block base fee adjustment, demand surges can compound quickly across a few minutes, then ease off just as fast.
 
 A recurring misconception is that reverts are free. They are not. If a transaction fails, you still pay for the computation attempted up to the failure point. Common pitfalls include setting too low a gas limit for contract interactions or tight slippage on swaps that causes execution to fail during volatile prices. Double check key parameters before confirming.
 
-For those doing frequent transactions, it is helpful to think of gas as a trading cost. Like spreads and commissions, it chips away at performance. If you are deciding between frequent small moves or fewer larger ones, review your expected costs in the context of your style. Our guide on **[Crypto Trading vs. Holding: Which Strategy Is Right for You?](/posts/crypto-trading-vs-holding)** can help frame that decision.
+For those doing frequent transactions, it is helpful to think of gas as a trading cost. Like spreads and commissions, it chips away at performance. If you are deciding between frequent small moves or fewer larger ones, review your expected costs in the context of your style, because a strategy that looks profitable before fees can be flat or negative once gas is counted.
 
 A few avoidable mistakes to keep on your radar:
 - **Ignoring base fee trends** - Submitting at the peak of a hype spike can multiply costs. If timing is flexible, wait 10 - 30 minutes.
@@ -115,6 +115,6 @@ Gas interacts with taxes in complex ways. In many jurisdictions, fees can adjust
 ## Conclusion: Spend Less On Fees, Do More On-Chain
 Now you know what gas fees are, why they exist, and how they are priced across major networks. You saw how Ethereum's base fee and tip model works, why Bitcoin quotes sat/vB, and how Layer 2 rollups compress costs dramatically. Most importantly, you learned simple tactics to control what you pay so fees do not control you.
 
-If you are getting started, pick a reliable exchange to fund your wallet and practice small actions during quiet times. Our guide to **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)** clarifies how on-ramps differ, and Crypto for Beginners will help you plan your first on-chain steps with confidence. With timing, tool choice, and a few smart settings, you can reduce costs by 50% or more while keeping the same outcomes.
+If you are getting started, pick a reliable exchange to fund your wallet and practice small actions during quiet times. Our guide to **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)** clarifies how on-ramps differ and which fees you meet before you ever touch a block explorer. With timing, tool choice, and a few smart settings, you can reduce costs by 50% or more while keeping the same outcomes.
 
 As you explore, remember that fees are part of an open market for block space. Learn the rhythm, respect the risk, and you will navigate gas efficiently across bull and bear cycles alike. And if your use case demands near-zero costs, the expanding L2 and alternative-chain universe is now only a bridge away.

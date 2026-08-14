@@ -5,7 +5,7 @@ date: 2026-08-05
 image: "/images/posts/what-is-a-dex.jpg"
 categories: ["Beginners", "Web3", "Blockchain"]
 crypto-ogs: ["Hayden Adams", "Vitalik Buterin"]
-exchanges: ["Uniswap", "Coinbase", "Binance", "Kraken", "OKX"]
+exchanges: ["Uniswap", "Coinbase", "Binance", "Kraken"]
 authors: ["Oktay Shakirov"]
 draft: false
 ---
@@ -22,7 +22,7 @@ By the end, you will know the differences between DEXs and centralized exchanges
 ## A Short History Of DEXs And Why They Matter
 Early experiments with decentralized trading appeared as far back as 2014 on protocols like Counterparty, but the first widely used Ethereum-based DEXs arrived in 2017 with EtherDelta. They were powerful but clunky - users manually signed orders and dealt with high failure rates. The big unlock came in 2018 when Uniswap launched an automated market maker, created by **[Hayden Adams](/crypto-ogs/hayden-adams)** and inspired by ideas circulating in the Ethereum community. By removing traditional order books and replacing them with liquidity pools governed by math, Uniswap made instant, permissionless swaps accessible to anyone with a crypto wallet.
 
-From there, innovation accelerated. Uniswap v2 in 2020 introduced direct ERC-20 to ERC-20 pools, while v3 in 2021 added concentrated liquidity with fee tiers like 0.05 %, 0.3 %, and 1.0 %, letting liquidity providers fine tune their risk and yield. This progress aligned with the broader rise of DeFi and Layer 2 networks that lowered costs. DEXs became central to on-chain finance because they:
+From there, innovation accelerated. Uniswap v2 in 2020 introduced direct ERC-20 to ERC-20 pools, while v3 in 2021 added concentrated liquidity with fee tiers like 0.05%, 0.3%, and 1.0%, letting liquidity providers fine tune their risk and yield. This progress aligned with the broader rise of DeFi and Layer 2 networks that lowered costs. DEXs became central to on-chain finance because they:
 
 - Allow self-custody by design - you hold the keys
 - Are permissionless - no signups or gatekeepers
@@ -38,7 +38,7 @@ Where does the liquidity come from? Users deposit token pairs into pools and ear
 
 Every trade is a transaction on the blockchain. The smart contract handles token transfers, checks pool math, and takes a fee, then submits new balances to the chain. This on-chain settlement provides transparency - you can verify pool reserves and fees at any time - but it also means you pay network costs and wait for block confirmations.
 
-![Automated market maker liquidity pools powering decentralized exchanges](/images/posts/defi.jpg)
+![A crypto wallet surrounded by floating coins, representing self-custody trading on a DEX](/images/posts/defi.jpg)
 
 Behind the scenes, DEX aggregators route your order across multiple pools to lower slippage, and bridges or cross-chain routers can help you move assets to cheaper networks. On busy chains, arbitrage bots constantly rebalance pools to align prices with the wider market, keeping DEXs competitive with centralized venues.
 
@@ -47,15 +47,15 @@ Centralized exchanges (CEXs) like **[Coinbase](/exchanges/coinbase)**, **[Binanc
 
 DEXs flip the model. You keep custody and trades settle on-chain. That improves transparency and reduces counterparty risk, but you pay gas fees, accept variable confirmation times, and navigate wallets and seed phrases yourself. Price execution can be excellent on blue-chip pairs with deep liquidity, but smaller pools may slip more on big trades.
 
-If you want a refresher on centralized platforms, see **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)**. For a beginner's roadmap to getting started with either path, skim **[Crypto for Beginners](/posts/crypto-for-beginners)** and decide what fits your risk tolerance, technical comfort, and local regulations.
+If you want a refresher on centralized platforms, see **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)**, then decide what fits your risk tolerance, technical comfort, and local regulations.
 
 <ArticleAd />
 
 ## Fees, Slippage, And Gas - The Real Cost Of Swapping
 Your final trade price on a DEX has three main components: the pool fee, slippage, and gas.
 
-- Pool fee: The protocol takes a fee per swap that goes to liquidity providers. On Uniswap v3, common tiers are 0.05 %, 0.3 %, and 1.0 %. Stablecoin pairs often use the lowest tiers due to lower volatility, while exotic assets might use higher tiers to compensate LPs for risk.
-- Slippage: Because AMMs adjust price with each trade, larger orders move the price more. If you push through a 1 % pool depth, expect about 1 % price impact plus fees. Many interfaces let you set a slippage tolerance to avoid overpaying in volatile moments.
+- Pool fee: The protocol takes a fee per swap that goes to liquidity providers. On Uniswap v3, common tiers are 0.05%, 0.3%, and 1.0%. Stablecoin pairs often use the lowest tiers due to lower volatility, while exotic assets might use higher tiers to compensate LPs for risk.
+- Slippage: Because AMMs adjust price with each trade, larger orders move the price more. If you push through a 1% pool depth, expect about 1% price impact plus fees. Many interfaces let you set a slippage tolerance to avoid overpaying in volatile moments.
 - Gas: Every on-chain action has a network fee. On Layer 1 Ethereum during congestion, a single swap may cost $5 to $50. On popular Layer 2s, typical costs range from $0.05 to $1.50. Timing your trade when network demand is lower can materially improve outcomes.
 
 Understanding gas is essential. Read **[What Are Gas Fees?](/posts/what-are-gas-fees)** to learn why fees spike and how to minimize them. In practice, you can reduce costs by trading on Layer 2, using aggregators that batch or route swaps efficiently, and avoiding peak hours when NFT mints or airdrops congest the network.
@@ -63,13 +63,13 @@ Understanding gas is essential. Read **[What Are Gas Fees?](/posts/what-are-gas-
 ## Liquidity Providers, Yield, And Impermanent Loss
 Supplying capital to a pool earns you a pro rata share of fees, but it is not risk free. The core risk is impermanent loss - the difference between holding your tokens versus providing them to the pool as prices move. When one token rises relative to the other, the AMM sells some of the winner to buy the loser in order to maintain balance. That can leave you with less of the appreciating asset than if you had simply held it.
 
-For example, imagine you deposit $1,000 split evenly between ETH and USDC into a 0.3 % fee pool. If ETH doubles while USDC stays flat, the pool's rebalancing leaves you holding more USDC and less ETH than you started with. Fees you earn can offset or exceed this loss, especially in high volume pools, but it is a real trade off you must evaluate.
+For example, imagine you deposit $1,000 split evenly between ETH and USDC into a 0.3% fee pool. If ETH doubles while USDC stays flat, the pool's rebalancing leaves you holding more USDC and less ETH than you started with. Fees you earn can offset or exceed this loss, especially in high volume pools, but it is a real trade off you must evaluate.
 
 - Stablecoin pools often have lower impermanent loss and can be attractive for fee farming at thinner spreads.
 - Volatile pairs offer higher potential fees but greater exposure to price divergence.
 - Concentrated liquidity can increase fee income per dollar but requires active management to avoid your position going out of range.
 
-Some protocols may add token incentives on top of fees, but rewards can change quickly. Before allocating funds, apply the principles in **[The Ultimate Beginner's Guide to Crypto Staking](/posts/crypto-staking)** and **[The Importance of DYOR (Do Your Own Research)](/posts/do-your-own-research)** to understand emissions schedules, fee tiers, historical volume, and your own rebalancing strategy.
+Some protocols may add token incentives on top of fees, but rewards can change quickly. Before allocating funds, apply the principles in **[The Importance of DYOR (Do Your Own Research)](/posts/do-your-own-research)** to understand emissions schedules, fee tiers, historical volume, and your own rebalancing strategy.
 
 <ArticleAd />
 
@@ -79,37 +79,37 @@ DEXs remove custodial risk, but on-chain trading introduces new hazards. Smart c
 Two quick real world scenarios make this concrete:
 
 - A user approves an unfamiliar token contract to spend unlimited USDC, then later interacts with a malicious front end that exploits that approval to drain funds. Limiting approvals and revoking unused ones could have prevented the loss.
-- During a volatile news event, a trader submits a large market swap with 3 % slippage tolerance. Bots front run the order, causing worse execution. With a tighter tolerance or a limit-order-capable DEX, the trader could have capped downside.
+- During a volatile news event, a trader submits a large market swap with 3% slippage tolerance. Bots front run the order, causing worse execution. With a tighter tolerance or a limit-order-capable DEX, the trader could have capped downside.
 
 Mitigate these risks by trading on audited, battle tested protocols, setting conservative slippage, and double checking token addresses. Study practical red flags with **[Crypto Scams: How to Spot and Avoid Them](/posts/how-to-avoid-crypto-scams)** and secure your recovery phrase using practices from **[How to Safely Store Your Cryptocurrency](/posts/how-to-store-crypto)**. Finally, remember that while leverage or exotic derivatives can amplify returns, they also magnify losses and liquidation risks on-chain.
 
 ## How To Use A DEX Safely: A Step By Step Workflow
 You can execute an on-chain swap in minutes. The outline below keeps you safe and cost aware.
 
-- **Acquire Funds On-Ramp**: Buy ETH or another base asset on a reputable exchange like Coinbase, Kraken, or **[OKX](/exchanges/okx)**. Withdraw to your self-custodial wallet.
+- **Acquire Funds On-Ramp**: Buy ETH or another base asset on a reputable exchange like Coinbase or Kraken. Withdraw to your self-custodial wallet.
 - **Select Network And DEX**: For blue-chip ERC-20 trades on Ethereum or Layer 2, **[Uniswap](/exchanges/uniswap)** is a common choice. Confirm the correct app domain, then connect your wallet.
-- **Check Fees And Slippage**: Review the pool fee tier, set a slippage tolerance of 0.1 % to 0.5 % for liquid pairs, and compare gas estimates. If gas is high, consider waiting or switching to a lower cost network.
+- **Check Fees And Slippage**: Review the pool fee tier, set a slippage tolerance of 0.1% to 0.5% for liquid pairs, and compare gas estimates. If gas is high, consider waiting or switching to a lower cost network.
 - **Verify Token Address**: Always paste the exact token contract address from a reliable source. Many scams rely on look alike tickers.
 - **Approve Then Swap**: First approve the token if required, then submit the swap. Wait for confirmation and verify receipt in your wallet.
 
-If you are sending assets to another person or address after swapping, refresh safe transfer habits with **[How to Send and Receive Crypto Safely](/posts/send-and-receive-crypto-safely)**. Move slowly, confirm every field, and test with a tiny transaction before moving size.
+Move slowly, confirm every field, and test with a tiny transaction before moving size.
 
 <ArticleAd />
 
 ## The Future Of DEXs: L2s, Cross Chain, And On Chain Order Books
 As costs fall and throughput rises, DEXs are expanding beyond simple AMMs. Layer 2 networks now finalize trades with sub dollar fees and near instant confirmations, and intent based systems can batch orders more efficiently. On-chain order books are reappearing with better performance trade offs, and hybrid models combine concentrated liquidity with RFQ or professional market makers for tight spreads on major pairs.
 
-Cross chain liquidity is the next frontier. Secure bridges and shared sequencing aim to make swapping across ecosystems feel like one click. Meanwhile, more complex orders - limit, TWAP, and dynamic range orders - are becoming standard in user interfaces. To track the infrastructure that enables this, see **[What Are Layer 2 Blockchains](/posts/what-are-layer-2-blockchains)** and how these tools bring us closer to **[What is Web3? The Decentralized Web of the Future](/posts/what-is-web3)**.
+Cross chain liquidity is the next frontier. Secure bridges and shared sequencing aim to make swapping across ecosystems feel like one click. Meanwhile, more complex orders - limit, TWAP, and dynamic range orders - are becoming standard in user interfaces. To track the infrastructure that enables this, see **[What Are Layer 2 Blockchains](/posts/what-are-layer-2-blockchains)**.
 
 ## Real World Scenarios You Can Relate To
 Consider two short narratives that highlight practical choices you will face as a DEX user.
 
-- The small swapper: You want $75 of a new governance token. On Ethereum Layer 1 at 6 pm UTC, gas is $18. By waiting until off peak hours or using a Layer 2 where the same swap costs $0.20, you save up to 23 % of your total outlay. You also set slippage to 0.3 % to prevent an accidental overpay if volatility spikes mid block.
-- The aspiring LP: You hold $2,000 in a stablecoin and $2,000 in ETH and want to earn fees. You choose a 0.3 % ETH stablecoin pool on Uniswap v3 and start with a wide price range to reduce out-of-range risk. You track average daily volume to ensure your expected fee APR compensates for potential impermanent loss. You revisit your position every week to adjust ranges as price drifts.
+- The small swapper: You want $75 of a new governance token. On Ethereum Layer 1 at 6 pm UTC, gas is $18. By waiting until off peak hours or using a Layer 2 where the same swap costs $0.20, you save up to 23% of your total outlay. You also set slippage to 0.3% to prevent an accidental overpay if volatility spikes mid block.
+- The aspiring LP: You hold $2,000 in a stablecoin and $2,000 in ETH and want to earn fees. You choose a 0.3% ETH stablecoin pool on Uniswap v3 and start with a wide price range to reduce out-of-range risk. You track average daily volume to ensure your expected fee APR compensates for potential impermanent loss. You revisit your position every week to adjust ranges as price drifts.
 
-![Using a DEX on a smartphone with on-chain swap interface](/images/posts/crypto-exchange.jpg)
+![Two hands passing a physical bitcoin coin, representing a direct peer to peer swap](/images/posts/crypto-exchange.jpg)
 
 ## Conclusion: Trade Permissionlessly And Stay In Control
 A DEX lets you swap assets without giving up custody or trusting a company to hold your coins. Automated market makers and smart contracts handle pricing and settlement transparently on-chain. The trade off is that you must account for pool fees, slippage, and gas - and you must own your security choices, from seed phrase storage to cautious approvals.
 
-If you understand the moving parts, DEXs are powerful tools for both traders and long term users. Start small, measure total costs, and stick to audited protocols with deep liquidity. As a practical next step, decide whether you prefer a centralized on-ramp like Coinbase or Kraken and then try a tiny swap on Uniswap after reviewing What Are Gas Fees?. You will build confidence quickly and keep your assets under your control.
+If you understand the moving parts, DEXs are powerful tools for both traders and long term users. Start small, measure total costs, and stick to audited protocols with deep liquidity. As a practical next step, decide whether you prefer a centralized on-ramp like Coinbase or Kraken, check what gas will cost you, and then try a tiny swap on Uniswap. You will build confidence quickly and keep your assets under your control.

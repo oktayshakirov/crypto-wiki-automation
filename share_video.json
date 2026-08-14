@@ -1,0 +1,189 @@
+{
+  "name": "Crypto Wiki: Share Video",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Crypto Wiki: Share Video",
+        "formDescription": "Internal trigger: YouTube video id or URL.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "videoId",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "cta",
+              "requiredField": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5cb9d83f-877c-56f1-853a-801b172b8b9a",
+      "name": "Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -260,
+        0
+      ],
+      "webhookId": "fde5036d-4c77-5fec-a8d9-21ca02aa4bcf"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = String($json.videoId ?? $json['field-0'] ?? '').trim();\nconst m = raw.match(/(?:v=|youtu\\.be\\/|shorts\\/|embed\\/|live\\/)([A-Za-z0-9_-]{11})/);\nconst id = m ? m[1] : raw;\nif (!/^[A-Za-z0-9_-]{11}$/.test(id)) {\n  throw new Error(`Not a YouTube video id or URL: ${raw || '(empty)'}`);\n}\nreturn [{ json: {\n  videoId: id,\n  url: `https://www.youtube.com/watch?v=${id}`,\n  cta: String($json.cta ?? $json['field-1'] ?? '').trim(),\n} }];\n"
+      },
+      "id": "b4ba7a26-f804-5db0-a60c-e1b689df56ca",
+      "name": "Normalise Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://www.youtube.com/oembed?url={{ encodeURIComponent($json.url) }}&format=json",
+        "options": {}
+      },
+      "id": "737f4a06-b30f-5118-a545-cbce71acfe55",
+      "name": "Fetch Video Info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        180,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const info = $json;                       // the oEmbed response\nconst v = $('Normalise Input').item.json;\nconst title = (info.title || '').trim();\nconst cta = v.cta || 'Watch the full breakdown on YouTube';\n\n// Facebook and Telegram both unfurl the URL into a player card, so the text\n// stays short and does not repeat what the card already shows.\nconst message = `${title}\\n\\n${cta} \ud83d\udc47`;\n\nreturn [{ json: {\n  videoId: v.videoId,\n  url: v.url,\n  title,\n  message,\n  facebook: message,\n  telegram: `${message}\\n${v.url}`,\n  // maxres is the 1280x720 frame and exists for every video; hq is the\n  // fallback for the rare one that has no maxres yet.\n  storyImage: `https://i.ytimg.com/vi/${v.videoId}/maxresdefault.jpg`,\n} }];\n"
+      },
+      "id": "e6fed5cc-7935-5a21-b6e3-2790d8636b7f",
+      "name": "Format Video Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $json.facebook }}"
+              },
+              {
+                "name": "link",
+                "value": "={{ $json.url }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f0d40c8e-eeb3-574e-880d-6db26b58896d",
+      "name": "Facebook Post",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -180
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "@thecryptowiki",
+        "text": "={{ $json.telegram }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": false
+        }
+      },
+      "id": "57e273c9-786f-5a3c-9d4d-8f7affea64b6",
+      "name": "Telegram Post",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        0
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "geWva7g9QuODXuET",
+          "name": "Telegram (CryptoWiki)"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalise Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise Input": {
+      "main": [
+        [
+          {
+            "node": "Fetch Video Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Video Info": {
+      "main": [
+        [
+          {
+            "node": "Format Video Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Video Post": {
+      "main": [
+        [
+          {
+            "node": "Facebook Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  }
+}

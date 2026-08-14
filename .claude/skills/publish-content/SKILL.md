@@ -43,6 +43,8 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Tinnitus | New Post | `pddxBAmv2k2nSBv2` | `{ topic }` |
 | Tinnitus | Share Post | `jtUStrxCt23FGNDk` | `{ slug }` |
 | Tinnitus | Share Sound | `UcubZDb1sKnszcZX` | `{ slug }` |
+| Crypto Wiki | Share Video | `MZy8L37FaVL5zh64` | `{ videoId, cta }` |
+| Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, cta }` |
 
 ## Step 1 - Suggest 10 topics
 Read `content-database.json` in the matching automation repo (crypto: `posts`/`exchanges`/`crypto_ogs`; tinnitus: `blog`/`zen`). Gap-analyze vs existing titles; use WebSearch for trends (CMC exchange rankings page is JS-rendered - WebSearch only). Present 10 options with a one-line "why" each. **The chosen topic becomes title AND slug verbatim - keep it short.**
@@ -98,6 +100,45 @@ If the run failed or timed out, re-run it from the Actions tab, or send it by ha
 Before running: confirm the share image doesn't already exist in the automation repo (`images/posts/<slug>.png` or `images/crypto-ogs/<slug>.png` via GitHub API; if present from a previous run, `git rm` + push first - the Upload node is create-only and fails with "sha wasn't supplied").
 Run the matching Share workflow. It posts to Telegram (binary upload), Instagram + Facebook (Twitter nodes are intentionally disconnected - no X API). Verify: every node success; Telegram result has a `photo` array (**nested at `result.photo`, not top-level** - checking the top level looks like a failure on a perfectly good run); Facebook/Instagram outputs each carry an `id`; download the run's APITemplate `download_url_png` and view it to confirm the banner rendered (title + photo, no black spot).
 **Single-channel re-share**: temporarily remove the other channel targets from `Format Social Post`'s connections, run, then restore.
+
+## Share Video - the YouTube share workflows
+
+Separate from the article Share workflows and much smaller: **no banner, no
+image upload, no CDN wait.** Facebook and Telegram both unfurl a YouTube URL
+into a playable card by themselves, and a card beats a still because it is
+clickable. `videoId` takes a bare id or any YouTube URL shape; `cta` is
+optional and overrides the site's default call to action. The title is fetched
+live from `youtube.com/oembed` - no credential, no quota, works on unlisted
+videos - so the caption always matches whatever the video is called right now.
+
+**Both workflows are generated, not hand-edited.** `scripts/build_share_video_workflows.py`
+builds them from one definition and PUTs them; the two sites differ only in
+credentials, Telegram channel and default CTA. Edit the script and re-run
+`--apply`, never the live JSON - that is how the two Share Post workflows
+drifted into using different Telegram operations.
+
+- **`--channels telegram` (or `facebook`) re-posts one channel without spamming
+  the other**, plus `--no-snapshot` so a deliberately partial build never lands
+  in the committed JSON. This replaces the hand-edit-the-connections dance.
+- **The Telegram node's defaults are both wrong here and both fail quietly.**
+  `appendAttribution` defaults to true and appends "This message was sent
+  automatically with n8n"; the node also sends `disable_web_page_preview`, which
+  is why the first run showed a bare URL and no thumbnail - Telegram echoed it
+  back as `link_preview_options: {is_disabled: true}`. Both are now set to
+  `false` explicitly. Neither ever mattered for Share Post because those use
+  `sendPhoto`. **Check `link_preview_options` in the Telegram response**: a bare
+  `{url: ...}` means the card renders, `{is_disabled: true}` means it will not.
+- **There is no Instagram branch and it should not come back.** A story was
+  built and it published - the permission works and `media_type=STORIES` is
+  fine - but **link stickers cannot be set through the Graph API at all**. That
+  is a platform limit, not a missing scope, so an automated story is a picture
+  with nothing to tap. It was cut for that reason.
+- **A form POST that returns `{"status":200}` has already run the workflow.**
+  Do not re-POST to "check the response" - that is a second live post. The
+  executions list lags and excludes in-flight runs, so an empty list right
+  after a trigger is not evidence that nothing happened; poll
+  `?workflowId=<id>&limit=1` a few seconds later instead. Three identical posts
+  went out to the crypto channels this way.
 
 ## Safety
 - Never push or share without the user's explicit go for that step.

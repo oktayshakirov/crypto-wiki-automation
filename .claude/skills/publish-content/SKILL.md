@@ -43,8 +43,8 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Tinnitus | New Post | `pddxBAmv2k2nSBv2` | `{ topic }` |
 | Tinnitus | Share Post | `jtUStrxCt23FGNDk` | `{ slug }` |
 | Tinnitus | Share Sound | `UcubZDb1sKnszcZX` | `{ slug }` |
-| Crypto Wiki | Share Video | `MZy8L37FaVL5zh64` | `{ videoId, cta }` |
-| Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, cta }` |
+| Crypto Wiki | Share Video | `MZy8L37FaVL5zh64` | `{ videoId, topic }` |
+| Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, topic }` |
 
 ## Step 1 - Suggest 10 topics
 Read `content-database.json` in the matching automation repo (crypto: `posts`/`exchanges`/`crypto_ogs`; tinnitus: `blog`/`zen`). Gap-analyze vs existing titles; use WebSearch for trends (CMC exchange rankings page is JS-rendered - WebSearch only). Present 10 options with a one-line "why" each. **The chosen topic becomes title AND slug verbatim - keep it short.**
@@ -106,10 +106,21 @@ Run the matching Share workflow. It posts to Telegram (binary upload), Instagram
 Separate from the article Share workflows and much smaller: **no banner, no
 image upload, no CDN wait.** Facebook and Telegram both unfurl a YouTube URL
 into a playable card by themselves, and a card beats a still because it is
-clickable. `videoId` takes a bare id or any YouTube URL shape; `cta` is
-optional and overrides the site's default call to action. The title is fetched
-live from `youtube.com/oembed` - no credential, no quota, works on unlisted
-videos - so the caption always matches whatever the video is called right now.
+clickable. `videoId` takes a bare id or any YouTube URL shape. The title
+is fetched live from `youtube.com/oembed` - no credential, no quota, works on
+unlisted videos.
+
+**The caption must not contain the title.** The card already shows the title,
+the description and the thumbnail, so putting the title in the message prints
+the same sentence twice in one post - which is what the first version did, and
+it is obvious the moment you look at the post rather than the API response. The
+caption's only job is the one human line the card cannot supply, and it is
+deliberately one line: `New video about <topic>`. The `topic` field is optional
+and is the subject in two or three words; left empty it is guessed from a
+`Subject: hook` or `hook | Subject` title and otherwise falls back to a generic
+line. **The guess is a convenience, not a rule** - it finds "Michael Saylor" in
+both Saylor titles and finds nothing in "Does Tinnitus Go Away? Temporary vs
+Chronic Explained", which is why the fallback exists instead of an error.
 
 **Both workflows are generated, not hand-edited.** `scripts/build_share_video_workflows.py`
 builds them from one definition and PUTs them; the two sites differ only in

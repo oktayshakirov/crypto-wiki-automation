@@ -60,7 +60,8 @@ SITES = {
         "ig_user": "17841477190733041",
         "tg_chat": "@thecryptowiki",
         "site": "thecrypto.wiki",
-        "cta": "Watch the full breakdown on YouTube",
+        "lead": "New video about",
+        "bare": "New video is up on YouTube",
     },
     "tinnitus": {
         "name": "Tinnitus Help: Share Video",
@@ -70,10 +71,14 @@ SITES = {
         "ig_user": "17841477062009382",
         "tg_chat": "@tinnitushelpme",
         "site": "tinnitushelp.me",
-        "cta": "Watch the full video on YouTube",
+        "lead": "New video about",
+        "bare": "New video is up on YouTube",
     },
 }
 
+# Accepts a bare id or any YouTube URL shape, because the user will paste
+# whichever is in the clipboard. Eleven characters is the id format and
+# validating it here turns a silent no-op into a named failure.
 # Accepts a bare id or any YouTube URL shape, because the user will paste
 # whichever is in the clipboard. Eleven characters is the id format and
 # validating it here turns a silent no-op into a named failure.
@@ -87,7 +92,7 @@ if (!/^[A-Za-z0-9_-]{11}$/.test(id)) {
 return [{ json: {
   videoId: id,
   url: `https://www.youtube.com/watch?v=${id}`,
-  cta: String($json.cta ?? $json['field-1'] ?? '').trim(),
+  topic: String($json.topic ?? $json['field-1'] ?? '').trim(),
 } }];
 """
 
@@ -95,22 +100,36 @@ FORMAT = """
 const info = $json;                       // the oEmbed response
 const v = $('Normalise Input').item.json;
 const title = (info.title || '').trim();
-const cta = v.cta || %(cta)r;
 
-// Facebook and Telegram both unfurl the URL into a player card, so the text
-// stays short and does not repeat what the card already shows.
-const message = `${title}\\n\\n${cta} 👇`;
+// **Do not put the title in the caption.** Facebook and Telegram both unfurl
+// the URL into a card that already carries the title, the description and the
+// thumbnail, so repeating it prints the same sentence twice in one post. The
+// caption's only job is the human line the card cannot supply.
+//
+// The subject is typed into the `topic` field. Failing that it is guessed from
+// a `Subject: hook` or `hook | Subject` title, which is this channel's habit
+// and not a rule — "Does Tinnitus Go Away? Temporary vs Chronic" has no
+// subject to find, so the generic line is the third branch rather than an
+// error. Guessing is a convenience; typing two words is the reliable path.
+let topic = v.topic;
+if (!topic) {
+  const colon = title.match(/^([^:]{3,40}):\\s/);
+  const pipe = title.match(/\\|\\s*(.{3,40})$/);
+  topic = (colon && colon[1].trim()) || (pipe && pipe[1].trim()) || '';
+}
+
+const message = topic
+  ? `%(lead)s ${topic} 👇`
+  : `%(bare)s 👇`;
 
 return [{ json: {
   videoId: v.videoId,
   url: v.url,
   title,
+  topic,
   message,
   facebook: message,
   telegram: `${message}\\n${v.url}`,
-  // maxres is the 1280x720 frame and exists for every video; hq is the
-  // fallback for the rare one that has no maxres yet.
-  storyImage: `https://i.ytimg.com/vi/${v.videoId}/maxresdefault.jpg`,
 } }];
 """
 
@@ -144,10 +163,10 @@ def build(cfg: dict, site: str, channels=("facebook", "telegram")) -> dict:
     nodes = [
         n("Form Trigger", "n8n-nodes-base.formTrigger", 2.2, {
             "formTitle": cfg["name"],
-            "formDescription": "Internal trigger: YouTube video id or URL.",
+            "formDescription": "YouTube video id or URL, plus an optional topic (the subject of the video, two or three words).",
             "formFields": {"values": [
                 {"fieldLabel": "videoId", "requiredField": True},
-                {"fieldLabel": "cta", "requiredField": False},
+                {"fieldLabel": "topic", "requiredField": False},
             ]},
             "options": {},
         }, [-260, 0], extra={"webhookId": nid(site, "form-webhook")}),
@@ -163,7 +182,7 @@ def build(cfg: dict, site: str, channels=("facebook", "telegram")) -> dict:
         }, [180, 0]),
 
         n("Format Video Post", "n8n-nodes-base.code", 1,
-             {"jsCode": (FORMAT % {"cta": cfg["cta"]}).strip() + "\n"}, [400, 0]),
+             {"jsCode": (FORMAT % {"lead": cfg["lead"], "bare": cfg["bare"]}).strip() + "\n"}, [400, 0]),
 
         n("Facebook Post", "n8n-nodes-base.facebookGraphApi", 1, {
             "httpRequestMethod": "POST", "graphApiVersion": "v23.0",

@@ -481,6 +481,10 @@
     "what.is.a.hardware.wallet": {
       "slug": "what-is-a-hardware-wallet",
       "title": "What Is a Hardware Wallet?"
+    },
+    "what.is.a.crypto.whale": {
+      "slug": "what-is-a-crypto-whale",
+      "title": "What Is a Crypto Whale?"
     }
   },
   "tools": {
@@ -512,6 +516,6 @@
   "next_orders": {
     "crypto_ogs": 33,
     "exchanges": 28,
-    "posts": 15
+    "posts": 16
   }
 }

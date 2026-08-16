@@ -67,7 +67,15 @@ SITES = {
         "name": "Tinnitus Help: Share Video",
         "snapshot": (REPO.parent / "tinnitus-help-automation" / "share_video.json"),
         "fb_cred": {"id": "Ydx1TfHeHlMX2ILQ", "name": "Facebook Graph (TinnitusHelp)"},
-        "tg_cred": {"id": "wvvr0VqigaV0y9Pc", "name": "Telegram (TinnitusHelp)"},
+        # **Copied from the committed `share_post.json`, which was stale.** That
+        # id does not exist in n8n and has not for some time: the live Share
+        # Post and Share Sound workflows both run on `4rLRmLOvcIlidonP`, so the
+        # credential was recreated at some point and only the live workflows
+        # were repointed. A missing credential fails at run time, not at build
+        # time, so Share Video published to Facebook and then died on Telegram
+        # the first time it was used for real. **Read a credential id off a
+        # live workflow, never off a snapshot.**
+        "tg_cred": {"id": "4rLRmLOvcIlidonP", "name": "Telegram (TinniusHelp)"},
         "ig_user": "17841477062009382",
         "tg_chat": "@tinnitushelpme",
         "site": "tinnitushelp.me",

@@ -239,6 +239,10 @@
     "aster": {
       "slug": "aster",
       "title": "Aster"
+    },
+    "pancakeswap": {
+      "slug": "pancakeswap",
+      "title": "PancakeSwap"
     }
   },
   "posts": {
@@ -519,7 +523,7 @@
   },
   "next_orders": {
     "crypto_ogs": 33,
-    "exchanges": 28,
+    "exchanges": 29,
     "posts": 17
   }
 }

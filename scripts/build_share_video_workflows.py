@@ -130,6 +130,13 @@ const message = topic
   ? `%(lead)s ${topic} 👇`
   : `%(bare)s 👇`;
 
+// Telegram posts in HTML parse mode (see the Telegram node), so the three
+// characters HTML reserves have to be escaped. Facebook takes the raw text —
+// it does no markup parsing at all, and escaping there would print "&amp;".
+const esc = (t) => t.replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+
 return [{ json: {
   videoId: v.videoId,
   url: v.url,
@@ -137,7 +144,7 @@ return [{ json: {
   topic,
   message,
   facebook: message,
-  telegram: `${message}\\n${v.url}`,
+  telegram: `${esc(message)}\\n${v.url}`,
 } }];
 """
 
@@ -211,12 +218,35 @@ def build(cfg: dict, site: str, channels=("facebook", "telegram")) -> dict:
         # run showed a bare URL and no player card — Telegram reported it back
         # as `link_preview_options: {is_disabled: true}`. The preview *is* the
         # post here, so turning it off defeats the whole design.
+        # **`parse_mode` must be set to HTML explicitly, and that is not
+        # cosmetic.** A YouTube id is base64url — it contains
+        # `_` and `-` freely. `xRn9taQ11_E` has exactly one underscore, so
+        # Telegram read it as the start of an italic entity, found no closing
+        # one, and returned `400 can't parse entities: Can't find end of the
+        # entity starting at byte offset 83`. Facebook had already posted by
+        # then, so the run was a half-share that needed a telegram-only
+        # re-run to finish.
+        #
+        # This was latent from the first build and only fires on ids with an
+        # odd number of `_` (or `*`), which is why several crypto shares went
+        # out fine before it bit.
+        #
+        # **Leaving it unset does not mean "no parsing", and neither does "".**
+        # `GenericFunctions.addAdditionalFields` runs
+        # `if (!additionalFields.parse_mode) additionalFields.parse_mode =
+        # 'Markdown'`, so absent *and* empty both land on Markdown — the node's
+        # own UI default of HTML never applies to a workflow built over the
+        # API. HTML is the safe mode here because the caption carries no
+        # formatting; `esc()` in the Format node covers the three characters
+        # HTML does care about, so a topic with an `&` in it cannot reopen this
+        # hole from the other end.
         n("Telegram Post", "n8n-nodes-base.telegram", 1.2, {
             "chatId": cfg["tg_chat"],
             "text": "={{ $json.telegram }}",
             "additionalFields": {
                 "appendAttribution": False,
                 "disable_web_page_preview": False,
+                "parse_mode": "HTML",
             },
         }, [640, 0], {"telegramApi": cfg["tg_cred"]}),
 

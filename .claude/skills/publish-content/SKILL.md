@@ -131,6 +131,20 @@ drifted into using different Telegram operations.
 - **`--channels telegram` (or `facebook`) re-posts one channel without spamming
   the other**, plus `--no-snapshot` so a deliberately partial build never lands
   in the committed JSON. This replaces the hand-edit-the-connections dance.
+- **`parse_mode` must be set to `HTML`, or a YouTube id eventually kills the
+  post.** The Telegram node coerces a missing *or empty* `parse_mode` to
+  Markdown - `GenericFunctions.addAdditionalFields` runs
+  `if (!additionalFields.parse_mode) additionalFields.parse_mode = 'Markdown'`,
+  so the node's own UI default of HTML never applies to a workflow built over
+  the API. A YouTube id is base64url and contains `_` freely: `xRn9taQ11_E` has
+  exactly one, Telegram read it as an unterminated italic entity and returned
+  `400 can't parse entities: Can't find end of the entity starting at byte
+  offset 83`. **Facebook had already posted by then**, so the run was a
+  half-share needing a `--channels telegram` re-run to finish - which is
+  precisely what that flag is for. Latent from the first build; it only fires
+  on ids with an odd number of `_` or `*`, which is why earlier crypto shares
+  went out fine. The Format node now HTML-escapes `&`, `<` and `>` in the
+  caption so a topic string cannot reopen the same hole from the other end.
 - **The Telegram node's defaults are both wrong here and both fail quietly.**
   `appendAttribution` defaults to true and appends "This message was sent
   automatically with n8n"; the node also sends `disable_web_page_preview`, which

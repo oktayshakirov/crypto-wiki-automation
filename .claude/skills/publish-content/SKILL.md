@@ -47,12 +47,22 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, topic }` |
 | Crypto Wiki | Publish Reel | `uIV6956N14pMGMZ5` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
 | Tinnitus | Publish Reel | `1GTSF6izfwA1gpig` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
+| Crypto Wiki | Publish Facebook Video | `zS3xX6tbXpXnF32N` | `{ videoUrl, title, description, thumbUrl }` |
 
 **Publish Reel** is driven by the `publish-video` skill, not by this one. It posts one
 vertical video as an Instagram Reel and a Facebook Reel; `videoUrl` and `coverUrl` must
 be publicly reachable for the length of the run (the skill opens a cloudflared quick
 tunnel over the render folder). Facebook Reels accepts 3 to 90 seconds only, which is
 why `durationSeconds` is required and checked before anything uploads.
+
+**Publish Facebook Video** posts a long-form video natively to the Page feed - not a
+Reel, no duration cap, `POST /me/videos` with `file_url` rather than the three-phase
+Reels upload. Built 2026-08-20 to test whether native video earns more organic reach
+than the Share Video workflow's link-unfurl card; all four existing crypto long-form
+videos went out this way as the first test - see CHANGELOG for the results once there
+is data. Pulls `title`/`description` straight from `youtube-audit video <id>` rather
+than writing Facebook-native copy, since the source videos are already public on
+YouTube. No Tinnitus version exists yet - build one the same way if this proves out.
 
 **The `FB Reel Upload` node posts to `rupload.facebook.com`, not `graph.facebook.com`.**
 Meta documents its auth as an `Authorization: OAuth <token>` header; the node instead

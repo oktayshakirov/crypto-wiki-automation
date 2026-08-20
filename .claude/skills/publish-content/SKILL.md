@@ -48,6 +48,7 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Crypto Wiki | Publish Reel | `uIV6956N14pMGMZ5` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
 | Tinnitus | Publish Reel | `1GTSF6izfwA1gpig` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
 | Crypto Wiki | Publish Facebook Video | `zS3xX6tbXpXnF32N` | `{ videoUrl, title, description, thumbUrl }` |
+| Tinnitus | Publish Facebook Video | `Lyhn5U7pYhrAs9x7` | `{ videoUrl, title, description, thumbUrl }` |
 
 **Publish Reel** is driven by the `publish-video` skill, not by this one. It posts one
 vertical video as an Instagram Reel and a Facebook Reel; `videoUrl` and `coverUrl` must
@@ -62,7 +63,15 @@ than the Share Video workflow's link-unfurl card; all four existing crypto long-
 videos went out this way as the first test - see CHANGELOG for the results once there
 is data. Pulls `title`/`description` straight from `youtube-audit video <id>` rather
 than writing Facebook-native copy, since the source videos are already public on
-YouTube. No Tinnitus version exists yet - build one the same way if this proves out.
+YouTube. The Tinnitus version is a straight clone with the TinnitusHelp Page credential
+swapped in - check that node before running, since a wrong credential posts to the wrong
+brand and cannot be undone quietly.
+
+**If the source folder has no thumbnails, pull each video's `maxresdefault.jpg` from
+YouTube** rather than rendering new ones - that is the poster already live on the
+channel, so the Facebook cover matches. **Match files to YouTube videos by duration,
+not by title**: the filenames drift from the published titles, and duration matched all
+five tinnitus videos within a second on 2026-08-20.
 
 **The `FB Reel Upload` node posts to `rupload.facebook.com`, not `graph.facebook.com`.**
 Meta documents its auth as an `Authorization: OAuth <token>` header; the node instead

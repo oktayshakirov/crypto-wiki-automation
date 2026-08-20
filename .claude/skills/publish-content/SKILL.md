@@ -45,6 +45,23 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Tinnitus | Share Sound | `UcubZDb1sKnszcZX` | `{ slug }` |
 | Crypto Wiki | Share Video | `MZy8L37FaVL5zh64` | `{ videoId, topic }` |
 | Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, topic }` |
+| Crypto Wiki | Publish Reel | `uIV6956N14pMGMZ5` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
+| Tinnitus | Publish Reel | `1GTSF6izfwA1gpig` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
+
+**Publish Reel** is driven by the `publish-video` skill, not by this one. It posts one
+vertical video as an Instagram Reel and a Facebook Reel; `videoUrl` and `coverUrl` must
+be publicly reachable for the length of the run (the skill opens a cloudflared quick
+tunnel over the render folder). Facebook Reels accepts 3 to 90 seconds only, which is
+why `durationSeconds` is required and checked before anything uploads.
+
+**The `FB Reel Upload` node posts to `rupload.facebook.com`, not `graph.facebook.com`.**
+Meta documents its auth as an `Authorization: OAuth <token>` header; the node instead
+uses the existing Facebook Graph credential as a *predefined credential type*, which
+n8n injects as `?access_token=` on the query string. **Verified working on 2026-08-20**
+against both Pages - rupload accepts the query string as well as the header, so no
+Header Auth credential is needed. If it ever starts 401ing, that is the first thing to
+suspect and a Header Auth credential (`Authorization` = `OAuth <page token>`) on that
+one node is the fix.
 
 ## Step 1 - Suggest 10 topics
 Read `content-database.json` in the matching automation repo (crypto: `posts`/`exchanges`/`crypto_ogs`; tinnitus: `blog`/`zen`). Gap-analyze vs existing titles; use WebSearch for trends (CMC exchange rankings page is JS-rendered - WebSearch only). Present 10 options with a one-line "why" each. **The chosen topic becomes title AND slug verbatim - keep it short.**

@@ -43,8 +43,6 @@ Both 301 to `www`, so always `curl -L`. A `000` status is DNS/connection failure
 | Tinnitus | New Post | `pddxBAmv2k2nSBv2` | `{ topic }` |
 | Tinnitus | Share Post | `jtUStrxCt23FGNDk` | `{ slug }` |
 | Tinnitus | Share Sound | `UcubZDb1sKnszcZX` | `{ slug }` |
-| Crypto Wiki | Share Video | `MZy8L37FaVL5zh64` | `{ videoId, topic }` |
-| Tinnitus | Share Video | `q3omZaUm7kpTc6WE` | `{ videoId, topic }` |
 | Crypto Wiki | Publish Reel | `uIV6956N14pMGMZ5` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
 | Tinnitus | Publish Reel | `1GTSF6izfwA1gpig` | `{ videoUrl, coverUrl, caption, durationSeconds }` |
 | Crypto Wiki | Publish Facebook Video | `zS3xX6tbXpXnF32N` | `{ videoUrl, title, description, thumbUrl }` |
@@ -59,13 +57,27 @@ why `durationSeconds` is required and checked before anything uploads.
 **Publish Facebook Video** posts a long-form video natively to the Page feed - not a
 Reel, no duration cap, `POST /me/videos` with `file_url` rather than the three-phase
 Reels upload. Built 2026-08-20 to test whether native video earns more organic reach
-than the Share Video workflow's link-unfurl card; all four existing crypto long-form
-videos went out this way as the first test - see CHANGELOG for the results once there
-is data. Pulls `title`/`description` straight from `youtube-audit video <id>` rather
+than posting a YouTube link; all four existing crypto long-form videos went out this
+way as the first test - see CHANGELOG for the results once there is data. **It replaced
+the Share Video workflows**, which posted a YouTube URL to Facebook and Telegram and let
+them unfurl it into a card. Those were deleted on 2026-08-20 - a link post sends the
+viewer to YouTube and earns the reach an outbound link earns, which is the thing native
+upload exists to avoid. The last JSON of each is in
+`.n8n-backups/*.before-delete.json` - **local only**, since `.n8n-backups/` is
+gitignored, so that safety net does not survive a fresh clone. Pulls `title`/`description` straight from `youtube-audit video <id>` rather
 than writing Facebook-native copy, since the source videos are already public on
 YouTube. The Tinnitus version is a straight clone with the TinnitusHelp Page credential
 swapped in - check that node before running, since a wrong credential posts to the wrong
 brand and cannot be undone quietly.
+
+**Pass the full YouTube description; the workflow trims it.** `Normalise Input` keeps
+the first paragraph and the line carrying the article link, and drops the rest - the
+second summary, the chapter list, and the repeat of the same URL at the bottom. A whole
+YouTube description under a Facebook video buries the one line a reader acts on and
+prints the URL twice. The trim lives in the workflow rather than at the caller so it
+cannot be forgotten. It carries the link's own line **verbatim** rather than relabelling
+it: an article video says `Full article: <url>`, a sound session says `More at <url>` and
+has no article behind it, so a hardcoded "Full article" label would be a lie there.
 
 **If the source folder has no thumbnails, pull each video's `maxresdefault.jpg` from
 YouTube** rather than rendering new ones - that is the poster already live on the
@@ -136,76 +148,6 @@ If the run failed or timed out, re-run it from the Actions tab, or send it by ha
 Before running: confirm the share image doesn't already exist in the automation repo (`images/posts/<slug>.png` or `images/crypto-ogs/<slug>.png` via GitHub API; if present from a previous run, `git rm` + push first - the Upload node is create-only and fails with "sha wasn't supplied").
 Run the matching Share workflow. It posts to Telegram (binary upload), Instagram + Facebook (Twitter nodes are intentionally disconnected - no X API). Verify: every node success; Telegram result has a `photo` array (**nested at `result.photo`, not top-level** - checking the top level looks like a failure on a perfectly good run); Facebook/Instagram outputs each carry an `id`; download the run's APITemplate `download_url_png` and view it to confirm the banner rendered (title + photo, no black spot).
 **Single-channel re-share**: temporarily remove the other channel targets from `Format Social Post`'s connections, run, then restore.
-
-## Share Video - the YouTube share workflows
-
-Separate from the article Share workflows and much smaller: **no banner, no
-image upload, no CDN wait.** Facebook and Telegram both unfurl a YouTube URL
-into a playable card by themselves, and a card beats a still because it is
-clickable. `videoId` takes a bare id or any YouTube URL shape. The title
-is fetched live from `youtube.com/oembed` - no credential, no quota, works on
-unlisted videos.
-
-**The caption must not contain the title.** The card already shows the title,
-the description and the thumbnail, so putting the title in the message prints
-the same sentence twice in one post - which is what the first version did, and
-it is obvious the moment you look at the post rather than the API response. The
-caption's only job is the one human line the card cannot supply, and it is
-deliberately one line: `New video about <topic>`. The `topic` field is optional
-and is the subject in two or three words; left empty it is guessed from a
-`Subject: hook` or `hook | Subject` title and otherwise falls back to a generic
-line. **The guess is a convenience, not a rule** - it finds "Michael Saylor" in
-both Saylor titles and finds nothing in "Does Tinnitus Go Away? Temporary vs
-Chronic Explained", which is why the fallback exists instead of an error.
-
-**Both workflows are generated, not hand-edited.** `scripts/build_share_video_workflows.py`
-builds them from one definition and PUTs them; the two sites differ only in
-credentials, Telegram channel and default CTA. Edit the script and re-run
-`--apply`, never the live JSON - that is how the two Share Post workflows
-drifted into using different Telegram operations.
-
-- **`--channels telegram` (or `facebook`) re-posts one channel without spamming
-  the other**, plus `--no-snapshot` so a deliberately partial build never lands
-  in the committed JSON. This replaces the hand-edit-the-connections dance.
-- **`parse_mode` must be set to `HTML`, or a YouTube id eventually kills the
-  post.** The Telegram node coerces a missing *or empty* `parse_mode` to
-  Markdown - `GenericFunctions.addAdditionalFields` runs
-  `if (!additionalFields.parse_mode) additionalFields.parse_mode = 'Markdown'`,
-  so the node's own UI default of HTML never applies to a workflow built over
-  the API. A YouTube id is base64url and contains `_` freely: `xRn9taQ11_E` has
-  exactly one, Telegram read it as an unterminated italic entity and returned
-  `400 can't parse entities: Can't find end of the entity starting at byte
-  offset 83`. **Facebook had already posted by then**, so the run was a
-  half-share needing a `--channels telegram` re-run to finish - which is
-  precisely what that flag is for. Latent from the first build; it only fires
-  on ids with an odd number of `_` or `*`, which is why earlier crypto shares
-  went out fine. The Format node now HTML-escapes `&`, `<` and `>` in the
-  caption so a topic string cannot reopen the same hole from the other end.
-- **The Telegram node's defaults are both wrong here and both fail quietly.**
-  `appendAttribution` defaults to true and appends "This message was sent
-  automatically with n8n"; the node also sends `disable_web_page_preview`, which
-  is why the first run showed a bare URL and no thumbnail - Telegram echoed it
-  back as `link_preview_options: {is_disabled: true}`. Both are now set to
-  `false` explicitly. Neither ever mattered for Share Post because those use
-  `sendPhoto`. **Check `link_preview_options` in the Telegram response**: a bare
-  `{url: ...}` means the card renders, `{is_disabled: true}` means it will not.
-- **There is no Instagram branch and it should not come back.** A story was
-  built and it published - the permission works and `media_type=STORIES` is
-  fine - but **link stickers cannot be set through the Graph API at all**. That
-  is a platform limit, not a missing scope, so an automated story is a picture
-  with nothing to tap. It was cut for that reason.
-- **Verify a run from the execution, not from the app.** Poll
-  `?workflowId=<id>&limit=1&includeData=true` and check four things: the
-  `Format Video Post` node's `topic` (empty means it fell back to the generic
-  line - fine, but know it happened), the Facebook node's `id`, the Telegram
-  `message_id`, and Telegram's `link_preview_options`. A bare `{url: ...}`
-  there is the card rendering; `{is_disabled: true}` is the bug above.
-- **A form POST that returns `{"status":200}` has already run the workflow.**
-  Do not re-POST to "check the response" - that is a second live post. The
-  executions list lags and excludes in-flight runs, so an empty list right
-  after a trigger is not evidence that nothing happened; poll
-  `?workflowId=<id>&limit=1` a few seconds later instead. Three identical posts
-  went out to the crypto channels this way.
 
 ## Safety
 - Never push or share without the user's explicit go for that step.

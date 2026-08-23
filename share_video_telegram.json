@@ -1,0 +1,295 @@
+{
+  "id": "5x8Kaq91qqPl6pmp",
+  "name": "Crypto Wiki: Share Video To Telegram",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Crypto Wiki: Share Video To Telegram",
+        "formDescription": "Post a finished video to the Telegram channel. Telegram unfurls the YouTube URL into its own play card, so no file is uploaded here.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "title",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "hook",
+              "fieldType": "textarea",
+              "requiredField": false
+            },
+            {
+              "fieldLabel": "youtubeUrl",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {},
+        "path": "share-video-telegram-crypto"
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -300,
+        300
+      ],
+      "id": "348ed229-593c-4de6-a8d4-d11236ebfb54",
+      "name": "Form Trigger",
+      "webhookId": "share-video-telegram-crypto"
+    },
+    {
+      "parameters": {
+        "jsCode": "const j = $json;\nconst pick = (label, idx) => String(j[label] ?? j[`field-${idx}`] ?? '').trim();\n\nconst title = pick('title', 0);\nconst hook = pick('hook', 1);\nconst youtubeUrl = pick('youtubeUrl', 2);\n\nif (!title) throw new Error('title is empty.');\nif (!/^https:\\/\\/(www\\.)?(youtube\\.com|youtu\\.be)\\//.test(youtubeUrl)) {\n  throw new Error(`youtubeUrl must be a YouTube URL, got: ${youtubeUrl || '(empty)'}`);\n}\n\n\n// **The poster is YouTube's own, by video id.** `i.ytimg.com/vi/<id>/\n// maxresdefault.jpg` is the thumbnail we uploaded with the video, it is\n// public and permanent, and it needs no tunnel and no file handling here.\n// The site's own /images/videos/<slug>.webp would work too but Telegram is\n// happier with jpeg.\nconst ytId = (youtubeUrl.match(/(?:v=|youtu\\.be\\/)([A-Za-z0-9_-]{11})/) || [])[1] || '';\nconst posterUrl = ytId ? `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg` : '';\n\nreturn [{ json: { title, hook, youtubeUrl, ytId, posterUrl } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        300
+      ],
+      "id": "2006bc74-3765-4367-8dc6-acd4a4a1226b",
+      "name": "Normalise Input"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendPhoto",
+        "chatId": "@thecryptowiki",
+        "binaryData": false,
+        "additionalFields": {
+          "caption": "=\ud83c\udfac {{ $json.title }}\n\n{{ $json.hook }}\n\n\u25b6\ufe0f Watch the full video: {{ $json.youtubeUrl }}",
+          "appendAttribution": false
+        },
+        "file": "={{ $json.posterUrl }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        140,
+        300
+      ],
+      "id": "02488b05-f7bc-4c5c-b4ff-9a52b93d9572",
+      "name": "Telegram Post",
+      "webhookId": "4568fcb5-9127-4a72-aceb-40834db96719",
+      "credentials": {
+        "telegramApi": {
+          "id": "geWva7g9QuODXuET",
+          "name": "Telegram (CryptoWiki)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  telegramMessageId: $json?.result?.message_id ?? $json?.message_id ?? null,\n  youtubeUrl: $('Normalise Input').item.json.youtubeUrl,\n  title: $('Normalise Input').item.json.title,\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        300
+      ],
+      "id": "364e95a2-4e5a-4bd9-aece-ee0e0c959c50",
+      "name": "Summary"
+    }
+  ],
+  "connections": {
+    "Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalise Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise Input": {
+      "main": [
+        [
+          {
+            "node": "Telegram Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Post": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "nodeGroups": [],
+  "pinData": null,
+  "activeVersionId": "c90ec412-4afe-41a0-8841-ec793e336b3d",
+  "versionCounter": 5,
+  "sourceWorkflowId": null,
+  "activeVersion": {
+    "updatedAt": "2026-08-23T22:04:21.106Z",
+    "createdAt": "2026-08-23T22:04:21.106Z",
+    "versionId": "c90ec412-4afe-41a0-8841-ec793e336b3d",
+    "workflowId": "5x8Kaq91qqPl6pmp",
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Crypto Wiki: Share Video To Telegram",
+          "formDescription": "Post a finished video to the Telegram channel. Telegram unfurls the YouTube URL into its own play card, so no file is uploaded here.",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "title",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "hook",
+                "fieldType": "textarea",
+                "requiredField": false
+              },
+              {
+                "fieldLabel": "youtubeUrl",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {},
+          "path": "share-video-telegram-crypto"
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.2,
+        "position": [
+          -300,
+          300
+        ],
+        "id": "348ed229-593c-4de6-a8d4-d11236ebfb54",
+        "name": "Form Trigger",
+        "webhookId": "share-video-telegram-crypto"
+      },
+      {
+        "parameters": {
+          "jsCode": "const j = $json;\nconst pick = (label, idx) => String(j[label] ?? j[`field-${idx}`] ?? '').trim();\n\nconst title = pick('title', 0);\nconst hook = pick('hook', 1);\nconst youtubeUrl = pick('youtubeUrl', 2);\n\nif (!title) throw new Error('title is empty.');\nif (!/^https:\\/\\/(www\\.)?(youtube\\.com|youtu\\.be)\\//.test(youtubeUrl)) {\n  throw new Error(`youtubeUrl must be a YouTube URL, got: ${youtubeUrl || '(empty)'}`);\n}\n\n\n// **The poster is YouTube's own, by video id.** `i.ytimg.com/vi/<id>/\n// maxresdefault.jpg` is the thumbnail we uploaded with the video, it is\n// public and permanent, and it needs no tunnel and no file handling here.\n// The site's own /images/videos/<slug>.webp would work too but Telegram is\n// happier with jpeg.\nconst ytId = (youtubeUrl.match(/(?:v=|youtu\\.be\\/)([A-Za-z0-9_-]{11})/) || [])[1] || '';\nconst posterUrl = ytId ? `https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg` : '';\n\nreturn [{ json: { title, hook, youtubeUrl, ytId, posterUrl } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -80,
+          300
+        ],
+        "id": "2006bc74-3765-4367-8dc6-acd4a4a1226b",
+        "name": "Normalise Input"
+      },
+      {
+        "parameters": {
+          "resource": "message",
+          "operation": "sendPhoto",
+          "chatId": "@thecryptowiki",
+          "binaryData": false,
+          "additionalFields": {
+            "caption": "=\ud83c\udfac {{ $json.title }}\n\n{{ $json.hook }}\n\n\u25b6\ufe0f Watch the full video: {{ $json.youtubeUrl }}",
+            "appendAttribution": false
+          },
+          "file": "={{ $json.posterUrl }}"
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [
+          140,
+          300
+        ],
+        "id": "02488b05-f7bc-4c5c-b4ff-9a52b93d9572",
+        "name": "Telegram Post",
+        "webhookId": "4568fcb5-9127-4a72-aceb-40834db96719",
+        "credentials": {
+          "telegramApi": {
+            "id": "geWva7g9QuODXuET",
+            "name": "Telegram (CryptoWiki)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return [{ json: {\n  telegramMessageId: $json?.result?.message_id ?? $json?.message_id ?? null,\n  youtubeUrl: $('Normalise Input').item.json.youtubeUrl,\n  title: $('Normalise Input').item.json.title,\n} }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          360,
+          300
+        ],
+        "id": "364e95a2-4e5a-4bd9-aece-ee0e0c959c50",
+        "name": "Summary"
+      }
+    ],
+    "connections": {
+      "Form Trigger": {
+        "main": [
+          [
+            {
+              "node": "Normalise Input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalise Input": {
+        "main": [
+          [
+            {
+              "node": "Telegram Post",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Telegram Post": {
+        "main": [
+          [
+            {
+              "node": "Summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Oktay Shakirov",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-08-23T22:04:21.123Z",
+        "id": 239,
+        "workflowId": "5x8Kaq91qqPl6pmp",
+        "versionId": "c90ec412-4afe-41a0-8841-ec793e336b3d",
+        "event": "activated",
+        "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+      },
+      {
+        "createdAt": "2026-08-23T22:04:21.119Z",
+        "id": 238,
+        "workflowId": "5x8Kaq91qqPl6pmp",
+        "versionId": "c90ec412-4afe-41a0-8841-ec793e336b3d",
+        "event": "deactivated",
+        "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+      }
+    ]
+  }
+}

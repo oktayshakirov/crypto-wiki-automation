@@ -1,0 +1,1173 @@
+{
+  "id": "uIV6956N14pMGMZ5",
+  "name": "Crypto Wiki: Publish Reel",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Crypto Wiki: Publish Reel",
+        "formDescription": "Publishes one vertical video as an Instagram Reel and a Facebook Reel. Both URLs must be publicly reachable for the length of the run.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "videoUrl",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "coverUrl",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "caption",
+              "fieldType": "textarea",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "durationSeconds",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {},
+        "path": "6d62a5fb-66ee-415e-b6fd-c125fbe6c3a5"
+      },
+      "name": "Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        300
+      ],
+      "id": "8d1d41ff-eccf-4743-a25e-00cf920a803e",
+      "webhookId": "6d62a5fb-66ee-415e-b6fd-c125fbe6c3a5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// The form gives us field labels when triggered from the browser and `field-N`\n// when triggered over HTTP. Read both: a run triggered by index that silently\n// produced nulls is exactly how a previous workflow published an article about\n// the wrong subject.\nconst j = $json;\nconst pick = (label, idx) => String(j[label] ?? j[`field-${idx}`] ?? '').trim();\n\nconst videoUrl = pick('videoUrl', 0);\nconst coverUrl = pick('coverUrl', 1);\nconst caption  = pick('caption', 2);\nconst duration = Number(pick('durationSeconds', 3) || '0');\n\nfor (const [name, value] of [['videoUrl', videoUrl], ['coverUrl', coverUrl]]) {\n  if (!/^https:\\/\\//.test(value)) {\n    throw new Error(`${name} must be a public https URL, got: ${value || '(empty)'}`);\n  }\n}\nif (!caption) throw new Error('caption is empty. A Reel published with no caption cannot be edited into one later.');\n\n// Facebook Reels are 3 to 90 seconds. Instagram allows far longer, but this\n// workflow posts the same file to both, so the tighter limit is the real one.\n// Checked here rather than discovered after the bytes have been uploaded.\nif (!Number.isFinite(duration) || duration <= 0) {\n  throw new Error('durationSeconds is required so the 90 second Facebook Reels limit can be checked before uploading.');\n}\nif (duration < 3 || duration > 90) {\n  throw new Error(`This video is ${duration}s. Facebook Reels accepts 3 to 90 seconds, so it cannot be published as a Reel.`);\n}\n\nreturn [{ json: { videoUrl, coverUrl, caption, duration } }];"
+      },
+      "name": "Normalise Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        300
+      ],
+      "id": "0a62c938-7620-4042-8955-50e02c1b4b2f"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "media_type",
+                "value": "REELS"
+              },
+              {
+                "name": "video_url",
+                "value": "={{ $json.videoUrl }}"
+              },
+              {
+                "name": "cover_url",
+                "value": "={{ $json.coverUrl }}"
+              },
+              {
+                "name": "caption",
+                "value": "={{ $json.caption }}"
+              },
+              {
+                "name": "share_to_feed",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "name": "IG Create Container",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        300
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "id": "fa43de4b-7f87-4f55-906e-ea45e500c686"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "name": "Wait for Encoding",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        300
+      ],
+      "webhookId": "0201ddc1-95c2-43ba-92fa-5878bde14cd8",
+      "id": "8b1b332b-4fe0-431e-aa50-62bb600206af"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "GET",
+        "graphApiVersion": "v23.0",
+        "node": "={{ $('IG Create Container').item.json.id }}",
+        "edge": "",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status_code,status"
+              }
+            ]
+          }
+        }
+      },
+      "name": "IG Container Status",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        420,
+        300
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "id": "ba825bcc-8355-453d-87a5-9095220b0159"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "finished",
+              "leftValue": "={{ $json.status_code }}",
+              "rightValue": "FINISHED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Encoded?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        300
+      ],
+      "id": "95bb75c9-b153-466a-ace6-5756061703f1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Instagram encodes the video before the container can be published. Polling\n// forever would hang the run, so cap it: 20 attempts at 15s is five minutes,\n// well past the normal encode time for a short.\nconst attempt = ($runIndex ?? 0) + 1;\nif (attempt >= 20) {\n  const status = $('IG Container Status').item.json.status_code;\n  throw new Error(`Instagram container still ${status} after ${attempt} checks. Nothing was published; check the Meta status page and retry.`);\n}\nreturn $input.all();"
+      },
+      "name": "Retry Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        500
+      ],
+      "id": "d7aa60e3-d1b6-4e27-a8f2-176b230340e5"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "17841477190733041",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $('IG Create Container').item.json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "name": "IG Publish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        880,
+        200
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "id": "383a2c4d-e98c-4ebd-9d65-4b100437e740"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "start"
+              }
+            ]
+          }
+        }
+      },
+      "name": "FB Reel Start",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        200
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "id": "c71dc0a0-e3a2-4177-abd2-68391ab081ab"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://rupload.facebook.com/video-upload/v23.0/{{ $json.video_id }}",
+        "authentication": "predefinedCredentialType",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{ $('Normalise Input').item.json.videoUrl }}"
+            }
+          ]
+        },
+        "options": {},
+        "nodeCredentialType": "facebookGraphApi"
+      },
+      "name": "FB Reel Upload",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        200
+      ],
+      "id": "a2ffd39b-ad09-4404-9e7b-99fe1a227e89",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_id",
+                "value": "={{ $('FB Reel Start').item.json.video_id }}"
+              },
+              {
+                "name": "upload_phase",
+                "value": "finish"
+              },
+              {
+                "name": "video_state",
+                "value": "PUBLISHED"
+              },
+              {
+                "name": "description",
+                "value": "={{ $('Normalise Input').item.json.caption }}"
+              }
+            ]
+          }
+        }
+      },
+      "name": "FB Reel Finish",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        200
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "id": "5f452121-2388-4e3c-a165-7d4f08857c75"
+    },
+    {
+      "parameters": {
+        "jsCode": "// One place to read what actually happened. Both platforms report success\n// differently \u2014 Instagram returns the published media id, Facebook Reels\n// returns {success:true} and the id came back in the start phase.\nconst v = $('Normalise Input').item.json;\nreturn [{ json: {\n  instagramMediaId: $('IG Publish').item.json.id ?? null,\n  facebookVideoId: $('FB Reel Start').item.json.video_id ?? null,\n  facebookFinished: $('FB Reel Finish').item.json.success === true,\n  caption: v.caption,\n  durationSeconds: v.duration,\n  // Cosmetic and deliberately non-fatal: both cover nodes are\n  // continueRegularOutput, because they run *after* the Reel is\n  // already live on both platforms and must never fail a published run.\n  facebookCoverSet: $('FB Set Reel Cover').item.json?.id != null\n                 || $('FB Set Reel Cover').item.json?.success === true,\n} }];"
+      },
+      "name": "Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        200
+      ],
+      "id": "d85ce705-5156-41db-9d17-d9f5f5fe5b2a"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Normalise Input').item.json.coverUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "cover"
+            }
+          }
+        }
+      },
+      "id": "fb-fetch-cover-node-0001",
+      "name": "FB Fetch Cover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1740,
+        200
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v23.0/{{ $('FB Reel Start').item.json.video_id }}/thumbnails",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "is_preferred",
+              "value": "true"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "source",
+              "inputDataFieldName": "cover"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fb-set-reel-cover-node-01",
+      "name": "FB Set Reel Cover",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1940,
+        200
+      ],
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "CGGakNGphccGvIDc",
+          "name": "Facebook Graph (CryptoWiki)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "connections": {
+    "Form Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalise Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalise Input": {
+      "main": [
+        [
+          {
+            "node": "IG Create Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Create Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Encoding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Encoding": {
+      "main": [
+        [
+          {
+            "node": "IG Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Container Status": {
+      "main": [
+        [
+          {
+            "node": "Encoded?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Encoded?": {
+      "main": [
+        [
+          {
+            "node": "IG Publish",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Retry Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Guard": {
+      "main": [
+        [
+          {
+            "node": "Wait for Encoding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IG Publish": {
+      "main": [
+        [
+          {
+            "node": "FB Reel Start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB Reel Start": {
+      "main": [
+        [
+          {
+            "node": "FB Reel Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB Reel Upload": {
+      "main": [
+        [
+          {
+            "node": "FB Reel Finish",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB Reel Finish": {
+      "main": [
+        [
+          {
+            "node": "FB Fetch Cover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB Fetch Cover": {
+      "main": [
+        [
+          {
+            "node": "FB Set Reel Cover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FB Set Reel Cover": {
+      "main": [
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "nodeGroups": [],
+  "pinData": null,
+  "activeVersionId": "950f821e-0085-4b43-8219-107b6bded400",
+  "versionCounter": 4,
+  "sourceWorkflowId": null,
+  "activeVersion": {
+    "updatedAt": "2026-08-23T14:53:09.015Z",
+    "createdAt": "2026-08-23T14:53:09.015Z",
+    "versionId": "950f821e-0085-4b43-8219-107b6bded400",
+    "workflowId": "uIV6956N14pMGMZ5",
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Crypto Wiki: Publish Reel",
+          "formDescription": "Publishes one vertical video as an Instagram Reel and a Facebook Reel. Both URLs must be publicly reachable for the length of the run.",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "videoUrl",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "coverUrl",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "caption",
+                "fieldType": "textarea",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "durationSeconds",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {},
+          "path": "6d62a5fb-66ee-415e-b6fd-c125fbe6c3a5"
+        },
+        "name": "Form Trigger",
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.2,
+        "position": [
+          -460,
+          300
+        ],
+        "id": "8d1d41ff-eccf-4743-a25e-00cf920a803e",
+        "webhookId": "6d62a5fb-66ee-415e-b6fd-c125fbe6c3a5"
+      },
+      {
+        "parameters": {
+          "jsCode": "// The form gives us field labels when triggered from the browser and `field-N`\n// when triggered over HTTP. Read both: a run triggered by index that silently\n// produced nulls is exactly how a previous workflow published an article about\n// the wrong subject.\nconst j = $json;\nconst pick = (label, idx) => String(j[label] ?? j[`field-${idx}`] ?? '').trim();\n\nconst videoUrl = pick('videoUrl', 0);\nconst coverUrl = pick('coverUrl', 1);\nconst caption  = pick('caption', 2);\nconst duration = Number(pick('durationSeconds', 3) || '0');\n\nfor (const [name, value] of [['videoUrl', videoUrl], ['coverUrl', coverUrl]]) {\n  if (!/^https:\\/\\//.test(value)) {\n    throw new Error(`${name} must be a public https URL, got: ${value || '(empty)'}`);\n  }\n}\nif (!caption) throw new Error('caption is empty. A Reel published with no caption cannot be edited into one later.');\n\n// Facebook Reels are 3 to 90 seconds. Instagram allows far longer, but this\n// workflow posts the same file to both, so the tighter limit is the real one.\n// Checked here rather than discovered after the bytes have been uploaded.\nif (!Number.isFinite(duration) || duration <= 0) {\n  throw new Error('durationSeconds is required so the 90 second Facebook Reels limit can be checked before uploading.');\n}\nif (duration < 3 || duration > 90) {\n  throw new Error(`This video is ${duration}s. Facebook Reels accepts 3 to 90 seconds, so it cannot be published as a Reel.`);\n}\n\nreturn [{ json: { videoUrl, coverUrl, caption, duration } }];"
+        },
+        "name": "Normalise Input",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -240,
+          300
+        ],
+        "id": "0a62c938-7620-4042-8955-50e02c1b4b2f"
+      },
+      {
+        "parameters": {
+          "httpRequestMethod": "POST",
+          "graphApiVersion": "v23.0",
+          "node": "17841477190733041",
+          "edge": "media",
+          "options": {
+            "queryParameters": {
+              "parameter": [
+                {
+                  "name": "media_type",
+                  "value": "REELS"
+                },
+                {
+                  "name": "video_url",
+                  "value": "={{ $json.videoUrl }}"
+                },
+                {
+                  "name": "cover_url",
+                  "value": "={{ $json.coverUrl }}"
+                },
+                {
+                  "name": "caption",
+                  "value": "={{ $json.caption }}"
+                },
+                {
+                  "name": "share_to_feed",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        "name": "IG Create Container",
+        "type": "n8n-nodes-base.facebookGraphApi",
+        "typeVersion": 1,
+        "position": [
+          -20,
+          300
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "id": "fa43de4b-7f87-4f55-906e-ea45e500c686"
+      },
+      {
+        "parameters": {
+          "amount": 15
+        },
+        "name": "Wait for Encoding",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          200,
+          300
+        ],
+        "webhookId": "0201ddc1-95c2-43ba-92fa-5878bde14cd8",
+        "id": "8b1b332b-4fe0-431e-aa50-62bb600206af"
+      },
+      {
+        "parameters": {
+          "httpRequestMethod": "GET",
+          "graphApiVersion": "v23.0",
+          "node": "={{ $('IG Create Container').item.json.id }}",
+          "edge": "",
+          "options": {
+            "queryParameters": {
+              "parameter": [
+                {
+                  "name": "fields",
+                  "value": "status_code,status"
+                }
+              ]
+            }
+          }
+        },
+        "name": "IG Container Status",
+        "type": "n8n-nodes-base.facebookGraphApi",
+        "typeVersion": 1,
+        "position": [
+          420,
+          300
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "id": "ba825bcc-8355-453d-87a5-9095220b0159"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "finished",
+                "leftValue": "={{ $json.status_code }}",
+                "rightValue": "FINISHED",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "name": "Encoded?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          640,
+          300
+        ],
+        "id": "95bb75c9-b153-466a-ace6-5756061703f1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Instagram encodes the video before the container can be published. Polling\n// forever would hang the run, so cap it: 20 attempts at 15s is five minutes,\n// well past the normal encode time for a short.\nconst attempt = ($runIndex ?? 0) + 1;\nif (attempt >= 20) {\n  const status = $('IG Container Status').item.json.status_code;\n  throw new Error(`Instagram container still ${status} after ${attempt} checks. Nothing was published; check the Meta status page and retry.`);\n}\nreturn $input.all();"
+        },
+        "name": "Retry Guard",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          640,
+          500
+        ],
+        "id": "d7aa60e3-d1b6-4e27-a8f2-176b230340e5"
+      },
+      {
+        "parameters": {
+          "httpRequestMethod": "POST",
+          "graphApiVersion": "v23.0",
+          "node": "17841477190733041",
+          "edge": "media_publish",
+          "options": {
+            "queryParameters": {
+              "parameter": [
+                {
+                  "name": "creation_id",
+                  "value": "={{ $('IG Create Container').item.json.id }}"
+                }
+              ]
+            }
+          }
+        },
+        "name": "IG Publish",
+        "type": "n8n-nodes-base.facebookGraphApi",
+        "typeVersion": 1,
+        "position": [
+          880,
+          200
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "id": "383a2c4d-e98c-4ebd-9d65-4b100437e740"
+      },
+      {
+        "parameters": {
+          "httpRequestMethod": "POST",
+          "graphApiVersion": "v23.0",
+          "node": "me",
+          "edge": "video_reels",
+          "options": {
+            "queryParameters": {
+              "parameter": [
+                {
+                  "name": "upload_phase",
+                  "value": "start"
+                }
+              ]
+            }
+          }
+        },
+        "name": "FB Reel Start",
+        "type": "n8n-nodes-base.facebookGraphApi",
+        "typeVersion": 1,
+        "position": [
+          1100,
+          200
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "id": "c71dc0a0-e3a2-4177-abd2-68391ab081ab"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://rupload.facebook.com/video-upload/v23.0/{{ $json.video_id }}",
+          "authentication": "predefinedCredentialType",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "file_url",
+                "value": "={{ $('Normalise Input').item.json.videoUrl }}"
+              }
+            ]
+          },
+          "options": {},
+          "nodeCredentialType": "facebookGraphApi"
+        },
+        "name": "FB Reel Upload",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1320,
+          200
+        ],
+        "id": "a2ffd39b-ad09-4404-9e7b-99fe1a227e89",
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpRequestMethod": "POST",
+          "graphApiVersion": "v23.0",
+          "node": "me",
+          "edge": "video_reels",
+          "options": {
+            "queryParameters": {
+              "parameter": [
+                {
+                  "name": "video_id",
+                  "value": "={{ $('FB Reel Start').item.json.video_id }}"
+                },
+                {
+                  "name": "upload_phase",
+                  "value": "finish"
+                },
+                {
+                  "name": "video_state",
+                  "value": "PUBLISHED"
+                },
+                {
+                  "name": "description",
+                  "value": "={{ $('Normalise Input').item.json.caption }}"
+                }
+              ]
+            }
+          }
+        },
+        "name": "FB Reel Finish",
+        "type": "n8n-nodes-base.facebookGraphApi",
+        "typeVersion": 1,
+        "position": [
+          1540,
+          200
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "id": "5f452121-2388-4e3c-a165-7d4f08857c75"
+      },
+      {
+        "parameters": {
+          "jsCode": "// One place to read what actually happened. Both platforms report success\n// differently \u2014 Instagram returns the published media id, Facebook Reels\n// returns {success:true} and the id came back in the start phase.\nconst v = $('Normalise Input').item.json;\nreturn [{ json: {\n  instagramMediaId: $('IG Publish').item.json.id ?? null,\n  facebookVideoId: $('FB Reel Start').item.json.video_id ?? null,\n  facebookFinished: $('FB Reel Finish').item.json.success === true,\n  caption: v.caption,\n  durationSeconds: v.duration,\n  // Cosmetic and deliberately non-fatal: both cover nodes are\n  // continueRegularOutput, because they run *after* the Reel is\n  // already live on both platforms and must never fail a published run.\n  facebookCoverSet: $('FB Set Reel Cover').item.json?.id != null\n                 || $('FB Set Reel Cover').item.json?.success === true,\n} }];"
+        },
+        "name": "Summary",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1760,
+          200
+        ],
+        "id": "d85ce705-5156-41db-9d17-d9f5f5fe5b2a"
+      },
+      {
+        "parameters": {
+          "url": "={{ $('Normalise Input').item.json.coverUrl }}",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file",
+                "outputPropertyName": "cover"
+              }
+            }
+          }
+        },
+        "id": "fb-fetch-cover-node-0001",
+        "name": "FB Fetch Cover",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1740,
+          200
+        ],
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://graph.facebook.com/v23.0/{{ $('FB Reel Start').item.json.video_id }}/thumbnails",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "facebookGraphApi",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "is_preferred",
+                "value": "true"
+              }
+            ]
+          },
+          "sendBody": true,
+          "contentType": "multipart-form-data",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "parameterType": "formBinaryData",
+                "name": "source",
+                "inputDataFieldName": "cover"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "fb-set-reel-cover-node-01",
+        "name": "FB Set Reel Cover",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1940,
+          200
+        ],
+        "credentials": {
+          "facebookGraphApi": {
+            "id": "CGGakNGphccGvIDc",
+            "name": "Facebook Graph (CryptoWiki)"
+          }
+        },
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "Form Trigger": {
+        "main": [
+          [
+            {
+              "node": "Normalise Input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalise Input": {
+        "main": [
+          [
+            {
+              "node": "IG Create Container",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IG Create Container": {
+        "main": [
+          [
+            {
+              "node": "Wait for Encoding",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait for Encoding": {
+        "main": [
+          [
+            {
+              "node": "IG Container Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IG Container Status": {
+        "main": [
+          [
+            {
+              "node": "Encoded?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Encoded?": {
+        "main": [
+          [
+            {
+              "node": "IG Publish",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Retry Guard",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Retry Guard": {
+        "main": [
+          [
+            {
+              "node": "Wait for Encoding",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IG Publish": {
+        "main": [
+          [
+            {
+              "node": "FB Reel Start",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FB Reel Start": {
+        "main": [
+          [
+            {
+              "node": "FB Reel Upload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FB Reel Upload": {
+        "main": [
+          [
+            {
+              "node": "FB Reel Finish",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FB Reel Finish": {
+        "main": [
+          [
+            {
+              "node": "FB Fetch Cover",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FB Fetch Cover": {
+        "main": [
+          [
+            {
+              "node": "FB Set Reel Cover",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "FB Set Reel Cover": {
+        "main": [
+          [
+            {
+              "node": "Summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Oktay Shakirov",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-08-23T14:53:09.034Z",
+        "id": 197,
+        "workflowId": "uIV6956N14pMGMZ5",
+        "versionId": "950f821e-0085-4b43-8219-107b6bded400",
+        "event": "activated",
+        "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+      },
+      {
+        "createdAt": "2026-08-23T14:53:09.030Z",
+        "id": 196,
+        "workflowId": "uIV6956N14pMGMZ5",
+        "versionId": "950f821e-0085-4b43-8219-107b6bded400",
+        "event": "deactivated",
+        "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+      }
+    ]
+  }
+}

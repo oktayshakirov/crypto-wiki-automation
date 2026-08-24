@@ -127,6 +127,10 @@
     "kris.marszalek": {
       "slug": "kris-marszalek",
       "title": "Kris Marszalek"
+    },
+    "emin.gun.sirer": {
+      "slug": "emin-gun-sirer",
+      "title": "Emin Gun Sirer"
     }
   },
   "exchanges": {
@@ -522,7 +526,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 33,
+    "crypto_ogs": 34,
     "exchanges": 29,
     "posts": 17
   }

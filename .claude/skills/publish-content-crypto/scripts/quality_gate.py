@@ -134,13 +134,29 @@ def main():
         desc = ""
         record(FAIL, "description", "missing description in frontmatter")
 
-    # --- exchange-only frontmatter blocks ---
-    # Both render in layouts/ExchangeSingle.js, and faqs also feeds the
-    # faqSchema() JSON-LD, so a missing block silently costs the rich result.
-    if a.type == "exchange":
+    # --- quickFacts / faqs: required on exchanges AND crypto-OGs ---
+    # ExchangeSingle.js and CryptoOgSingle.js both render these (as
+    # ExchangeQuickFacts / PersonQuickFacts plus ExchangeFaq) and both feed
+    # faqSchema(), so a missing block silently costs the FAQ rich result and
+    # the whole quick-facts panel. All 33 live OG pages carry both; this used
+    # to be checked on exchanges only, which left OGs unguarded.
+    if a.type in ("exchange", "og"):
         for block in ("quickFacts", "faqs"):
             check(bool(re.search(rf"^{block}:", fm, re.M)), f"{block} present",
                   bad_detail="missing")
+
+    # --- freshness ---
+    # `updated` feeds dateModified and the visible "Last updated:" line; without
+    # it both fall back to `date`. Not required on a new page - it has never
+    # been revised - but it must be a real date and never precede `date`.
+    mu = re.search(r"^updated:\s*['\"]?([0-9]{4}-[0-9]{2}-[0-9]{2})", fm, re.M)
+    md_ = re.search(r"^date:\s*['\"]?([0-9]{4}-[0-9]{2}-[0-9]{2})", fm, re.M)
+    if re.search(r"^updated:", fm, re.M) and not mu:
+        record(FAIL, "updated format",
+               "present but not an ISO YYYY-MM-DD date")
+    elif mu and md_:
+        record(PASS if mu.group(1) >= md_.group(1) else FAIL, "updated >= date",
+               f"updated {mu.group(1)}, date {md_.group(1)}")
 
     # --- author ---
     check("Oktay Shakirov" in fm, "author", "Oktay Shakirov", "author not found")

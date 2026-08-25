@@ -105,7 +105,32 @@ Most violations are auto-fixed by the Build node now - if one slips through, fix
 Per-type conventions:
 - **Post**: starts `## Heading`; `<ArticleAd />`; images `![alt](/images/posts/x.jpg)`; main image ≠ body images; frontmatter `categories` (fixed list) + optional `crypto-ogs`/`exchanges` (Title Case) + `draft: false`; description 150-160 chars. Proactively link relevant existing crypto-OGs. Avoid brand-heavy/ad-like archive images. **Every name in `crypto-ogs`/`exchanges` must actually be linked in the body** - the AI tends to list OGs it never mentions (the gate now fails on this); either add a real mention+link or drop the name. If you trim a body link, drop the matching frontmatter entry too.
 - **Exchange**: `## Heading` (recent pages are plain, older ones bold - either passes); `<ArticleAd />`; body images `![alt](/images/posts/x.jpg)` from the archive; main image is a **brand logo** at `/images/exchanges/<slug>.png` (~16:9, 600-1200px wide, <100 KB) that the user supplies by hand - never Pexels. Frontmatter needs `title, image, description, date, updated, order, authors, quickFacts, faqs, social` - **`quickFacts` and `faqs` are mandatory** (both render in `layouts/ExchangeSingle.js`, and `faqs` feeds the `faqSchema()` JSON-LD, so omitting it silently costs the FAQ rich result; the AI leaves both out). description **90-125 chars** - the exchange card is a fixed tile and past ~125 chars it wraps to a 5th row and looks off next to the rest of the grid. `social` keys are limited to what `layouts/components/Social.js` destructures (website, twitter, discord, github, telegram, apple, android, facebook, instagram, linkedin, youtube, reddit, medium, wikipedia, ...) - anything else, e.g. `docs`, is silently dropped. Verify each social URL via WebSearch and drop unverified ones. **Always add `apple` and `android` links when the exchange ships mobile apps** - nearly all of them do, and the AI omits them or invents plausible-looking fakes (it guessed `apps.apple.com/app/asterdex` and `id=com.asterdex`, both nonexistent). Find the real listings via WebSearch or the exchange's own site/X account, then **confirm the developer name on the listing matches the exchange** (Aster's Play listing is developer "Aster DEX" / contact@asterdex.com) - store search is full of copycat wallet apps. `curl -sL -o /dev/null -w '%{http_code}'` both URLs before committing. Apple storefronts are per-country and a listing missing from one 404s there while working elsewhere, so if `/us/` 404s try `gb`, `de`, `ch`, `ee` and use one that returns 200 (Aster is not in the US/UK/DE stores; the page uses `ch`). Play Store URLs are global - no `hl=` needed. Fact-check the protocol/company specifics: GPT-5 tends to emit a generic exchange template with the name swapped in, so confirm founders, launch year, native token, architecture, and any major incident actually made it into the body.
-- **Crypto OG**: `## **Bold Heading**`; quotes `> "..." - Name`; social block in frontmatter (verify links via WebSearch; drop unverified); no tags; ISO date + order; description 90-125 chars (same card grid as exchanges). Fact-check recent events (GPT-5 may miss them, e.g. verdicts/sentencings).
+- **Crypto OG**: `## **Bold Heading**`; quotes `> "..." - Name`; social block in frontmatter (verify links via WebSearch; drop unverified); no tags; ISO date + order; description 90-125 chars (same card grid as exchanges). **`quickFacts` and `faqs` are mandatory here too** - `CryptoOgSingle.js` renders them as `PersonQuickFacts` and `ExchangeFaq` and feeds `faqSchema()`, exactly like the exchange layout, and all 33 live OG pages carry both. The skill used to list them under exchanges only and the gate only checked exchanges, so an OG could ship without them and silently lose the FAQ rich result plus the whole quick-facts panel; the gate now checks both types. Same failure mode as exchanges - the AI leaves both out unless told. Fact-check recent events (GPT-5 may miss them, e.g. verdicts/sentencings).
+
+## Step 3b - Freshness: the `updated` field
+
+**Crypto facts decay faster than anything else this pipeline publishes**, and
+`updated` is how the site says so. `PostSingle.js` feeds it to `dateModified` in
+the article schema *and* prints a visible `Last updated:` line; without it both
+fall back to the original `date`, so a page that was revised last week still
+tells Google and the reader it is from whenever it was written. Only 6 of 63
+posts carry it.
+
+- **On a new post: omit it.** `date` alone is correct - the page has never been
+  revised, and a `updated` equal to `date` is noise.
+- **On any edit to a live post, set or bump `updated` to the edit date** (ISO,
+  same format as `date`). This is the step that gets forgotten, because the edit
+  itself feels like the whole job.
+- **The things that go stale** are worth naming, because they are what a
+  re-generation will not catch: protocol upgrades and hard forks, L1/L2
+  landscape claims, exchange status and rankings, token models, "as of" figures,
+  and anything phrased as a current state ("the largest", "recently", "so far").
+  A real case on 2026-08-25: the Emin Gün Sirer OG page had no mention of
+  Avalanche9000, the December 2024 Etna hard fork that restructured the entire
+  subnet model - the single biggest change to the network the page is about.
+- When fact-checking an existing page, **search for events after its `date`**
+  specifically, rather than re-reading what is already there. The gap is always
+  in what happened since, not in what was written.
 
 ## Step 4 - Stage locally + pick the main image
 Copy the MDX to `crypto-wiki/content/{posts|exchanges|crypto-ogs}/` - do NOT commit.

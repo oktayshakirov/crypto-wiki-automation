@@ -1,55 +1,28 @@
 #!/usr/bin/env python3
-"""Deterministic quality gate for a post MDX (skill Step 3).
+"""Deterministic quality gate for a thecrypto.wiki post MDX (skill Step 3).
 
 Usage:
-  python3 quality_gate.py <post.mdx> [--site crypto|tinnitus] [--db <content-database.json>]
-      [--archive <image dir>] [--type post|exchange|og|tinnitus-post]
+  python3 quality_gate.py <post.mdx> [--db <content-database.json>]
+      [--archive <image dir>] [--type post|exchange|og]
 
 Runs every Step-3 check and prints one line per check (PASS / WARN / FAIL).
 Exits non-zero if any hard FAIL is found (WARN does not fail the gate).
 
-Both sites are supported. The site is inferred from the MDX path (anything
-under a *tinnitus* repo is the tinnitus site, else crypto-wiki), and the DB and
-image archive default to that site's repo, so the usual call is just:
-
-    python3 quality_gate.py <path-to.mdx>
-
-The two sites differ in almost every surface detail - link prefixes
-(/posts/ vs /blog/), image syntax (markdown ![]() vs <Image src="" />),
-ad component, frontmatter quoting, whether an author field exists - so running
-the crypto checklist against a tinnitus post produces a wall of meaningless
-failures. Keep new checks inside the right site's branch.
+Crypto-wiki only. For tinnitushelp.me use publish-content-tinnitus's own copy
+of this script in tinnitus-help-automation - the two sites differ in almost
+every surface detail (link prefixes, image syntax, ad component, frontmatter
+quoting, whether an author field exists), which is why this is a separate
+script rather than one shared script branching on site.
 """
 import argparse, json, os, re, sys
 from datetime import datetime
 
-SITES = {
-    "crypto": {
-        "db": "/Users/oktayshakirov/Coding/crypto-wiki-automation/content-database.json",
-        "archive": "/Users/oktayshakirov/Coding/crypto-wiki/public/images/posts",
-        "domain": "https://www.thecrypto.wiki",
-        # Non-content link targets that are valid but never in the DB.
-        "static": {"/app", "/tools", "/search", "/about", "/posts",
-                   "/exchanges", "/crypto-ogs", "/categories"},
-    },
-    "tinnitus": {
-        "db": "/Users/oktayshakirov/Coding/tinnitus-help-automation/content-database.json",
-        "archive": "/Users/oktayshakirov/Coding/tinnitus-blog/public/images",
-        "domain": "https://www.tinnitushelp.me",
-        "static": {"/app", "/about", "/contact", "/faq", "/privacy", "/terms",
-                   "/disclaimer", "/blog", "/zen"},
-    },
-}
-
-# post_guidelines.md fixes this list; the Build node should emit only these.
-TINNITUS_TAGS = {"basics", "management", "research", "psychology",
-                 "nutrition", "meditation", "sounds"}
-# Tags that predate that list but are live on the site with real tag pages
-# (lifestyle x15, society x13, technology x7, neuroscience x6, history x3), and
-# that the workflow still emits. Accepted with a WARN so a genuinely invented
-# tag still FAILs; widen TINNITUS_TAGS if the guidelines adopt them.
-TINNITUS_TAGS_LEGACY = {"lifestyle", "society", "technology",
-                        "neuroscience", "history"}
+DB = "/Users/oktayshakirov/Coding/crypto-wiki-automation/content-database.json"
+ARCHIVE = "/Users/oktayshakirov/Coding/crypto-wiki/public/images/posts"
+DOMAIN = "https://www.thecrypto.wiki"
+# Non-content link targets that are valid but never in the DB.
+STATIC = {"/app", "/tools", "/search", "/about", "/posts",
+          "/exchanges", "/crypto-ogs", "/categories"}
 
 FAIL, WARN, PASS = "FAIL", "WARN", "PASS"
 results = []  # (level, check, detail)
@@ -63,29 +36,21 @@ def check(cond, name, ok_detail="ok", bad_detail="", level=FAIL):
     record(PASS if cond else level, name, ok_detail if cond else bad_detail)
 
 
-# Content directory -> URL prefix. Note tinnitus serves content/posts at /blog/.
-CONTENT_DIRS = {
-    "crypto": {"posts": "/posts/", "exchanges": "/exchanges/",
-               "crypto-ogs": "/crypto-ogs/", "tools": "/tools/"},
-    "tinnitus": {"posts": "/blog/", "zen": "/zen/"},
-}
+# Content directory -> URL prefix.
+CONTENT_DIRS = {"posts": "/posts/", "exchanges": "/exchanges/",
+                "crypto-ogs": "/crypto-ogs/", "tools": "/tools/"}
 
 
-def valid_slugs(db, site, mdx_path):
-    """Set of valid internal link targets for this site.
+def valid_slugs(db, mdx_path):
+    """Set of valid internal link targets.
 
-    Union of the content DB and the MDX actually on disk. The DB drifts (two
-    live tinnitus posts are missing from it), and a link to a page that really
-    exists must not fail the gate.
+    Union of the content DB and the MDX actually on disk. The DB drifts, and
+    a link to a page that really exists must not fail the gate.
     """
-    out = set(SITES[site]["static"])
+    out = set(STATIC)
 
-    if site == "tinnitus":
-        db_keys = (("blog", "/blog/"), ("zen", "/zen/"))
-    else:
-        db_keys = (("posts", "/posts/"), ("exchanges", "/exchanges/"),
-                   ("crypto_ogs", "/crypto-ogs/"), ("tools", "/tools/"))
-    for key, pref in db_keys:
+    for key, pref in (("posts", "/posts/"), ("exchanges", "/exchanges/"),
+                      ("crypto_ogs", "/crypto-ogs/"), ("tools", "/tools/")):
         for v in db.get(key, {}).values():
             s = (v.get("slug") or "").lstrip("/")
             if s.startswith(("posts/", "exchanges/", "crypto-ogs/", "tools/")):
@@ -95,7 +60,7 @@ def valid_slugs(db, site, mdx_path):
 
     # ...plus whatever is actually published in the site repo's content tree.
     content_root = os.path.dirname(os.path.dirname(os.path.abspath(mdx_path)))
-    for sub, pref in CONTENT_DIRS[site].items():
+    for sub, pref in CONTENT_DIRS.items():
         d = os.path.join(content_root, sub)
         if not os.path.isdir(d):
             continue
@@ -106,16 +71,13 @@ def valid_slugs(db, site, mdx_path):
 
 
 def imgs_in(txt):
-    """Both image syntaxes: crypto uses markdown, tinnitus uses <Image />."""
-    return re.findall(r"!\[[^\]]*\]\((/images/[^)\s]+)\)", txt) + \
-           re.findall(r'<Image\s[^>]*src="(/images/[^"]+)"', txt)
+    return re.findall(r"!\[[^\]]*\]\((/images/[^)\s]+)\)", txt)
 
 
 def strip_tables(txt):
     """Drop markdown table separator rows (| --- | --- |).
 
-    They are legitimate table syntax on both sites (12 tinnitus posts and many
-    crypto pages use tables) but look like a banned `--` to the dash check.
+    Legitimate table syntax, but looks like a banned `--` to the dash check.
     """
     return "\n".join(ln for ln in txt.split("\n")
                      if not re.match(r"^\s*\|[\s:|-]+\|\s*$", ln))
@@ -124,12 +86,10 @@ def strip_tables(txt):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("mdx")
-    ap.add_argument("--site", default=None, choices=sorted(SITES),
-                    help="site; inferred from the MDX path when omitted")
-    ap.add_argument("--db", default=None)
-    ap.add_argument("--archive", default=None)
+    ap.add_argument("--db", default=DB)
+    ap.add_argument("--archive", default=ARCHIVE)
     ap.add_argument("--type", default=None,
-                    choices=["post", "exchange", "og", "tinnitus-post"],
+                    choices=["post", "exchange", "og"],
                     help="content type; inferred from the path when omitted")
     ap.add_argument("--recent-window", type=int, default=5,
                     help="how many of the most recent other posts to check for "
@@ -137,18 +97,11 @@ def main():
     a = ap.parse_args()
 
     p = os.path.abspath(a.mdx).replace(os.sep, "/")
-    if a.site is None:
-        a.site = "tinnitus" if "tinnitus" in p else "crypto"
-    cfg = SITES[a.site]
-    a.db = a.db or cfg["db"]
-    a.archive = a.archive or cfg["archive"]
     if a.type is None:
-        a.type = ("tinnitus-post" if a.site == "tinnitus"
-                  else "exchange" if "/exchanges/" in p
+        a.type = ("exchange" if "/exchanges/" in p
                   else "og" if "/crypto-ogs/" in p
                   else "post")
-    tin = a.type == "tinnitus-post"
-    record(PASS, "site / type", f"{a.site} / {a.type}")
+    record(PASS, "type", a.type)
 
     text = open(a.mdx, encoding="utf-8").read()
     parts = text.split("---", 2)
@@ -169,23 +122,14 @@ def main():
     # tile: past ~125 chars it spills to a 5th row and looks off next to the
     # rest of the grid, so exchanges target the existing pages' 90-125 band.
     # OG pages sit in the same card grid and measure the same way.
-    # Tinnitus targets 120-135 with a HARD max of 140 (the site truncates).
-    desc_range = {"post": (150, 160),
-                  "exchange": (90, 125),
-                  "og": (90, 125),
-                  "tinnitus-post": (120, 135)}[a.type]
-    # Crypto frontmatter quotes with ", tinnitus with '.
+    desc_range = {"post": (150, 160), "exchange": (90, 125), "og": (90, 125)}[a.type]
     m = re.search(r"""description:\s*(['"])(.*)\1""", fm)
     if m:
         desc = m.group(2)
         dl = len(desc)
         lo, hi = desc_range
-        if tin and dl > 140:
-            record(FAIL, "description length",
-                   f"{dl} chars (HARD max 140, target {lo}-{hi})")
-        else:
-            record(PASS if lo <= dl <= hi else WARN, "description length",
-                   f"{dl} chars (target {lo}-{hi} for {a.type})")
+        record(PASS if lo <= dl <= hi else WARN, "description length",
+               f"{dl} chars (target {lo}-{hi} for {a.type})")
     else:
         desc = ""
         record(FAIL, "description", "missing description in frontmatter")
@@ -198,25 +142,8 @@ def main():
             check(bool(re.search(rf"^{block}:", fm, re.M)), f"{block} present",
                   bad_detail="missing")
 
-    # --- author (crypto only; tinnitus posts carry no author field) ---
-    if not tin:
-        check("Oktay Shakirov" in fm, "author", "Oktay Shakirov", "author not found")
-
-    # --- tags (tinnitus only): exactly 2-3, lowercase, from the fixed vocab ---
-    if tin:
-        mt = re.search(r"^tags:\s*\[(.*?)\]", fm, re.M)
-        tags = [x.strip().strip("\"'") for x in mt.group(1).split(",")
-                if x.strip()] if mt else []
-        bad = [t for t in tags
-               if t not in TINNITUS_TAGS and t not in TINNITUS_TAGS_LEGACY]
-        legacy = [t for t in tags if t in TINNITUS_TAGS_LEGACY]
-        if bad or not 2 <= len(tags) <= 3:
-            record(FAIL, "tags", f"{len(tags)} tags" +
-                   ("; not in vocab: " + ", ".join(bad) if bad else ""))
-        else:
-            record(WARN if legacy else PASS, "tags", ", ".join(tags) +
-                   ("  (legacy, outside guidelines vocab: "
-                    + ", ".join(legacy) + ")" if legacy else ""))
+    # --- author ---
+    check("Oktay Shakirov" in fm, "author", "Oktay Shakirov", "author not found")
 
     # --- links: count, dedupe, bold, slug validity ---
     links = re.findall(r"\[([^\]]+)\]\((/[^)]+)\)", body)
@@ -235,7 +162,7 @@ def main():
     check(not notbold, "links bolded",
           bad_detail="not bold: " + ", ".join(notbold))
 
-    valid = valid_slugs(db, a.site, a.mdx)
+    valid = valid_slugs(db, a.mdx)
     # Strip #anchors and ?query - a deep link into a real page is still valid.
     invalid = [u for _, u in internal
                if u.split("#")[0].split("?")[0].rstrip("/") not in valid]
@@ -260,40 +187,29 @@ def main():
                 return slug
         return None
 
-    if not tin:
-        orphans = []
-        for field, section, prefix in (("crypto-ogs", "crypto_ogs", "/crypto-ogs/"),
-                                       ("exchanges", "exchanges", "/exchanges/")):
-            for name in fm_list(field):
-                s = slug_for(section, name)
-                if s is None:
-                    orphans.append(f"{name} (not in DB)")
-                elif prefix + s not in linked:
-                    orphans.append(f"{name} (no body link)")
-        check(not orphans, "frontmatter ogs/exchanges linked in body",
-              bad_detail="; ".join(orphans))
+    orphans = []
+    for field, section, prefix in (("crypto-ogs", "crypto_ogs", "/crypto-ogs/"),
+                                   ("exchanges", "exchanges", "/exchanges/")):
+        for name in fm_list(field):
+            s = slug_for(section, name)
+            if s is None:
+                orphans.append(f"{name} (not in DB)")
+            elif prefix + s not in linked:
+                orphans.append(f"{name} (no body link)")
+    check(not orphans, "frontmatter ogs/exchanges linked in body",
+          bad_detail="; ".join(orphans))
 
     # --- images ---
     mi = re.search(r"""image:\s*(['"])([^'"]+)\1""", fm)
     main_img = mi.group(2) if mi else ""
     body_imgs = imgs_in(body)
 
-    if tin:
-        # Tinnitus: exactly 2 <Image />, and the FIRST one is the main image.
-        check(len(body_imgs) == 2, "exactly 2 images",
-              f"{len(body_imgs)} found", f"{len(body_imgs)} found")
-        check(bool(main_img) and bool(body_imgs) and body_imgs[0] == main_img,
-              "first image is the main image", main_img,
-              f"main={main_img or 'none'}, "
-              f"first={body_imgs[0] if body_imgs else 'none'}")
-        extra = body_imgs[1:]
-    else:
-        check(len(body_imgs) == 2, "exactly 2 body images",
-              f"{len(body_imgs)} found", f"{len(body_imgs)} found")
-        check(bool(main_img) and main_img not in body_imgs,
-              "main image != body images", main_img,
-              main_img or "no main image in frontmatter")
-        extra = body_imgs
+    check(len(body_imgs) == 2, "exactly 2 body images",
+          f"{len(body_imgs)} found", f"{len(body_imgs)} found")
+    check(bool(main_img) and main_img not in body_imgs,
+          "main image != body images", main_img,
+          main_img or "no main image in frontmatter")
+    extra = body_imgs
 
     missing = [q for q in body_imgs
                if not os.path.exists(os.path.join(a.archive, os.path.basename(q)))]
@@ -303,8 +219,7 @@ def main():
     # --- shared images not repeated in nearby posts ---
     # Reusing an archive image is fine and expected. What is not fine is reusing
     # it in posts published close together, because someone reading a few in a
-    # row sees the same picture twice (audiologist.jpg was the body image on
-    # three consecutive tinnitus posts). So compare only against the N most
+    # row sees the same picture twice. So compare only against the N most
     # recent OTHER posts, by frontmatter date, not the archive as a whole. The
     # main image is slug-specific and never shared, so it is excluded.
     def post_date(txt):
@@ -361,37 +276,16 @@ def main():
     if a.type == "post":
         record(PASS if re.match(r"\s*##\s", body) else WARN, "starts with ## heading",
                "ok" if re.match(r"\s*##\s", body) else "does not start with ##")
-    elif tin:
-        # Required opening: <Blockquote> -> main <Image> -> ## <Highlighter>.
-        check(body.lstrip().startswith("<Blockquote>"), "opens with <Blockquote>",
-              bad_detail="body does not start with <Blockquote>")
-        heads = re.findall(r"^##\s+(.*)$", body, re.M)
-        check(bool(heads) and heads[0].startswith("<Highlighter>"),
-              "first ## uses <Highlighter>",
-              bad_detail=f"first ## is: {heads[0][:60] if heads else 'none'}")
-        plain = [h for h in heads if not h.startswith("<Highlighter>")]
-        record(PASS if not plain else WARN, "all ## use <Highlighter>",
-               "ok" if not plain
-               else f"{len(plain)} plain: " + "; ".join(h[:40] for h in plain))
-        # Headless intro: prose between the main <Image> and the first heading.
-        mimg = re.search(r"<Image\s[^>]*>", body)
-        mhead = re.search(r"^##\s", body, re.M)
-        if mimg and mhead and mhead.start() > mimg.end():
-            between = body[mimg.end():mhead.start()].strip()
-            check(not between, "no headless intro before first heading",
-                  bad_detail="prose sits between the main image and the first "
-                             f"heading: {between[:70]}...")
 
     # --- ads present + not adjacent to images ---
-    ad = "AdComponent" if tin else "ArticleAd"
-    check(ad in body, f"<{ad} /> present", bad_detail=f"no {ad} in body")
+    check("ArticleAd" in body, "<ArticleAd /> present", bad_detail="no ArticleAd in body")
 
     sig = [(i, ln) for i, ln in enumerate(body.split("\n"))
-           if ad in ln or ln.strip().startswith("![") or "<Image" in ln]
+           if "ArticleAd" in ln or ln.strip().startswith("![")]
     adj = []
     for (i1, l1), (i2, l2) in zip(sig, sig[1:]):
-        k1 = "AD" if ad in l1 else "IMG"
-        k2 = "AD" if ad in l2 else "IMG"
+        k1 = "AD" if "ArticleAd" in l1 else "IMG"
+        k2 = "AD" if "ArticleAd" in l2 else "IMG"
         if k1 != k2 and i2 - i1 <= 2:
             adj.append(f"lines {i1+1}->{i2+1}")
     check(not adj, "ads not adjacent to images", bad_detail="; ".join(adj))

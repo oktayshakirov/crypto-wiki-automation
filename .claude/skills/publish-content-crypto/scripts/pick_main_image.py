@@ -12,7 +12,8 @@ and prints a JSON manifest to stdout: [{n, file, kb, photographer, source_url}].
 Re-roll with a higher --page to get different results for the same query.
 
 Key: reads the Pexels API key from crypto-wiki-automation/.pexels-api-key
-(gitignored). Get a free key at https://www.pexels.com/api/.
+(gitignored, shared with the tinnitus skill's own copy of this key). Get a
+free key at https://www.pexels.com/api/.
 """
 import argparse, json, os, subprocess, sys, urllib.request, urllib.parse
 
@@ -116,7 +117,7 @@ def main():
     ap.add_argument("--orientation", default="landscape")
     ap.add_argument("--archive", default=None,
                     help="site image dir to reject already-used photos against "
-                         "(tinnitus-blog/public/images or crypto-wiki/public/images/posts)")
+                         "(crypto-wiki/public/images/posts)")
     ap.add_argument("--dup-threshold", type=int, default=6,
                     help="max aHash Hamming distance treated as the same photo")
     a = ap.parse_args()

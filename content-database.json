@@ -497,6 +497,10 @@
     "what.is.a.rug.pull": {
       "slug": "what-is-a-rug-pull",
       "title": "What Is a Rug Pull?"
+    },
+    "what.is.the.genius.act": {
+      "slug": "what-is-the-genius-act",
+      "title": "What Is the GENIUS Act?"
     }
   },
   "tools": {
@@ -528,6 +532,6 @@
   "next_orders": {
     "crypto_ogs": 34,
     "exchanges": 29,
-    "posts": 17
+    "posts": 18
   }
 }

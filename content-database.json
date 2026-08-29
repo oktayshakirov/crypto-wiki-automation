@@ -247,6 +247,10 @@
     "pancakeswap": {
       "slug": "pancakeswap",
       "title": "PancakeSwap"
+    },
+    "jupiter": {
+      "slug": "jupiter",
+      "title": "Jupiter"
     }
   },
   "posts": {
@@ -531,7 +535,7 @@
   },
   "next_orders": {
     "crypto_ogs": 34,
-    "exchanges": 29,
+    "exchanges": 30,
     "posts": 18
   }
 }

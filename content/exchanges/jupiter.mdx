@@ -1,132 +1,144 @@
 ---
 title: "Jupiter"
-image: "/images/exchanges/jupiter.png"
-description: "Jupiter is Solana’s leading non‑custodial DEX aggregator with perps, limit/DCA, and a community-driven launchpad."
+image: "/images/exchanges/jupiter.jpeg"
+description: "Jupiter is Solana's leading DEX aggregator, routing swaps for best execution alongside perps, DCA, lending and a launchpad."
 date: 2026-08-29
 order: 29
-authors: ["Crypto Wiki Team"]
+authors: ["Oktay Shakirov"]
+quickFacts:
+  founded: "2021"
+  headquarters: "No fixed headquarters; operates as an on-chain protocol with a distributed team"
+  founder: "Pseudonymous co-founders known as Meow and Siong"
+  type: "Non-custodial DEX aggregator on Solana, plus perps, DCA, lending and a launchpad"
+  custody: "Non-custodial; you trade from your own Solana wallet"
+  token: "JUP (governance)"
+  availability: "Permissionless; no KYC or account sign-up to swap"
+faqs:
+  - question: "What is Jupiter?"
+    answer: "Jupiter is a decentralized exchange aggregator on Solana. Instead of holding a single pool of liquidity, it scans Solana's automated market makers and order books in real time and splits each trade across venues to get you the best effective price. It launched in 2021 and has since grown into a wider trading app that also offers perpetual futures, limit orders, recurring dollar-cost-averaging, lending and a token launchpad. It is non-custodial: you connect a Solana wallet and every trade is signed by you and settled on-chain."
+  - question: "Is Jupiter safe to use?"
+    answer: "Jupiter never takes custody of your funds, so there is no exchange balance for anyone to freeze or lose. The risks are different rather than absent. Aggregation and perps rely on many smart contracts, price oracles and third-party liquidity venues, and a bug or oracle problem in any of them can affect a trade. Jupiter's core programs are audited and every route is shown before you sign, but you are responsible for checking token addresses, setting sensible slippage and keeping your own keys secure."
+  - question: "Do I need KYC to use Jupiter?"
+    answer: "No. Jupiter is a permissionless protocol, not a licensed broker. You can swap by connecting a self-custody wallet such as Phantom, Solflare or Backpack, with no identity check or email sign-up. In exchange you also get none of the consumer protections a regulated exchange provides, and you are responsible for your own tax reporting. Access to some products, such as perps, may be geo-restricted at the front-end level."
+  - question: "What is the JUP token?"
+    answer: "JUP is Jupiter's governance token. It launched on 31 January 2024 with a large airdrop to past users, a recurring distribution the community nicknamed Jupuary. Holders vote in the JUP DAO on protocol decisions, working-group funding and tokenomics. In early 2025 Jupiter began directing a share of protocol fees into JUP buybacks; that program was paused later in 2025 after roughly 70 million dollars had been spent with little price effect, and the DAO has since debated resuming buybacks alongside token burns."
+  - question: "Does Jupiter have a mobile app?"
+    answer: "Yes. Jupiter Mobile is a self-custodial Solana wallet and trading app for iOS and Android, built from the Ultimate wallet team that Jupiter acquired. It bundles swaps, limit and recurring orders, perps and portfolio tracking. Because fake wallet apps are common, only install it from the links on jup.ag or the official app-store listings."
+  - question: "How is Jupiter different from Uniswap?"
+    answer: "Uniswap is primarily a single automated market maker on Ethereum and other EVM chains, where you trade directly against Uniswap pools. Jupiter is an aggregator on Solana: it does not run its own core spot pools but routes your order across every major Solana venue at once. Solana's low fees make splitting an order across several pools cheap, which is central to how Jupiter delivers price improvement."
 social:
-  website: https://jup.ag
-  twitter: https://twitter.com/JupiterExchange
-  discord: https://discord.gg/jup
-  github: https://github.com/jup-ag
-  docs: https://docs.jup.ag
+  website: "https://jup.ag"
+  twitter: "https://x.com/JupiterExchange"
+  discord: "https://discord.gg/jup"
+  github: "https://github.com/jup-ag"
+  apple: "https://apps.apple.com/us/app/jupiter-solana-swap-wallet/id6484069059"
+  android: "https://play.google.com/store/apps/details?id=ag.jup.jupiter.android"
 ---
 
-## Jupiter: Solana’s Leading DEX Aggregator and Perps Hub
+## Jupiter: Solana's Leading DEX Aggregator and Trading Hub
 
-Jupiter is a decentralized exchange (DEX) aggregator on Solana, launched in 2021 by a pseudonymous team widely known in the ecosystem. Built for speed and best execution, Jupiter scans multiple Solana liquidity venues in real time and routes each swap across AMMs and order books to minimize slippage and maximize price improvement. Unlike a centralized cryptocurrency exchange, it is non-custodial and wallet-based. Jupiter has become a core pillar of Solana’s on-chain liquidity, while expanding into perpetual futures and community token launches.
+Jupiter is a decentralized exchange (DEX) aggregator on Solana, launched in 2021 by a pseudonymous team known in the ecosystem as Meow and Siong. Rather than hosting one pool of liquidity, Jupiter scans Solana's many trading venues in real time and routes each swap across automated market makers and order books to minimize slippage and improve price. Unlike a centralized cryptocurrency exchange, it is non-custodial and wallet-based. Over time it has become the default swap layer for Solana and expanded into perpetual futures, recurring orders, lending and community token launches.
 
-As a Solana-native protocol, Jupiter benefits from the network’s high throughput and low fees. Solana’s architecture—pioneered by **[Anatoly Yakovenko](/crypto-ogs/anatoly-yakovenko)**—enables fast settlement for on-chain orders and market-making. Traders who typically start with familiar assets like **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)** often discover Solana through Jupiter’s simple swap interface and its deep roster of **[altcoins](/posts/what-are-altcoins)**, memecoins, and newly launched tokens. Under the hood, it all runs on **[blockchain](/posts/what-is-blockchain)** rails with transparent pricing and on-chain auditability.
+As a Solana-native protocol, Jupiter depends on the network's high throughput and low fees. Solana's architecture, co-created by **[Anatoly Yakovenko](/crypto-ogs/anatoly-yakovenko)**, makes it cheap to split a single order across several pools, which is the core of how an aggregator adds value. Traders who start with familiar assets like **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)** often meet Solana through Jupiter's simple swap box and its deep roster of **[altcoins](/posts/what-are-altcoins)**, memecoins and freshly launched tokens. Underneath, everything runs on **[blockchain](/posts/what-is-blockchain)** rails with transparent pricing and on-chain settlement.
 
 <ArticleAd />
 
 ## Core Protocol: How Jupiter Works
 
-Jupiter’s design is straightforward for users yet complex under the hood. Connect a Solana wallet (e.g., Phantom, Solflare, Backpack), choose tokens, and Jupiter assembles the optimal route across Solana liquidity sources to deliver the best possible effective price. The protocol includes swap aggregation, limit orders, recurring DCA (dollar-cost averaging), a launchpad (“LFG”), and a purpose-built perpetuals venue.
+Jupiter is simple for users and complex under the hood. Connect a Solana wallet such as Phantom, Solflare or Backpack, choose your tokens, and Jupiter assembles a route across Solana liquidity sources to deliver the best effective price. The protocol now spans swap aggregation, limit orders, recurring dollar-cost averaging, lending, a launchpad and a dedicated perpetuals venue.
 
-- **Routing Engine:** Jupiter scans across on-chain AMMs and order books and can split a single order among multiple pools to reduce slippage. It supports both “exact in” and “exact out” orders and exposes settings for slippage tolerance and priority fees. Execution is non-custodial; transactions are signed in your wallet and settled on Solana.
+- **Routing engine:** Jupiter scans on-chain market makers and order books and can split one order among several pools to cut slippage. It supports "exact in" and "exact out" trades and exposes slippage tolerance and priority-fee controls. Execution is non-custodial; transactions are signed in your wallet and settled on Solana.
 
-- **Token Coverage and Pairs:** Jupiter surfaces a wide catalog of Solana-native tokens—everything from blue chips and stablecoins to new community projects. Token lists, warnings, and community labels help traders navigate the long tail of assets common in **[DeFi](/posts/what-is-defi)**.
+- **Token coverage:** Jupiter surfaces a wide catalog of Solana-native tokens, from blue chips and stablecoins to brand-new community projects. Token lists, warnings and community labels help traders navigate the long tail of assets common in decentralized finance.
 
-- **Limit Orders and DCA:** For more control, Jupiter supports on-chain limit orders and recurring DCA schedules. These tools suit users who want to automate entries and reduce timing risk without leaving funds in a centralized order book. You keep custody at all times; the automation is smart-contract driven.
+- **Limit orders and DCA:** For more control, Jupiter runs on-chain limit orders and recurring buy or sell schedules. These suit users who want to automate entries without parking funds on a centralized order book. You keep custody throughout; the automation is smart-contract driven.
 
-- **Perpetual Futures (Perps):** Jupiter Perps brings leveraged long/short exposure to major Solana assets. It uses on-chain liquidity pools and oracles to price contracts and manage positions, with funding rates aligning market and index prices. While leverage can amplify returns, it equally magnifies losses and liquidation risk.
+- **Jupiter Perps:** Jupiter Perps offers leveraged long and short exposure on major assets like SOL, ETH and BTC, with leverage up to roughly 100x. Instead of a matching order book, trades are taken against the Jupiter Liquidity Provider (JLP) pool, with prices set by oracles and funding rates keeping the contract aligned with spot. Leverage magnifies losses and liquidation risk as much as gains.
 
-- **LFG Launchpad and Community Distributions:** Jupiter’s launchpad has been used for community events and token distributions, helping new projects achieve fair and transparent initial liquidity. Notably, the protocol rolled out the JUP token in early 2024 via a large community airdrop.
+- **Launchpad and airdrops:** Jupiter's launchpad has hosted community token events and distributions, and the protocol rolled out its JUP token in early 2024 through a large airdrop to past users.
 
-- **Staking and PoS Context:** While Jupiter itself is not a staking platform, it lives on Solana, a **[Proof-of-Stake](/posts/what-is-proof-of-stake)** chain. Many Solana assets interact with staking derivatives and validators; if you’re planning to earn yield elsewhere in the ecosystem, it’s worth reviewing how **[staking](/posts/crypto-staking)** works and how liquid staking tokens behave in AMMs.
+- **Developer tooling:** Jupiter offers an SDK, APIs and an embeddable widget, so wallets, analytics sites and other apps can plug in best-price routing. This has helped make Jupiter the standard route for Solana swaps.
 
-- **Developer Integrations:** Jupiter offers an SDK, APIs, and an embeddable “Terminal” widget, allowing wallets, analytics sites, and dApps to add best-price routing. This has helped make Jupiter the default route for many Solana-native swaps.
-
-![Jupiter’s Solana swap interface with aggregated routes across AMMs and order books](/images/posts/jupiter-solana-aggregator-interface.png)
+![A trader checking crypto charts on a laptop and phone while using a decentralized exchange](/images/posts/what-is-a-dex.jpg)
 
 ## Security Measures
 
-Because Jupiter is a non-custodial, smart-contract-based protocol, security considerations differ from a traditional custodial cryptocurrency exchange. There are no exchange accounts or omnibus wallets; you sign transactions in your own wallet, and funds reside in your custody except while interacting with the swap or perps contracts.
+Because Jupiter is a non-custodial, smart-contract protocol, its security profile differs from a custodial cryptocurrency exchange. There are no exchange accounts or pooled deposits; your funds stay in your wallet except while interacting with a swap or perps contract.
 
-- **Smart Contract Risk:** Aggregators and perps rely on multiple contracts, oracles, and liquidity venues. Bugs, oracle manipulation, or integration risk can impact trade outcomes. Jupiter publishes audits and open-source components where applicable, and route transparency allows users to view paths before signing.
+- **Smart contract and oracle risk:** Aggregation and perps rely on multiple contracts, price oracles and external liquidity venues. Bugs, oracle manipulation or integration failures can affect trade outcomes. Jupiter's core programs are audited and open components are public, and route transparency lets you inspect the path before signing.
 
-- **Token Verification and Warnings:** The long tail of tokens on Solana includes dupes, honeypots, and spoofed tickers. Jupiter displays warnings, labels, and metadata to help avoid obvious traps, but due diligence remains essential.
+- **Token verification:** Solana's long tail of tokens includes duplicates, honeypots and spoofed tickers. Jupiter shows warnings, labels and metadata to flag obvious traps, but due diligence on the contract address and liquidity remains essential.
 
-- **MEV and Slippage Controls:** Solana’s validator landscape and Jito tooling have their own MEV dynamics. Jupiter exposes slippage limits and configurable priority fees to mitigate adverse selection, and routing strategies aim to minimize price impact.
+- **MEV and slippage controls:** Jupiter exposes slippage limits and configurable priority fees, and its routing aims to minimize price impact, which helps reduce adverse execution during volatile conditions.
 
-- **Self-Custody Best Practices:** With self-custody comes responsibility. Hardware wallets and segregated hot/cold setups reduce phishing and signing risks. If you intend to hold positions longer term, review how to **[store crypto](/posts/how-to-store-crypto)** securely and how to spot **[crypto scams](/posts/how-to-avoid-crypto-scams)**.
+- **Self-custody responsibility:** With self-custody comes full responsibility. Hardware wallets and separate hot and cold setups reduce phishing and signing risk. Before holding positions longer term, review how to **[store crypto](/posts/how-to-store-crypto)** securely and how to spot **[crypto scams](/posts/how-to-avoid-crypto-scams)**, since fake Jupiter sites and airdrop lures are common.
 
-- **Network Reliability:** Solana experienced several high-profile slowdowns and outages in 2022–early 2023, followed by significant stability improvements. Degraded network conditions can affect the timeliness of order submission and confirmation.
+- **Network reliability:** Solana suffered several high-profile slowdowns and outages in 2022 and early 2023, followed by major stability improvements. Degraded network conditions can still delay order submission and confirmation.
 
 <ArticleAd />
 
 ## User Experience
 
-Jupiter’s front end is designed to abstract complexity from everyday swaps. Novices get a simple “from/to” interface; advanced users unlock full route details, limit/DCA automation, and perps. A few UX touchpoints stand out:
+Jupiter's front end hides complexity for everyday swaps. Beginners get a plain from and to interface; advanced users unlock full route details, limit and DCA automation, and perps.
 
-- **Onboarding:** Connect a wallet and you can trade immediately—no account creation or KYC, typical for non-custodial DEXs. If you’re choosing between different trading venues, our overview of **[crypto exchanges](/posts/understanding-crypto-exchanges)** and **[crypto for beginners](/posts/crypto-for-beginners)** can help frame the landscape.
+- **Onboarding:** Connect a wallet and trade immediately, with no account creation or KYC. If you are weighing different venues, our overview of **[crypto exchanges](/posts/understanding-crypto-exchanges)** and the guide to **[crypto for beginners](/posts/crypto-for-beginners)** help frame the landscape.
 
-- **Quotes and Route Transparency:** Each quote shows estimated output, slippage, and route composition. Users can toggle perps or spot, adjust priority fees, and set custom slippage depending on volatility.
+- **Quotes and routing:** Each quote shows estimated output, price impact and the route composition. You can switch between spot and perps, adjust priority fees, and set custom slippage based on volatility.
 
-- **Portfolio Context:** Jupiter surfaces balances and token metadata directly in the interface, including watchlists and token info panels that link to explorers and community resources.
+- **Mobile access:** Jupiter Mobile is a self-custodial Solana wallet and trading app for iOS and Android, built from the Ultimate wallet team that Jupiter acquired. It carries swaps, limit and recurring orders, perps and portfolio tracking. Only install it from links on jup.ag, since fake wallet apps are a persistent problem.
 
-- **Speed and Fees:** Solana’s block times and fee market allow for fast, low-cost transactions. Still, volatile markets can produce temporarily wider slippage; consider limit orders or DCA for better control.
-
-- **Mobile Access:** Jupiter runs in mobile wallets’ dApp browsers. There is no standalone iOS or Android app; app-store impersonators should be treated as suspicious.
+- **Speed and fees:** Solana's block times and fee market allow fast, low-cost trades. Volatile markets can still widen slippage, so limit orders or DCA give better control.
 
 ## Regulatory Compliance and the Decentralization Context
 
-Jupiter is a non-custodial protocol with no user accounts, operating via smart contracts on Solana. There is no centralized entity holding user deposits, and swaps settle on-chain. As with other DEXs, jurisdiction-specific access may depend on local regulations, how front-end domains are managed, and whether any products (e.g., perps) apply geo-restrictions.
+Jupiter is a non-custodial protocol with no user accounts, operating through smart contracts on Solana. No central entity holds deposits, and swaps settle on-chain. As with other DEXs, access can depend on local rules, how front-end domains are operated, and whether specific products apply geo-restrictions.
 
-- **Non-Custodial Model:** No KYC or account sign-up is required to use swap aggregation. This is similar to how **[Uniswap](/exchanges/uniswap)** operates on Ethereum, though the liquidity and fee dynamics differ by chain.
+- **Non-custodial model:** No KYC or sign-up is needed to swap, similar to how a Uniswap-style DEX works on Ethereum, though liquidity and fee dynamics differ by chain.
 
-- **On-Ramps and Off-Ramps:** To acquire SOL or stablecoins before using Jupiter, many users still rely on compliant centralized exchanges in their region. For example, US-based users often start with regulated platforms such as **[Coinbase](/exchanges/coinbase)** before moving funds to self-custody and trading on-chain.
+- **On-ramps and off-ramps:** To get SOL or stablecoins before using Jupiter, many users still rely on a regulated centralized exchange in their region, then move funds to self-custody.
 
-- **Perps Availability:** Derivatives often face stricter rules. Access to Jupiter Perps may vary by jurisdiction and wallet IP. Users are responsible for ensuring that their use complies with local laws.
+- **Perps availability:** Derivatives face stricter rules, and access to Jupiter Perps may vary by jurisdiction. Users are responsible for complying with local laws.
 
-![Non-custodial swaps on Solana: wallet connection, route preview, and on-chain settlement](/images/posts/solana-wallet-dex-swap-flow.png)
+## JUP Token, Governance and Buybacks
 
-## Token, Perps, and Ecosystem Evolution
+- **Governance token:** JUP launched on 31 January 2024 and introduced the JUP DAO, where holders vote on protocol decisions, working-group budgets and tokenomics. Recurring airdrops to active users, nicknamed Jupuary, seeded the community; the planned 2026 airdrop was cut from 700 million to 200 million JUP after DAO debate.
 
-- **JUP Governance Token:** Rolled out in early 2024, JUP introduced a governance layer and community incentives. The team used a large airdrop to existing users, followed by additional distributions and governance experiments. Token utility focuses on governance, community alignment, and potentially liquidity incentives or fee-adjustment votes as the protocol evolves.
+- **Fee buybacks:** In early 2025 Jupiter began routing about half of protocol fees into JUP buybacks held in a community trust. The program spent roughly 70 million dollars during 2025 with limited effect on price and was paused later that year pending a tokenomics rework, with buybacks paired with burns among the options the DAO has since discussed.
 
-- **Jupiter Perps Mechanics:** On-chain perps use liquidity pools and oracles to price contracts, with funding payments balancing long/short positioning. Position management, collateralization, and liquidation are fully on-chain. As always, leveraged trading introduces significant downside risk; use conservative leverage and understand liquidation thresholds.
-
-- **LFG Launchpad and Composability:** LFG showcases Solana’s speed for mass mints and community distributions. Jupiter’s “Terminal” embed and APIs extend this reach, letting wallets and dApps pipe in best-price routes without rebuilding aggregation from scratch.
-
-- **Composability with Solana DeFi:** Many Jupiter users route into Solana-native structured products, lending markets, or staking derivatives. The breadth of Solana’s **[DeFi](/posts/what-is-defi)** stack—and the speed of **[Proof-of-Stake](/posts/what-is-proof-of-stake)** finality—underpin Jupiter’s execution quality.
+- **Acquisitions:** Jupiter has bought several Solana teams to broaden its app, including the Moonshot mobile trading app, the SonarWatch portfolio tracker, the SolanaFM explorer, the Coinhall analytics platform and the Ultimate wallet that became Jupiter Mobile.
 
 ## Points to Consider
 
-- **Fees and Execution Quality:** Total trade cost = pool fee + Solana network fee + any aggregator/platform parameters for advanced features. Execution quality hinges on route depth and slippage—use the route preview and consider limit/DCA for volatile pairs. For an overview of active vs. passive strategies, here’s a primer on **[crypto trading](/posts/crypto-trading-vs-holding)**.
+- **Execution quality:** Total cost is the pool fee plus the Solana network fee plus any parameters for advanced features. Quality depends on route depth and slippage, so use the route preview and consider limit or DCA orders for volatile pairs. For strategy context, see this primer on **[trading versus holding](/posts/crypto-trading-vs-holding)**.
 
-- **Non-Custodial Responsibility:** You control your keys. There’s no password reset or customer support reclaim for lost seed phrases. For long-term holdings, practice good operational security and know how to **[store crypto](/posts/how-to-store-crypto)**.
+- **Non-custodial responsibility:** You control your keys. There is no password reset and no support desk that can recover a lost seed phrase.
 
-- **Token Risk:** The long tail of Solana assets includes memecoins and illiquid tokens. Always check contract addresses, community reputation, and liquidity depth. Token warnings in the UI are helpful but not foolproof.
+- **Token risk:** The long tail of Solana assets includes memecoins and thin markets. Always check contract addresses, liquidity depth and community reputation; UI warnings help but are not foolproof.
 
-- **Derivatives Risk:** Perps add leverage, funding payments, and liquidation paths. Size positions conservatively; consider isolating collateral in a dedicated wallet to compartmentalize risk.
-
-- **Network Dynamics:** Priority fees may be needed during congestion. If transactions are pending or failing, reassess slippage and priority fee settings or try limit orders.
+- **Derivatives risk:** Perps add leverage, funding payments and liquidation. Size positions conservatively and consider isolating collateral in a dedicated wallet.
 
 <ArticleAd />
 
 ## Market Position and Competitors
 
-On Solana, Jupiter occupies a role analogous to aggregator-plus-venue gateways on other chains. It competes for swaps with direct AMM UIs and alternative routers but generally benefits from network effects: more integrations drive more order flow, which improves execution quality and keeps the flywheel spinning.
+On Solana, Jupiter is the gateway most order flow passes through. As of 2025 it handled the large majority of Solana DEX-aggregator volume and a substantial share of on-chain perps activity. Its main edge is a network effect: more integrations bring more order flow, which improves execution and pulls in further integrations.
 
-Compared to Ethereum’s dominant DEX, **[Uniswap](/exchanges/uniswap)**, Jupiter emphasizes cross-venue routing as a first-class experience and leans into Solana’s high throughput. Where Uniswap users often hop between routers and single-venue UIs, Jupiter users frequently make it their default swap endpoint on Solana. For fiat on-ramping or regulated custody, centralized venues like **[Coinbase](/exchanges/coinbase)** remain complementary rather than direct competitors.
-
-<ArticleAd />
+Against Ethereum's dominant DEX, **[Uniswap](/exchanges/uniswap)**, Jupiter makes cross-venue routing the default experience and leans on Solana's throughput. For leveraged trading it competes with venues like **[Hyperliquid](/exchanges/hyperliquid)**, which runs its own order-book chain, while Jupiter Perps uses a pool-based model. Centralized platforms such as **[Coinbase](/exchanges/coinbase)** remain complementary for fiat access and regulated custody rather than direct rivals.
 
 ## Who Should Use Jupiter?
 
-- **Active Solana Traders:** If you care about best execution across multiple pools and order books without juggling many tabs, Jupiter’s router and limit/DCA tools are purpose-built.
+- **Active Solana traders:** If you want best execution across many pools without juggling tabs, Jupiter's router plus limit and DCA tools are built for it.
 
-- **Launch Participants and Long-Tail Explorers:** The launchpad and token discovery tooling help navigate the fast-moving list of new Solana assets. Still, assume higher risk for illiquid or unaudited tokens.
+- **Long-tail explorers:** The launchpad and token discovery tools help navigate new Solana assets, with the caveat that illiquid or unaudited tokens carry higher risk.
 
-- **DeFi Power Users and Builders:** API/SDK and Terminal embeds make it easy to integrate best-price routing in wallets and dashboards, letting power users consolidate swaps and automate strategies.
+- **Builders:** The API, SDK and embeddable widget make it simple to add best-price routing to a wallet or dashboard.
 
-- **Newcomers to On-Chain Trading:** If you are stepping off a centralized platform into self-custody, Jupiter’s simple interface, warnings, and route previews present a manageable learning curve. Complement this with foundations in **[crypto for beginners](/posts/crypto-for-beginners)** and the basics of **[blockchain](/posts/what-is-blockchain)**.
+- **Newcomers to on-chain trading:** Moving off a centralized platform into self-custody, Jupiter's clean interface, warnings and route previews present a manageable learning curve.
+
+![A phone showing the Solana logo beside physical crypto coins](/images/posts/solana.jpeg)
 
 ## Conclusion
 
-Jupiter is the liquidity router of record on Solana: fast, non-custodial, and increasingly full-featured with perps and launch tooling. It blends simplicity for casual users with transparency and control for advanced traders, leveraging Solana’s performance to keep fees low and slippage competitive. The flip side of this freedom is self-custody responsibility, token-quality variability, and the usual risks of smart contracts and on-chain derivatives. For traders who want on-chain price discovery and best-route execution across a vibrant Solana ecosystem, Jupiter is a strong choice—especially when paired with solid wallet security and informed, selective exposure to **[altcoins](/posts/what-are-altcoins)** and **[DeFi](/posts/what-is-defi)**.
+Jupiter is the liquidity router of record on Solana: fast, non-custodial and steadily more full-featured with perps, lending and launch tooling. It pairs a simple interface for casual users with the transparency and control that advanced traders want, using Solana's performance to keep fees low and slippage competitive. The trade-off is self-custody responsibility, variable token quality, and the usual risks of smart contracts and on-chain derivatives. For traders who want on-chain price discovery and best-route execution across the Solana ecosystem, Jupiter is a strong choice when paired with careful wallet security and a selective approach to risk.
 
 <ExchangeButton href="https://jup.ag" text="Join Jupiter" />

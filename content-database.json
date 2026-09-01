@@ -505,6 +505,10 @@
     "what.is.the.genius.act": {
       "slug": "what-is-the-genius-act",
       "title": "What Is the GENIUS Act?"
+    },
+    "what.are.perpetual.futures": {
+      "slug": "what-are-perpetual-futures",
+      "title": "What Are Perpetual Futures?"
     }
   },
   "tools": {
@@ -536,6 +540,6 @@
   "next_orders": {
     "crypto_ogs": 34,
     "exchanges": 30,
-    "posts": 18
+    "posts": 19
   }
 }

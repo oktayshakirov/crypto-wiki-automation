@@ -1,0 +1,117 @@
+---
+title: "What Are Perpetual Futures?"
+description: "Perpetual futures are crypto derivatives with no expiry. Learn funding rates, leverage, risks, and how to trade them safely across major exchanges. Globally."
+date: 2026-09-01
+image: "/images/posts/what-are-perpetual-futures.jpg"
+categories: ["Beginners", "Investing", "Technology"]
+crypto-ogs: ["Satoshi Nakamoto", "Changpeng Zhao"]
+exchanges: ["Binance", "Bybit", "Kraken", "Hyperliquid"]
+authors: ["Oktay Shakirov"]
+draft: false
+---
+
+## What Are Perpetual Futures?
+Imagine being able to long or short Bitcoin at 2x, 5x, or even 20x without ever worrying about an expiration date. That is the promise of perpetual futures - they let you express a view on price with leverage while rolling indefinitely. If you are new to crypto, this guide will walk you from first principles to practical, risk-aware use, with clear examples and a step by step starter plan. For broader basics, you can also start with our **[Crypto for Beginners](/posts/crypto-for-beginners)** guide.
+
+Perpetual futures, often called "perps," dominate crypto derivatives volume because they fit 24/7 markets and fast-moving narratives. But the same features that make them flexible - high leverage, continuous pricing, and funding payments - also increase risk. Understanding how perps are priced, how funding works, and how liquidations happen is essential before placing your first trade.
+
+By the end, you will know what perps are, how they differ from traditional futures, where to trade them, and how to manage the biggest pitfalls. You will also see real examples of hedging and speculation, so you can decide whether perps fit your strategy or if spot holding suits you better.
+
+<ArticleAd />
+
+## The Core Idea: A Futures Contract With No Expiry
+Traditional futures have set expirations - monthly or quarterly - and they "settle" into cash or delivery on a fixed date. Perpetual futures eliminate that expiration. You can hold a position indefinitely, so long as your margin covers losses and you meet funding payments.
+
+The origin story is part academic, part crypto-native. The idea of an always-rolling "perpetual" future dates back to academic work in the 1990s, but the modern crypto implementation arrived in 2016 when BitMEX launched the XBTUSD Perpetual Swap. That single product changed crypto trading by pairing high leverage with an index-based pricing mechanism and a small, periodic fee called the funding rate. From there, perps spread quickly across exchanges as liquidity gravitated to instruments that could track spot price tightly.
+
+Adoption accelerated after 2017 as traders poured into leveraged products on top of major assets like **[Bitcoin](/posts/what-is-bitcoin)** and Ethereum. In 2019, Binance rolled out Binance Futures under the leadership of **Changpeng Zhao**, expanding perps to a global audience. Bybit launched derivatives in 2018 with a focus on perpetuals. Kraken entered the derivatives arena via its 2019 acquisition of Crypto Facilities, then offered perpetuals on multiple pairs. In 2023, decentralized platforms like Hyperliquid popularized high-performance perp DEXs. The perpetual format fits crypto's 24/7, event-driven market cycle - there is always a new catalyst, from protocol upgrades to macro headlines.
+
+## How Perpetual Futures Work: Funding, Mark Price, And Leverage
+Perpetuals need a way to stay close to spot price without the anchoring force of a settlement date. That is what the funding rate does. When the perp price trades above spot, longs pay shorts a small fee at intervals - typically every 8 hours on centralized exchanges. When the perp trades below spot, shorts pay longs. The funding rate is the thermostat nudging perp price back toward spot. On quiet days, funding can hover near 0.01 percent per 8 hours. In heated markets, it can spike above 0.10 percent per 8 hours. Some venues use 1 hour intervals, others 8 hours, and a few DEXs smooth funding continuously.
+
+To avoid unfair liquidations during sudden spikes or wicks, exchanges use a "mark price" - often an index built from several spot exchanges - as the reference for unrealized PnL and liquidation checks. The mark price, not the last traded price, determines liquidation risk. This reduces manipulation risk and helps stabilize outcomes during thin liquidity.
+
+Leverage multiplies exposure. With $1,000 as initial margin at 5x, you control a $5,000 notional position. A 2 percent move in the underlying becomes a roughly 10 percent PnL swing on your margin, ignoring fees and funding. At very high leverage - 50x to 100x on some pairs - even a 1 percent adverse move can trigger liquidation. Most platforms offer two margin modes:
+- **Isolated Margin** - Only the margin assigned to a position is at risk; useful for containing damage if a single trade goes wrong.
+- **Cross Margin** - Positions draw from your entire account balance; helpful for advanced hedging, but a bad trade can drain usable collateral.
+
+Liquidation is automatic when your margin ratio falls below the maintenance requirement. Exchanges use insurance funds and sometimes Auto Deleveraging (ADL) to handle bankruptcies. ADL, if triggered, can reduce the position of traders on the winning side according to a fairness queue. The goal is to close insolvent positions without destabilizing the order book.
+
+![Traders Analyzing Funding Rates, Mark Price, And Leverage On A Perpetual Futures Chart](/images/posts/trading.jpg)
+
+## Why Traders Use Perps: Hedging And Speculation With Precision
+Perps let you buy or sell exposure quickly, in size, with capital efficiency. That serves two main goals: hedging and speculation.
+
+For hedging, imagine you hold $10,000 of BTC spot you plan to keep for years, but you are worried about a 1 to 2 week downturn. You can short an equivalent notional on a BTC perpetual to reduce net exposure while avoiding a taxable sale in many jurisdictions. If BTC drops 8 percent, spot loses $800, but the short perp gains roughly $800 before fees and funding. When the risk passes, close the hedge and keep your long term spot.
+
+For speculation, perps allow you to bet on direction or event risk without tying up large capital. Suppose you expect a 5 percent ETH rally after a major upgrade. With $2,000 margin at 3x, a 5 percent move can produce about 15 percent return on margin (again, before fees and funding). The trade-off is amplified losses if you are wrong, so control your size, set stops, and avoid chasing euphoria.
+
+If you are deciding between a multi-year spot strategy or active trading, see how these tools compare in our **[Crypto Trading vs. Holding: Which Strategy Is Right for You?](/posts/crypto-trading-vs-holding)** guide.
+
+## Key Risks And How To Manage Them
+Perps are powerful, but risks compound quickly with leverage and 24/7 markets. The major hazards include:
+- **Liquidation Risk** - High leverage plus volatile assets can erase margin fast. Keep leverage conservative - many pros rarely exceed 3x to 5x on crypto.
+- **Funding Cost Risk** - Prolonged positive funding eats into long profits; prolonged negative funding eats into short profits. Check the current and predicted funding before entering.
+- **Wick And Slippage Risk** - Thin liquidity or news spikes can cause brief but deep wicks. Use stop losses and avoid oversized orders in illiquid pairs.
+- **Counterparty And Tech Risk** - Centralized exchanges can suffer outages during volatility. DEXs can have smart contract or oracle risk. Diversify venues and know each platform's safeguards.
+- **ADL And Insurance Dynamics** - Rare, but ADL can reduce profitable positions during extreme events. Understand the platform's ADL and insurance fund rules.
+
+Mini case study 1 - The hedge that paid for itself: Alex holds $50,000 in BTC spot. Fearing a short term pullback, Alex shorts $50,000 notional BTC perps at 2x leverage with isolated margin. Over 5 days, BTC drops 7 percent and funding stays slightly negative, so the short receives small payments. Alex closes the hedge, down slightly on the spot but up more on the short, netting a 1.5 percent portfolio gain. Key decisions: conservative leverage, isolated margin, clear time window.
+
+Mini case study 2 - The overleveraged long: Jamie opens a 25x long on a mid-cap alt during a hype cycle. A 3 percent intraday dip below support triggers liquidation despite a swift rebound 10 minutes later. The lesson is blunt - high leverage shrinks your error budget to near zero. Lower leverage and stricter sizing would have kept the position alive.
+
+To help avoid trades fueled by emotion, many traders watch the **[Fear and Greed Index](/tools/fear-and-greed-index)** and commit to a written plan. And because every market has unknowns, keep improving your process with **[The Importance of DYOR (Do Your Own Research)](/posts/do-your-own-research)**.
+
+<ArticleAd />
+
+## Pricing Nuances: Funding Rates, Basis, And Premiums
+Funding rates aim to align perp prices with spot, but intraday deviations are normal. When enthusiasm is extreme, perps can trade at a premium to spot, producing positive funding that longs pay. During fear, perps can flip to a discount with negative funding that shorts pay. Funding is typically exchanged every 8 hours on centralized venues; some DEXs use 1 hour or near-continuous models that smooth payments.
+
+The "basis" - the difference between perp price and spot - can enable market neutral strategies. In certain conditions, traders buy spot while shorting the perp to collect positive funding, or they do the reverse when funding turns negative. These approaches require meticulous risk control, reliable execution, and constant monitoring of fees, spreads, and limits.
+
+For context, crypto assets are famously volatile relative to equities. If you are calibrating leverage or stops, review our primer on **[Understanding Cryptocurrency Volatility](/posts/crypto-volatility)** and size positions for worst-case swings, not best-case dreams.
+
+## Where To Trade Perps: Centralized vs Decentralized
+Centralized exchanges provide deep order books, many pairs, and familiar interfaces. They also carry custodial and operational risk, so it is critical to understand platform safeguards and your own account protections. If you are evaluating platforms, start with **[Understanding Crypto Exchanges](/posts/understanding-crypto-exchanges)**, then compare a few live venues:
+- **[Binance](/exchanges/binance)** - Launched Binance Futures in 2019, offering diverse pairs, risk controls, and advanced order types.
+- **[Bybit](/exchanges/bybit)** - Founded in 2018 with a derivatives-first focus, featuring robust perpetual markets and tools for active traders.
+- **[Kraken](/exchanges/kraken)** - Entered derivatives via acquisition in 2019; offers perpetuals through Kraken Futures with conservative risk management.
+- **[Hyperliquid](/exchanges/hyperliquid)** - A high-performance perp DEX launched in 2023, showcasing how decentralized venues can deliver low-latency trading.
+
+Decentralized perp platforms rely on oracles and smart contracts rather than centralized engines. You keep custody of assets, but you assume protocol, oracle, and liquidity design risks. If you are exploring non-custodial venues and on-chain trading workflows, read **[What Is a DEX?](/posts/what-is-a-dex)** to understand the moving parts before deploying significant capital.
+
+<ArticleAd />
+
+## A Conservative First Perp Trade: Step By Step
+Your first trade should be small, hedged by rules, and designed to teach. Here is a practical, low-drama blueprint you can adapt:
+
+1) Choose the market and pair. For beginners, major pairs like BTC or ETH traded against a stablecoin quote - for example, BTCUSDT Perpetual - generally have the deepest liquidity. If "USDT" or "USDC" is new to you, see **[What Are Stablecoins?](/posts/what-are-stablecoins)** for how dollar-pegged assets work.
+
+2) Set isolated margin and 2x leverage. Isolated margin confines potential losses to the margin you assign. At 2x, a 10 percent adverse move would reduce about 20 percent of your margin value, leaving breathing room to manage.
+
+3) Define invalidation and position size. Before entering, decide where your idea is wrong. If your stop loss is 3 percent away, size the position so a stop results in a loss of 0.5 percent to 1.0 percent of your total account. That way, a string of losing trades does not end your session.
+
+4) Place the order with a stop. Use a limit order for entry if liquidity is sufficient, and pair it with a protective stop loss immediately. Consider a take-profit order for partial exits.
+
+5) Monitor funding and events. Check current and next funding. Large events - protocol upgrades, macro prints - can shift volatility and funding quickly. If funding flips sharply against your position, reassess the trade's edge.
+
+6) Log the result. Keep a trading journal with screenshots, funding, entry/exit rationale, and emotions. Patterns in your behavior often matter as much as patterns on a chart.
+
+## Tax And Regulatory Notes
+Derivatives are taxed differently across jurisdictions, and rules can change. In some countries, frequent perp trading falls under short term trading income with higher tax rates; in others, it is treated as capital gains or ordinary income. Many regions also scrutinize leverage and derivatives access for retail users. Keep dated records of trades, fees, and funding payments. Consult a tax professional where you live and monitor announcements from regulators and your exchange.
+
+![Risk Planning And Position Sizing For A Leveraged Crypto Trade](/images/posts/analysis.jpg)
+
+## Perps In The Bigger Crypto Picture
+Perpetual futures are one reason crypto markets discovered venue and product fit so quickly after 2016. Continuous price discovery meshes with a 24/7 asset class, and leverage - when used responsibly - lets traders hedge or express views efficiently. On the other hand, derivatives can magnify systemic stress. During the 2020 crash and again through 2022, aggressive leverage and poor risk controls amplified downside and liquidations. As the industry matures, exchanges have expanded circuit breakers, refined mark prices, and grown insurance funds to reduce tail risk.
+
+On decentralized rails, perp DEXs innovate on funding models, oracle design, and latency. They also expand access for users who prefer self-custody. Expect continued experimentation in 2024 and beyond - per-market risk caps, smarter ADL queues, dynamic margin, and cross-collateral with on-chain treasuries. Whether you stick to spot or explore perps, understanding how these contracts work helps you read the market's temperature and make better decisions across your portfolio.
+
+<ArticleAd />
+
+## Conclusion: Trade Perps With Clarity, Not Hope
+Perpetual futures let you go long or short with precision, hedge spot holdings without selling, and deploy capital efficiently. The same features that make them powerful - leverage, 24/7 access, funding - also make them unforgiving if you size too big or skip stops. Mastering the mechanics will not remove risk, but it will turn unknowns into manageable variables.
+
+Start small with isolated margin, 2x to 3x leverage, and explicit invalidation. Keep a journal, track funding, and calibrate expectations to crypto's swings. If you prefer slower compounding and fewer decisions, spot may suit you better - our Crypto Trading vs. Holding: Which Strategy Is Right for You? comparison can help you choose. To keep perspective during headlines, revisit Understanding Cryptocurrency Volatility and, when in doubt, zoom out during a **[What Is a Bear Market in Crypto?](/posts/a-bear-market-in-crypto)** phase to protect your longevity in the market.
+
+With a clear plan, conservative sizing, and disciplined execution, perps can be a useful tool rather than a source of unnecessary drama. Whether you are hedging a long term position in assets created in the spirit of **Satoshi Nakamoto** or testing a tactical view around news, trade what you understand and let the process guide you.

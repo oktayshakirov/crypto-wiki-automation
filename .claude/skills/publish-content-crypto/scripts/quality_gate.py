@@ -145,6 +145,32 @@ def main():
             check(bool(re.search(rf"^{block}:", fm, re.M)), f"{block} present",
                   bad_detail="missing")
 
+    # --- meta_title: required on exchanges AND crypto-OGs ---
+    # Without it both layouts fall back to a shared boilerplate title
+    # ("<X> Review | In-Depth Exchange Analysis", "<X> | Achievements,
+    # Contributions & Impact"). That filler is identical on every page, eats
+    # ~30 of the ~60 usable characters, and mismatches the intent that actually
+    # drives traffic here: GSC shows the demand is encyclopedia-shaped
+    # ("trade republic wiki", "michael saylor wiki"), which the word "Review"
+    # reads as the wrong page type. Every live entity page now sets one.
+    if a.type in ("exchange", "og"):
+        mt = re.search(r"""^meta_title:\s*(['"])(.*)\1""", fm, re.M)
+        if not mt:
+            record(FAIL, "meta_title", "missing - page would fall back to "
+                   "the shared boilerplate title")
+        else:
+            mt_val = mt.group(2)
+            n = len(mt_val)
+            record(PASS if n <= 60 else WARN, "meta_title length",
+                   f"{n} chars (keep <=60 or Google truncates)")
+            # "Wiki" is generic and fine. "Wikipedia" is a Wikimedia Foundation
+            # trademark - targeting the query is legitimate, claiming to be
+            # them is not.
+            record(FAIL if "wikipedia" in mt_val.lower() else PASS,
+                   "meta_title trademark",
+                   "contains 'Wikipedia' (trademark) - use 'Wiki' instead"
+                   if "wikipedia" in mt_val.lower() else "ok")
+
     # --- freshness ---
     # `updated` feeds dateModified and the visible "Last updated:" line; without
     # it both fall back to `date`. Not required on a new page - it has never

@@ -131,6 +131,10 @@
     "emin.gun.sirer": {
       "slug": "emin-gun-sirer",
       "title": "Emin Gun Sirer"
+    },
+    "brad.garlinghouse": {
+      "slug": "brad-garlinghouse",
+      "title": "Brad Garlinghouse"
     }
   },
   "exchanges": {
@@ -538,7 +542,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 34,
+    "crypto_ogs": 35,
     "exchanges": 30,
     "posts": 19
   }

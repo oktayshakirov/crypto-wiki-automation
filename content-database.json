@@ -255,6 +255,10 @@
     "jupiter": {
       "slug": "jupiter",
       "title": "Jupiter"
+    },
+    "robinhood.crypto": {
+      "slug": "robinhood-crypto",
+      "title": "Robinhood Crypto"
     }
   },
   "posts": {
@@ -543,7 +547,7 @@
   },
   "next_orders": {
     "crypto_ogs": 35,
-    "exchanges": 30,
+    "exchanges": 31,
     "posts": 19
   }
 }

@@ -517,6 +517,10 @@
     "what.are.perpetual.futures": {
       "slug": "what-are-perpetual-futures",
       "title": "What Are Perpetual Futures?"
+    },
+    "what.is.yield.farming": {
+      "slug": "what-is-yield-farming",
+      "title": "What Is Yield Farming?"
     }
   },
   "tools": {
@@ -548,6 +552,6 @@
   "next_orders": {
     "crypto_ogs": 35,
     "exchanges": 31,
-    "posts": 19
+    "posts": 20
   }
 }

@@ -525,6 +525,10 @@
     "what.are.prediction.markets": {
       "slug": "what-are-prediction-markets",
       "title": "What Are Prediction Markets?"
+    },
+    "why.wall.street.is.betting.big.on.bitcoin.miners.for.ai": {
+      "slug": "why-wall-street-is-betting-big-on-bitcoin-miners-for-ai",
+      "title": "Why Wall Street Is Betting Big on Bitcoin Miners for AI?"
     }
   },
   "tools": {
@@ -556,6 +560,6 @@
   "next_orders": {
     "crypto_ogs": 35,
     "exchanges": 31,
-    "posts": 21
+    "posts": 22
   }
 }

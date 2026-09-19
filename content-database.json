@@ -259,6 +259,10 @@
     "robinhood.crypto": {
       "slug": "robinhood-crypto",
       "title": "Robinhood Crypto"
+    },
+    "deribit": {
+      "slug": "deribit",
+      "title": "deribit"
     }
   },
   "posts": {
@@ -559,7 +563,7 @@
   },
   "next_orders": {
     "crypto_ogs": 35,
-    "exchanges": 31,
+    "exchanges": 32,
     "posts": 22
   }
 }

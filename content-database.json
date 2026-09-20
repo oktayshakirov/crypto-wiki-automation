@@ -135,6 +135,10 @@
     "brad.garlinghouse": {
       "slug": "brad-garlinghouse",
       "title": "Brad Garlinghouse"
+    },
+    "ross.ulbricht": {
+      "slug": "ross-ulbricht",
+      "title": "Ross Ulbricht"
     }
   },
   "exchanges": {
@@ -562,7 +566,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 35,
+    "crypto_ogs": 36,
     "exchanges": 32,
     "posts": 22
   }

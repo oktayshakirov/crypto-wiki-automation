@@ -537,6 +537,10 @@
     "why.wall.street.is.betting.big.on.bitcoin.miners.for.ai": {
       "slug": "why-wall-street-is-betting-big-on-bitcoin-miners-for-ai",
       "title": "Why Wall Street Is Betting Big on Bitcoin Miners for AI?"
+    },
+    "what.is.market.cap.in.crypto": {
+      "slug": "what-is-market-cap-in-crypto",
+      "title": "What Is Market Cap in Crypto?"
     }
   },
   "tools": {
@@ -568,6 +572,6 @@
   "next_orders": {
     "crypto_ogs": 36,
     "exchanges": 32,
-    "posts": 22
+    "posts": 23
   }
 }

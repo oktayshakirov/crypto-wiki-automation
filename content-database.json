@@ -139,6 +139,10 @@
     "ross.ulbricht": {
       "slug": "ross-ulbricht",
       "title": "Ross Ulbricht"
+    },
+    "arthur.hayes": {
+      "slug": "arthur-hayes",
+      "title": "Arthur Hayes"
     }
   },
   "exchanges": {
@@ -570,7 +574,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 36,
+    "crypto_ogs": 37,
     "exchanges": 32,
     "posts": 23
   }

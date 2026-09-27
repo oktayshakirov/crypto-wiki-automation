@@ -271,6 +271,10 @@
     "deribit": {
       "slug": "deribit",
       "title": "deribit"
+    },
+    "lighter": {
+      "slug": "lighter",
+      "title": "Lighter"
     }
   },
   "posts": {
@@ -575,7 +579,7 @@
   },
   "next_orders": {
     "crypto_ogs": 37,
-    "exchanges": 32,
+    "exchanges": 33,
     "posts": 23
   }
 }

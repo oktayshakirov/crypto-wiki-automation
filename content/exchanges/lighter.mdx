@@ -1,93 +1,113 @@
 ---
 title: "Lighter"
+meta_title: "Lighter Review: Zero-Fee zk-Rollup Perp DEX & LIT Token"
 image: "/images/exchanges/lighter.png"
-description: "Lighter is a non-custodial, high-performance on-chain exchange delivering pro tools and transparent settlement."
+description: "Lighter is a zero-fee perpetual futures DEX running on its own Ethereum zk-rollup with verifiable order matching."
 date: 2026-09-27
 order: 32
-authors: ["Crypto Wiki Team"]
+authors: ["Oktay Shakirov"]
+quickFacts:
+  founded: "2022 (company); public mainnet opened October 2025"
+  founder: "Vladimir Novakovski, a former Citadel engineer who previously co-founded Lunchclub"
+  ceo: "Vladimir Novakovski"
+  owner: "Elliot Technologies, Inc., a US C-corporation"
+  headquarters: "United States"
+  type: "Decentralized exchange (DEX); perpetual futures and spot on an application-specific zk-rollup"
+  custody: "Non-custodial; collateral sits in Ethereum smart contracts and you sign every order"
+  token: "LIT"
+  valuation: "Around USD 1.5 billion (November 2025 funding round)"
+  assets: "Around USD 487 million total value locked and USD 766 million open interest (early 2026)"
+  availability: "Global web app; the iOS app is listed in over 100 countries and the Android app is available worldwide"
+faqs:
+  - question: "What is Lighter?"
+    answer: "Lighter is a decentralized exchange for perpetual futures and spot trading that runs on its own application-specific zero-knowledge rollup settled on Ethereum. Every order match and every liquidation is proven with zk-SNARKs rather than simply asserted by the operator, which is the feature the team leads with. It was founded by Vladimir Novakovski, a former Citadel engineer, and its public mainnet opened in October 2025 after roughly eight months of private testing."
+  - question: "Does Lighter charge trading fees?"
+    answer: "Retail traders pay zero maker and taker fees on Lighter. The protocol earns revenue instead from premium market-maker tiers, liquidation fees, and a USDC revenue-sharing arrangement with Circle announced in February 2026. You still pay Ethereum gas when you deposit or withdraw collateral, and perpetual positions pay or receive funding, so zero fees is not the same as zero cost."
+  - question: "Is Lighter safe to use?"
+    answer: "Lighter is non-custodial, so no operator holds your assets and there is no exchange insolvency risk in the traditional sense. The risks are different rather than absent. Smart-contract bugs, oracle and liquidation mechanics, and thin depth in smaller markets all remain. A liquidation cascade in October 2025 briefly took the platform database offline and led the team to redesign the liquidity pool into strategies segregated by market type. A 14-day escape hatch, sometimes called Desert Mode, lets users withdraw directly from the Ethereum contracts if the sequencer stops processing their transactions."
+  - question: "What is the LIT token?"
+    answer: "LIT is Lighter's native token, with a fixed supply of 1 billion and no inflation. It launched at the token generation event on 30 December 2025, where 25 percent of supply was airdropped with no vesting. Half of the supply is allocated to the ecosystem and half to the team and investors, the latter under a one-year cliff and a multi-year unlock. LIT is used to stake alongside liquidity pool deposits and to unlock fee tiers, and it positions holders for future governance."
+  - question: "Do I need to pass KYC to trade on Lighter?"
+    answer: "No. Lighter is accessed with a self-custody wallet, so there is no account signup and no identity verification. That also means there is no support desk that can reverse a mistaken transaction or recover a lost wallet, and access to the official front end can still vary by jurisdiction."
 social:
-  website: https://lighter.xyz
+  website: "https://lighter.xyz/"
+  twitter: "https://x.com/Lighter_xyz"
+  github: "https://github.com/elliottech"
+  apple: "https://apps.apple.com/us/app/lighter-mobile/id6752246796"
+  android: "https://play.google.com/store/apps/details?id=com.zklighter.app"
 ---
 
-## Lighter: A High-Performance On-Chain Exchange for Pro Traders and Builders
-Lighter is an emerging on-chain cryptocurrency exchange focused on low-latency execution and deep liquidity for modern crypto trading. Launched in the mid-2020s, it positions itself between DEX usability and CEX-grade performance: a non-custodial interface that aims to deliver professional trading tools without sacrificing the transparency of on-chain settlement. The platform is designed for traders who want fast, reliable access to major assets like **[Bitcoin](/posts/what-is-bitcoin)** and **[Ethereum](/posts/what-is-ethereum)** (via wrapped representations where applicable), as well as a wide mix of **[altcoins](/posts/what-are-altcoins)**, all within a **[DeFi](/posts/what-is-defi)**-native workflow.
+## Lighter: A Zero-Fee Perpetual Futures DEX Built on Its Own zk-Rollup
 
-While Lighter is still expanding its feature set and market coverage, its core value proposition is clear: intuitive, self-custodial trading with advanced order types and routing, delivered through a sleek, pro-grade interface. Availability and features vary by jurisdiction and supported chains.
+Lighter is a non-custodial **[decentralized exchange](/posts/what-is-a-dex)** for **[perpetual futures](/posts/what-are-perpetual-futures)** and spot trading that runs on an application-specific zero-knowledge rollup settled on **[Ethereum](/posts/what-is-ethereum)**. It was founded by Vladimir Novakovski, a Harvard graduate and former Citadel engineer who had previously co-founded the networking app Lunchclub, and it is operated by Elliot Technologies, Inc., a US C-corporation. Public mainnet opened in October 2025 after roughly eight months of private testing.
+
+Two things separate it from the rest of the on-chain derivatives field. Trading is free for retail users, with zero maker and taker fees. And the exchange proves its own behaviour: order matching in strict price-time priority, liquidations, funding and risk checks are all verified by custom zero-knowledge circuits rather than taken on trust. The team calls this the first exchange to offer verifiable matching and liquidations at performance comparable to a centralized venue.
 
 <ArticleAd />
 
 ## Core Protocol: How Lighter Works
-Lighter delivers a non-custodial trading experience, meaning users trade directly from their wallets; the platform does not hold your private keys. Under the hood, Lighter connects to smart contracts and liquidity sources, seeking price efficiency and low slippage while keeping transactions verifiable on the underlying **[blockchain](/posts/what-is-blockchain)**.
 
-Key components and features include:
-- **Non-Custodial Architecture:** Users connect self-managed wallets; trades settle on-chain. There’s no omnibus account custody in the traditional exchange sense.
-- **Spot Trading:** Access to majors and long-tail **[altcoins](/posts/what-are-altcoins)**, subject to chain availability and liquidity. Slippage controls and route visualization help experienced traders manage execution risk.
-- **Perpetual Futures (if supported in your region):** Lighter’s roadmap and product suite lean into derivatives that feel CEX-like but settle on-chain. While leverage can amplify returns, it also increases potential losses—use with caution and ensure collateralization is adequate.
-- **Intent-Aware Routing (conceptual):** To achieve tight pricing and stable execution, Lighter can route orders across multiple liquidity venues, prioritizing depth and time-to-fill while attempting to minimize MEV exposure where possible.
-- **Pro Tools for Active Traders:** 
-  - **Order Types:** Limit, market, and potentially stop/trigger orders depending on chain support.
-  - **Portfolio View:** Real-time PnL and risk analytics for active positions.
-  - **APIs and Automation:** For quant and power users, programmatic access and automation hooks (availability may vary by network).
-- **Composability and DeFi Access:** Because Lighter is built for on-chain execution, positions and assets can interoperate with the broader **[DeFi](/posts/what-is-defi)** ecosystem—lending, LP-ing, and hedging strategies are often one wallet hop away.
+Lighter is not deployed on a general-purpose **[layer-2 network](/posts/what-are-layer-2-blockchains)**. It is a dedicated zk-rollup whose only job is hosting a central limit order book and a perpetual margin system, which is what lets it target latency that feels closer to a centralized exchange.
 
-For Proof-of-Stake networks, staked collateral or yield-bearing tokens may factor into treasury or collateral strategies at the user’s discretion. It’s important to understand how **[staking](/posts/crypto-staking)** and **[Proof-of-Stake](/posts/what-is-proof-of-stake)** mechanics interact with your trading and settlement flows, especially when moving assets between protocols.
+- **Three-Part Architecture:** A sequencer orders transactions, builds blocks and posts oracle prices. A prover generates zk-SNARK proofs, using custom Plonky2 circuits, showing that every state transition followed the rules. Ethereum smart contracts hold collateral, verify those proofs and process deposits and withdrawals.
+- **Verifiable Order Book:** Matching runs as a central limit order book with price-time priority, not an automated market maker. Because the matching itself is inside the proof, an operator cannot quietly reorder or front-run fills without the proof failing.
+- **Zero Fees for Retail:** Makers and takers pay nothing. Revenue comes from premium market-maker tiers, liquidation fees, and a USDC revenue-share agreement with Circle announced in February 2026. **[Stablecoins](/posts/what-are-stablecoins)** serve as the collateral asset, so that arrangement is tied directly to how the exchange is used.
+- **Escape Hatch:** If the sequencer censors a user for 14 days or more, a mechanism the docs call Desert Mode lets that user withdraw straight from the Ethereum contracts. It is the structural answer to the question of what happens when the operator misbehaves or disappears.
+- **Market Coverage:** Perpetuals sit alongside spot markets, tokenized real-world assets and pre-market listings, spanning **[Bitcoin](/posts/what-is-bitcoin)**, ether and a long tail of **[altcoins](/posts/what-are-altcoins)**.
+- **Mobile and Tooling:** A mobile app launched in January 2026 for iOS and Android, and the company publishes open Python, Go and TypeScript SDKs plus its prover and contracts on GitHub for programmatic traders.
 
-Note: Product availability, supported networks, and asset lists evolve quickly. Always confirm which assets and instruments are supported in your region and on your preferred chain.
+![A gold Ethereum coin, the network Lighter's zk-rollup settles its proofs to](/images/posts/ethereum-network.jpg)
 
-![Lighter on-chain exchange interface mockup showing non-custodial wallet connection and pro trading tools](/images/posts/onchain-exchange-trading-interface.png)
+## Funding, Traction and the LIT Token
+
+Lighter has raised USD 89 million across two rounds from Founders Fund, Ribbit Capital, Haun Ventures, Dragonfly, Craft Ventures and Robinhood Ventures, at a reported USD 1.5 billion valuation in November 2025. Roughly 80 percent of the engineering team came over from Lunchclub, with a mix of competitive programming alumni and former Citadel staff.
+
+The traction is real rather than theoretical. Before its token generation event, Lighter processed USD 232 billion in 30-day volume and briefly out-traded both **[Hyperliquid](/exchanges/hyperliquid)** and **[Aster](/exchanges/aster)**. Once airdrop farming ended, activity settled to a more honest baseline: around USD 39 billion in 30-day perpetual volume, USD 487 million in total value locked and USD 766 million in open interest in early 2026, holding a stable top-five position among perpetual DEXs, on cumulative volume past USD 1.6 trillion.
+
+LIT launched on 30 December 2025 with a fixed supply of 1 billion tokens and no inflation. A quarter of supply went out in the airdrop with no vesting, a quarter is reserved for future ecosystem programmes, and the remaining half is split between the team and investors under a one-year cliff with a multi-year unlock. The token is staked alongside liquidity pool deposits and unlocks fee tiers for larger accounts. Like most recent airdrops, the price fell sharply from its opening highs once unrestricted supply met real demand, which is worth keeping in mind before treating the token as a reason to trade there.
 
 ## Security Measures
-Security on Lighter begins with self-custody: you control your keys and authorize every transaction. That reduces counterparty risk inherent to custodial models, but introduces smart contract and wallet-security considerations.
 
-What Lighter emphasizes:
-- **Self-Custody by Design:** Funds remain in your connected wallet(s) unless deployed to smart contracts for open positions, LPing, or collateralization. Because this is non-custodial, there is no exchange hot-wallet risk in the traditional sense.
-- **Smart Contract Reviews and Safeguards:** Reputable on-chain exchanges commission independent audits and run ongoing bug bounties. When using Lighter, review audit references, repository activity, and upgrade policies where disclosed.
-- **Permission Boundaries:** Role-based access controls, time-locked upgrades, and transparent admin rights (if any) are critical to understand. Smart-contract governance and emergency controls should be clearly documented.
-- **Transaction Hygiene:** Use hardware wallets where possible and maintain strict approval management. Revoke allowances when they’re no longer needed. If you’re new to self-custody, start with small amounts and learn **[how to store crypto](/posts/how-to-store-crypto)** securely.
-- **Scam and Phishing Awareness:** On-chain interfaces are frequent targets for impersonation. Verify URLs, never share seed phrases, and learn common red flags to avoid **[crypto scams](/posts/how-to-avoid-crypto-scams)**.
+Security on Lighter starts with the fact that you keep your keys and sign every order. That removes the counterparty risk that sank custodial venues, and replaces it with a different set of exposures.
 
-Remember: On-chain transparency is a double-edged sword—auditable settlement is good, but it’s also unforgiving. Make a habit of simulating transactions where possible and double-checking approvals before signing.
+- **Proof-Backed Execution:** The prover turns "trust our matching engine" into a verifiable claim. This is genuinely unusual and it is the platform's strongest security argument.
+- **Audits and Open Code:** The contracts and prover are public, and audit reports are published in the project's security documentation. Audits reduce risk without eliminating it.
+- **The October 2025 Incident:** A liquidation cascade briefly knocked the platform database offline shortly after mainnet launch. The team responded by restructuring the liquidity pool into strategies segregated by market type, so stress in one market is less able to spill into the rest.
+- **Self-Custody Discipline:** Nothing here is recoverable by a support ticket. Use a hardware wallet where you can, manage token approvals actively, and read up on **[how to store crypto](/posts/how-to-store-crypto)** before moving meaningful size.
+- **Phishing Exposure:** New exchanges with a live airdrop narrative attract impersonators. Verify the domain each time and learn the usual patterns behind **[crypto scams](/posts/how-to-avoid-crypto-scams)**, because a signature on a malicious contract is final.
 
 <ArticleAd />
 
 ## User Experience
-Lighter’s UI targets the “pro trader who also loves self-custody.” It combines quick navigation and deep analytics with wallet-native workflows, so switching between spot and perps (where supported) feels natural. The typical UX loop:
-- **Wallet Connectivity:** Connect popular browser or hardware wallets. The interface should detect supported networks and prompt you to switch when needed.
-- **Asset Discovery:** Curated markets for majors like **[Bitcoin](/posts/what-is-bitcoin)** (wrapped where applicable) and **[Ethereum](/posts/what-is-ethereum)**, plus trending pairs across multiple ecosystems.
-- **Execution & Controls:** Slippage tolerances, route previews, and granular fee breakdowns (including gas estimates) help you gauge the true cost of execution.
-- **Education & Onboarding:** Lighter’s design assumes familiarity with self-custody. If you’re new to this flow, start with primers on how **[crypto exchanges](/posts/understanding-crypto-exchanges)** differ and consider stepping through **[crypto for beginners](/posts/crypto-for-beginners)** resources before committing material capital.
 
-The platform aims to minimize cognitive load without dumbing down core controls. Expect clear error messages, understandable chain prompts, and an emphasis on making complex trades feel safe and repeatable.
+The interface is aimed at people who already trade derivatives. You connect a wallet, deposit USDC as collateral, and work a familiar order book with limit, market and trigger orders, live depth, funding rates and position-level risk data. There is no signup flow and no verification queue, so the distance between arriving and placing a first order is short.
+
+The mobile app, launched in January 2026, carries the full market list rather than a stripped-down viewer, covering perpetuals, spot, tokenized real-world assets and pre-market listings. On the other end of the spectrum, the published SDKs and an agent kit for automated trading mean systematic users are not stuck with the web front end.
+
+The main friction is the same one every rollup shares: moving collateral in and out touches Ethereum, so **[gas fees](/posts/what-are-gas-fees)** apply at the edges even though trading itself is free. Sizing deposits sensibly rather than shuttling funds back and forth is the practical fix.
 
 ## Decentralization and the Regulatory Landscape
-DEXs live in a unique regulatory gray zone: the smart contracts generally run permissionlessly on public networks, but the hosted web interface you use to access them may adopt compliance controls (geo-fencing, IP filtering) and risk checks. Lighter’s availability can therefore vary by jurisdiction and product type. Perpetual futures, in particular, are often restricted in certain regions.
 
-Traders who prioritize heavy regulatory clarity and fiat on-ramps may prefer a licensed centralized exchange in their region—US users, for example, often compare front-ends like Lighter with compliant on-ramps such as **[Coinbase](/exchanges/coinbase)**. Conversely, globally oriented traders who focus on breadth of markets and on-chain composability sometimes opt for altcoin-centric venues like **[KuCoin](/exchanges/kucoin)** (CEX) or stay fully non-custodial via DEX front-ends.
+Lighter occupies the awkward middle ground that most serious perpetual DEXs now share. The settlement layer is Ethereum and the contracts are permissionless, but the sequencer is operated by a company, and that company is a US C-corporation with named venture backers rather than an anonymous team. That makes it more accountable than a pseudonymous protocol and more exposed to regulators at the same time.
 
-It’s crucial to understand that even if a protocol is permissionless, a public-facing web UI might impose access restrictions to reduce legal and operational risks. Advanced users sometimes interact directly with contracts when appropriate—but that moves even more responsibility to the user.
+Perpetual futures remain restricted for retail users in several major jurisdictions, and front-end access can vary accordingly even when the underlying contracts stay open. Traders who want a licensed venue with fiat rails and a support desk are comparing a different kind of product entirely, and the trade-offs between the two models are worth understanding before choosing. Our guide to **[crypto exchanges](/posts/understanding-crypto-exchanges)** covers that split, and the broader **[DeFi](/posts/what-is-defi)** picture explains where an exchange like this sits in the wider on-chain stack.
 
-![Regulatory landscape visualization for on-chain exchanges and DEX front-ends](/images/posts/defi-regulatory-landscape.png)
-
-## Liquidity, Pricing, and Market Structure
-For professional-grade crypto trading, the triad of liquidity depth, routing quality, and execution speed is everything. Lighter’s on-chain-first approach relies on:
-- **Aggregated Liquidity:** Routing across AMMs, on-chain order books, and possibly RFQ venues to find tight spreads and minimal slippage.
-- **MEV and Price Protection:** Where supported, transaction modes that mitigate frontrunning, sandwiching, and backrunning attempts, preserving quoted prices as closely as network conditions allow.
-- **Latency and Finality:** Performance depends on the base chain. Faster block times and efficient mempools typically result in tighter spreads and more predictable settlement.
-
-If you plan to trade large tickets or during volatile periods, test with partial fills and observe how price impact behaves at your preferred sizes. On-chain depth can be highly dynamic, especially for smaller pairs.
-
-<ArticleAd />
+![Financial district skyscrapers, representing the institutional and regulatory world that perpetual futures venues operate in](/images/posts/corporate.jpg)
 
 ## Points to Consider
-- **Gas and All-In Cost:** On-chain execution includes network gas plus protocol and LP fees. Compare your all-in cost to alternatives—especially for frequent, small trades.
-- **Smart Contract Risk:** Audits reduce risk but can’t eliminate it. Use risk budgets, diversify across protocols, and consider isolating wallets for different strategies.
-- **Derivatives Complexity:** If Lighter offers perps in your region, understand funding, liquidations, and leverage impact. While leverage can amplify profits, it magnifies losses.
-- **Liquidity Conditions:** Depth can vary by pair and time. Thin markets widen spreads and increase slippage. Test routes and slippage limits before committing size.
-- **Operational Redundancy:** Bookmark verified URLs, back up seed phrases offline, and plan for wallet recovery. If you’re not comfortable with long-term on-chain custody, review options for safer storage and when to hold funds off-exchange.
+
+- **Zero Fees Are Not Zero Cost:** Funding payments on perpetual positions and Ethereum gas on deposits and withdrawals still apply, and on a leveraged position funding usually dwarfs what a fee schedule would have cost anyway.
+- **Leverage Cuts Both Ways:** Perpetuals magnify losses exactly as efficiently as gains, and liquidation is automatic. The October 2025 cascade is a reminder that stress events are not hypothetical.
+- **Sequencer Centralization:** A single operator sequences transactions today. The proofs constrain what it can do to your orders and the escape hatch limits how long it can ignore you, but this is not a decentralized validator set.
+- **Token Performance:** LIT trades far below its opening level. Judge the exchange on its volume, depth and uptime rather than on the token chart.
+- **Young Platform:** Mainnet is under a year old. Depth is strong in majors and thinner elsewhere, so test execution at your intended size before committing to it.
 
 <ArticleAd />
 
 ## Conclusion
-Lighter’s pitch is straightforward: a non-custodial, high-performance on-chain exchange that gives you CEX-like trading ergonomics with DeFi transparency. It fits traders who want execution speed and robust tools while remaining in self-custody, and it’s especially compelling if you’re already active in **[DeFi](/posts/what-is-defi)** and comfortable managing wallets. That said, on-chain trading carries its own frictions—gas, contract risk, and occasionally thinner depth than top-tier centralized venues. If you’re new to active markets, revisit core concepts around **[crypto trading](/posts/crypto-trading-vs-holding)** strategies and take time to understand how self-custody best practices differ from custodial workflows. Overall, Lighter is a promising option for advanced users who value transparency and control, with the caveat that on-chain trading still demands diligence and operational discipline.
+
+Lighter is one of the more technically substantive entries in a crowded perpetual DEX field. The verifiable matching engine is a real answer to a real problem, since every other order book venue asks you to trust that fills were honest, and the zero-fee model paired with the Circle revenue share is a genuine attempt at a business that does not depend on taxing traders. The funding, the team background and a top-five position on volume all point the same way.
+
+The caveats are the ordinary ones for a platform this young. The sequencer is centralized, mainnet has under a year of history, one stress event has already taken the database offline, and the token is well below its debut. For an experienced derivatives trader who is comfortable with self-custody and wants proof rather than promises about execution, Lighter is worth a serious look. For anyone newer to leveraged trading, the right order is to understand perpetuals and self-custody first, then decide where to trade them.
 
 <ExchangeButton href="https://lighter.xyz/" text="Join Lighter" />

@@ -74,6 +74,30 @@ def imgs_in(txt):
     return re.findall(r"!\[[^\]]*\]\((/images/[^)\s]+)\)", txt)
 
 
+def public_root(archive):
+    """The site's `public/` directory, derived from the archive path.
+
+    ARCHIVE points at public/images/posts because that is where post images are
+    filed, but a body image is a real web path and may legitimately live in
+    another folder - /images/exchanges/kraken.png on an exchange or OG page, for
+    instance. Resolving against public/ checks where the file actually is
+    instead of assuming every image is a post image.
+    """
+    return os.path.dirname(os.path.dirname(os.path.abspath(archive)))
+
+
+def image_exists(src, archive):
+    """Does this body image resolve to a file on disk?
+
+    Checks the path as written, relative to public/. Falls back to the archive
+    directory by basename so a custom --archive pointing somewhere else still
+    behaves as it used to.
+    """
+    if os.path.exists(os.path.join(public_root(archive), src.lstrip("/"))):
+        return True
+    return os.path.exists(os.path.join(archive, os.path.basename(src)))
+
+
 def strip_tables(txt):
     """Drop markdown table separator rows (| --- | --- |).
 
@@ -253,10 +277,10 @@ def main():
           main_img or "no main image in frontmatter")
     extra = body_imgs
 
-    missing = [q for q in body_imgs
-               if not os.path.exists(os.path.join(a.archive, os.path.basename(q)))]
-    check(not missing, "images exist in archive",
-          bad_detail=f"missing from {a.archive}: " + ", ".join(missing))
+    missing = [q for q in body_imgs if not image_exists(q, a.archive)]
+    check(not missing, "body images exist on disk",
+          bad_detail=f"not found under {public_root(a.archive)}: "
+                     + ", ".join(missing))
 
     # --- shared images not repeated in nearby posts ---
     # Reusing an archive image is fine and expected. What is not fine is reusing

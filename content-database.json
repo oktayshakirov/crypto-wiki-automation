@@ -549,6 +549,10 @@
     "what.is.market.cap.in.crypto": {
       "slug": "what-is-market-cap-in-crypto",
       "title": "What Is Market Cap in Crypto?"
+    },
+    "what.are.tokenized.stocks": {
+      "slug": "what-are-tokenized-stocks",
+      "title": "What Are Tokenized Stocks?"
     }
   },
   "tools": {
@@ -580,6 +584,6 @@
   "next_orders": {
     "crypto_ogs": 37,
     "exchanges": 33,
-    "posts": 23
+    "posts": 24
   }
 }

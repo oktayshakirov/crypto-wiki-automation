@@ -1,11 +1,13 @@
 ---
 name: publish-content-crypto
-description: Publish content to thecrypto.wiki via the local n8n workflows - suggest topics, generate the article, quality-gate it, stage locally for review, then push (deploy-gated) and share to social media. Use when the user wants to create/publish/share a crypto post, exchange review, or crypto OG bio. For Tinnitus Help use publish-content-tinnitus instead.
+description: Publish content to thecrypto.wiki - suggest topics, write the article (Claude writes it directly; n8n generation is fallback only), quality-gate it, stage locally for review, then push (deploy-gated) and share to social media. Use when the user wants to create/publish/share a crypto post, exchange review, or crypto OG bio. For Tinnitus Help use publish-content-tinnitus instead.
 ---
 
 # Publish Content — Crypto Wiki
 
-Full agent loop: **suggest topics → user picks → generate via n8n → quality gate → stage locally → fetch main-image candidates (user picks) → user reviews → push (deploy gate) → share → verify.**
+Full agent loop: **suggest topics → user picks → Claude writes the article → quality gate → stage locally → fetch main-image candidates (user picks) → user reviews → push (deploy gate) → share → verify.**
+
+**Claude writes the articles; n8n posts them.** The three "New" generation workflows are kept as a fallback but are not the path - see Step 2.
 
 This skill covers **thecrypto.wiki only**. For tinnitushelp.me, use `publish-content-tinnitus` in `tinnitus-help-automation` — it is a separate copy, not a shared script, so a fix here does not apply there automatically.
 
@@ -22,7 +24,7 @@ This skill covers **thecrypto.wiki only**. For tinnitushelp.me, use `publish-con
 **Where this skill lives / cross-device:** the real files are versioned in the `crypto-wiki-automation` repo at `.claude/skills/publish-content-crypto/`; `~/.claude/skills/publish-content-crypto` is a **symlink** into it, which is how Claude Code discovers the skill. So edits to `SKILL.md` or `scripts/` are committed like any repo change (backup workflow JSON to `.n8n-backups/` still applies for workflow edits, but the skill files themselves just commit). **To set up a new device:** clone `crypto-wiki-automation`, then `ln -s <repo>/.claude/skills/publish-content-crypto ~/.claude/skills/publish-content-crypto`, and recreate the two gitignored secrets locally (`.n8n-api-key`, `.pexels-api-key`).
 
 ## Prerequisites
-- **n8n must be running** at `http://localhost:5678` (user starts it manually with `n8n`; it is NOT always on). If unreachable, ask the user to start it.
+- **n8n must be running** at `http://localhost:5678` (user starts it manually with `n8n`; it is NOT always on). If unreachable, ask the user to start it. Since the Step 2 migration this is needed for **Step 6 (Share)** and the video workflows, not for writing - an article can be written and gated with n8n down.
 - Prefer the `mcp__n8n-local__*` MCP tools. If they're not loaded in this session, call the MCP endpoint directly with curl: POST `http://127.0.0.1:5678/mcp-server/http` (JSON-RPC `tools/call`), auth `Authorization: Bearer <token>` - read the token from the `n8n-local` server entry in `~/.claude.json`. Poll executions via REST: `http://127.0.0.1:5678/api/v1/executions/<id>?includeData=true` with header `X-N8N-API-KEY` from the gitignored `/Users/oktayshakirov/Coding/crypto-wiki-automation/.n8n-api-key`.
 - **Triggering a Form Trigger without the MCP tools** (reading the MCP bearer token out of `~/.claude.json` may be blocked by the permission classifier): fetch the workflow over REST, read the form trigger's `webhookId`, and POST to `http://127.0.0.1:5678/form/<webhookId>`. Two non-obvious requirements, both of which fail *quietly*:
   - It must be **`multipart/form-data`** (`curl -F`, not `--data-urlencode`). Form-encoded returns HTTP 500 `Workflow could not be started!`, and the real reason (`Expected multipart/form-data`) only shows up in the execution record.
@@ -33,11 +35,15 @@ This skill covers **thecrypto.wiki only**. For tinnitushelp.me, use `publish-con
 - Workflow-edit gotcha: the n8n public-API PUT rejects `settings.binaryMode`; filter `settings` to allowed keys (executionOrder, callerPolicy, availableInMCP, ...) or the PUT 400s.
 
 ## Workflow registry (Form Triggers; run with `inputs: {type:"form", formData:{...}}`)
+
+The three **New \*** rows are **fallback only** - Claude writes articles now (Step 2). The
+Share and Publish rows are the live path and are unaffected.
+
 | Action | Workflow ID | formData |
 |---|---|---|
-| New Post | `aPOOMzK1MuUcr6sM` | `{ topic }` |
-| New Exchange | `pEfGTfVz5FdtLTGM` | `{ name, website }` |
-| New Crypto OG | `MYaoP3c6N5qLFX3U` | `{ name }` |
+| New Post (fallback) | `aPOOMzK1MuUcr6sM` | `{ topic }` |
+| New Exchange (fallback) | `pEfGTfVz5FdtLTGM` | `{ name, website }` |
+| New Crypto OG (fallback) | `MYaoP3c6N5qLFX3U` | `{ name }` |
 | Share Post | `LUkP4LjfcWefJZpJ` | `{ slug }` |
 | Share Exchange | `KYJga45bwixvg8DY` | `{ slug }` |
 | Share Crypto OG | `5dyD2hHUqfHCV8Rw` | `{ slug }` |
@@ -88,10 +94,69 @@ credential (`Authorization` = `OAuth <page token>`) on that one node is the fix.
 ## Step 1 - Suggest 10 topics
 Read `content-database.json` in `crypto-wiki-automation` (`posts`/`exchanges`/`crypto_ogs`). Gap-analyze vs existing titles; use WebSearch for trends (CMC exchange rankings page is JS-rendered - WebSearch only). Present 10 options with a one-line "why" each. **The chosen topic becomes title AND slug verbatim - keep it short.**
 
-## Step 2 - Generate
-Execute the matching "New" workflow. GPT-5 takes 1-3 min (retryOnFail 3x is set); if the run still fails with ECONNRESET/ETIMEDOUT, just re-run. On success it commits the MDX + updates `content-database.json` in the automation repo.
+## Step 2 - Write the article (Claude writes it; n8n is fallback only)
 
-## Step 3 - Quality gate (pull the automation repo, check the MDX)
+**Claude writes the article directly. Do NOT trigger the "New Post" / "New Exchange" /
+"New Crypto OG" workflows** - they still exist and still work, but they are a fallback,
+not the path. Migrated 2026-10-03; the reasoning and the evidence are in CHANGELOG.
+
+Why the change: the generation node runs `gpt-5-2025-08-07`, whose training predates
+most of what these pages have to be current about. A measured example from the
+2026-09-30 tokenized-stocks run, raw GPT-5 output versus what actually shipped: it wrote
+"tokenized U.S. Treasury funds grew past $1 billion by 2024" when the figure was $26.4
+billion by March 2026 - **off by 26x, stated with full confidence, and the quality gate
+passed it**. It also opened with scene-setting ("Imagine buying a fraction of Apple...")
+in violation of the answer-first rule, which the gate does not check either. Mechanically
+its output was clean; the gate scored it 0 fail / 2 warn. The gap is factual currency and
+framing, which is exactly what a gate cannot see.
+
+**The cost of this change, stated plainly:** you lose the two-model check. GPT-5 used to
+write and Claude used to audit, so their blind spots did not line up. Now Claude does
+both. The sourcing discipline below is what replaces that independence - treat it as
+mandatory, not advisory.
+
+### Sourcing discipline (this is the part that replaces the second model)
+
+- **Search before writing, not after.** Specifically search for events *after* the
+  model's cutoff and after any existing page's `date`. The gap is always in what happened
+  since, never in what is already written.
+- **Every figure carries its own date in the sentence**, the same rule AGENTS.md sets for
+  infoboxes, now applied to body prose too: "280 authorised CASPs as of 3 July 2026", not
+  "roughly 280 CASPs".
+- **Omit rather than estimate.** These are YMYL finance pages and, for OGs, living
+  people. A missing number costs nothing; a confident wrong one is the whole risk.
+- **Verify anything externally checkable.** `curl -sL -o /dev/null -w '%{http_code}'`
+  every App Store / Play Store / social URL before it goes in. GPT-5 invented
+  `apps.apple.com/app/asterdex` and `id=com.asterdex`, both nonexistent; that class of
+  error is only caught by actually fetching it.
+- **Look at the images before writing alt text.** `Read` each body image. Alt text
+  written against an imagined picture is a documented failure here, and it bites in both
+  directions: `law.jpg` looks like the obvious pick for a regulation article but contains
+  a **US flag**, which is wrong on an EU topic.
+
+### Procedure
+
+1. Read the matching guidelines doc in the automation repo as the brief:
+   `post_guidelines.md`, `exchange_guidelines.md`, or `crypto_og_guidelines.md`. They
+   remain the source of truth for structure, tone, categories, and the body-image list.
+   Some lines in them exist to patch GPT-5 habits; follow the substance, not the scolding.
+2. Read `content-database.json` for valid link targets, and confirm each target against
+   the MDX actually on disk - the DB drifts.
+3. Research the topic. Note what is new since the last comparable page.
+4. Write the MDX **directly into the site repo** (`crypto-wiki/content/{posts|exchanges|crypto-ogs}/<slug>.mdx`).
+   This replaces the old two-hop route where n8n committed to the automation repo and
+   Step 4 copied it across. Nothing is committed yet.
+5. **Register it in `content-database.json`** in the automation repo - this is the step
+   the `Update Database` node used to do and the easiest one to forget (it was missed on
+   the first migrated post). Replicate it exactly:
+   - key = slug with hyphens replaced by dots (`what-is-mica` -> `what.is.mica`)
+   - value = `{ "slug": "<slug>", "title": "<display title>" }`
+   - increment `next_orders.<type>` by 1
+   - the file has **no trailing newline**; keep it that way or every future diff carries noise
+6. Go to Step 3 and gate it. The gate is unchanged and now carries more weight, since it
+   is the only automated check left.
+
+## Step 3 - Quality gate (check the MDX you just wrote)
 **Run the automated gate first:** `python3 scripts/quality_gate.py <path-to.mdx>` (script dir is this skill's folder). It checks all of the below deterministically and exits non-zero on any hard FAIL - fix those, re-run, then eyeball anything a script can't judge (image relevance, factual/date accuracy, link *aptness*).
 
 It resolves the DB + image archive itself and infers the type from the path (`/exchanges/` -> exchange, `/crypto-ogs/` -> og, else post). Override with `--db` / `--archive` / `--type`, but the bare one-argument call is normally right. It echoes the resolved `type` as its first line - **check that line**.
@@ -99,7 +164,7 @@ It resolves the DB + image archive itself and infers the type from the path (`/e
 Known non-issues it deliberately tolerates: markdown table separator rows (`| --- |`) are stripped before the dash check, `#anchor`/`?query` links validate against the base page, and link targets are checked against the DB **union the MDX actually on disk** (the DB can drift and miss live posts).
 
 Checks: 1,200-2,500 words; 8-15 internal links, **bold** `**[Text](/path)**`, each page linked at most once, all slugs valid vs DB; exactly 2 body images **from the real archive** (never invented names) and **not repeated in posts published close together** - reusing an archive image across the site is fine and expected; what matters is that someone reading a few recent posts back to back never sees the same picture twice. The gate warns when a body image also appears in any of the 5 most recent other posts by frontmatter date (`--recent-window`). On a warning, swap in a different archive file, or fetch a new one with `pick_main_image.py`; no em/en dashes or `--` (plain `-` only); **no curly quotes** (`'`/`'`/`"`/`"` -> straight; applies to body AND the frontmatter description); no trailing metadata JSON (fenced or bare); ads never adjacent to images; no References section; author `Oktay Shakirov`.
-Most violations are auto-fixed by the Build node now - if one slips through, fix the article AND add a deterministic fix to the workflow node + guidelines (backup to `.n8n-backups/` first; mutate the workflow dict in place; PUT only `name,nodes,connections,settings`).
+The Build node's auto-fixes (curly quotes, dashes) no longer run, because Claude writes the MDX directly - **get these right while writing** rather than expecting a cleanup pass. If a violation recurs across articles, fix the guidelines doc, not a workflow node. The notes below about workflow-node fixes apply only if you fall back to n8n generation.
 **Persisting workflow fixes:** live n8n edits only survive in the gitignored `.n8n-backups/`. When a fix is **important/major** (fixes a broken workflow, changes a contract, or prevents a defect on every future run), also sync the live workflow into the repo's committed JSON snapshot (`crypto-wiki-automation/{new_post,share_post,...}.json`) and commit, so it survives an n8n reset - minor tweaks can stay live-only. Known deterministic fix already committed: Share `Set Slug` reads `={{ $json.slug }}` (was hardcoded, shared the wrong post). Live-only (not yet in committed JSON): New Post Build node curly-quote normalization.
 
 Per-type conventions:
@@ -135,7 +200,7 @@ posts carry it.
   in what happened since, not in what was written.
 
 ## Step 4 - Stage locally + pick the main image
-Copy the MDX to `crypto-wiki/content/{posts|exchanges|crypto-ogs}/` - do NOT commit.
+The MDX is already in `crypto-wiki/content/{posts|exchanges|crypto-ogs}/` from Step 2 - do NOT commit yet. (The old copy-from-the-automation-repo hop is gone.)
 
 ### `meta_title` on exchanges and crypto-OGs
 

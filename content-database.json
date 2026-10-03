@@ -553,6 +553,10 @@
     "what.are.tokenized.stocks": {
       "slug": "what-are-tokenized-stocks",
       "title": "What Are Tokenized Stocks?"
+    },
+    "what.is.mica": {
+      "slug": "what-is-mica",
+      "title": "What Is MiCA?"
     }
   },
   "tools": {
@@ -584,6 +588,6 @@
   "next_orders": {
     "crypto_ogs": 37,
     "exchanges": 33,
-    "posts": 24
+    "posts": 25
   }
 }

@@ -112,7 +112,7 @@
                   },
                   {
                     "key": "title.text",
-                    "value": "=Is {{$json.name}} the right platform for you ?"
+                    "value": "=Is {{$json.name}} the right platform for you?"
                   },
                   {
                     "key": "description.text",
@@ -685,7 +685,7 @@
                     },
                     {
                       "key": "title.text",
-                      "value": "=Is {{$json.name}} the right platform for you ?"
+                      "value": "=Is {{$json.name}} the right platform for you?"
                     },
                     {
                       "key": "description.text",

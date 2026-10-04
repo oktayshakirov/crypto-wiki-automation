@@ -143,6 +143,10 @@
     "arthur.hayes": {
       "slug": "arthur-hayes",
       "title": "Arthur Hayes"
+    },
+    "jeremy.allaire": {
+      "slug": "jeremy-allaire",
+      "title": "Jeremy Allaire"
     }
   },
   "exchanges": {
@@ -590,7 +594,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 37,
+    "crypto_ogs": 38,
     "exchanges": 34,
     "posts": 25
   }

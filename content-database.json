@@ -223,12 +223,12 @@
       "title": "HTX"
     },
     "bitfinex": {
-      "slug": "/exchanges/bitfinex",
+      "slug": "bitfinex",
       "title": "Bitfinex",
       "order": 20
     },
     "bingx": {
-      "slug": "/exchanges/bingx",
+      "slug": "bingx",
       "title": "BingX",
       "order": 21
     },
@@ -275,6 +275,10 @@
     "lighter": {
       "slug": "lighter",
       "title": "Lighter"
+    },
+    "bitvavo": {
+      "slug": "bitvavo",
+      "title": "Bitvavo"
     }
   },
   "posts": {
@@ -587,7 +591,7 @@
   },
   "next_orders": {
     "crypto_ogs": 37,
-    "exchanges": 33,
+    "exchanges": 34,
     "posts": 25
   }
 }

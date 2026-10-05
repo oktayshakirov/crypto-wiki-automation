@@ -1,0 +1,455 @@
+{
+    "updatedAt": "2026-08-19T22:57:31.264Z",
+    "createdAt": "2026-08-14T12:02:18.944Z",
+    "id": "q3omZaUm7kpTc6WE",
+    "name": "Tinnitus Help: Share Video",
+    "description": null,
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+        {
+            "parameters": {
+                "formTitle": "Tinnitus Help: Share Video",
+                "formDescription": "YouTube video id or URL, plus an optional topic (the subject of the video, two or three words).",
+                "formFields": {
+                    "values": [
+                        {
+                            "fieldLabel": "videoId",
+                            "requiredField": true
+                        },
+                        {
+                            "fieldLabel": "topic",
+                            "requiredField": false
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "375b3a30-bd59-5963-a834-47a03020c6f8",
+            "name": "Form Trigger",
+            "type": "n8n-nodes-base.formTrigger",
+            "typeVersion": 2.2,
+            "position": [
+                -260,
+                0
+            ],
+            "webhookId": "7838e1d1-e1e5-5c15-a32b-60fcac1e65c5"
+        },
+        {
+            "parameters": {
+                "jsCode": "const raw = String($json.videoId ?? $json['field-0'] ?? '').trim();\nconst m = raw.match(/(?:v=|youtu\\.be\\/|shorts\\/|embed\\/|live\\/)([A-Za-z0-9_-]{11})/);\nconst id = m ? m[1] : raw;\nif (!/^[A-Za-z0-9_-]{11}$/.test(id)) {\n  throw new Error(`Not a YouTube video id or URL: ${raw || '(empty)'}`);\n}\nreturn [{ json: {\n  videoId: id,\n  url: `https://www.youtube.com/watch?v=${id}`,\n  topic: String($json.topic ?? $json['field-1'] ?? '').trim(),\n} }];\n"
+            },
+            "id": "56d7d2d9-8733-5192-aea9-2be05d5ff334",
+            "name": "Normalise Input",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 1,
+            "position": [
+                -40,
+                0
+            ]
+        },
+        {
+            "parameters": {
+                "url": "=https://www.youtube.com/oembed?url={{ encodeURIComponent($json.url) }}&format=json",
+                "options": {}
+            },
+            "id": "88401f3f-cf77-5c79-b1e8-99dda5ed7c8d",
+            "name": "Fetch Video Info",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                180,
+                0
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "const info = $json;                       // the oEmbed response\nconst v = $('Normalise Input').item.json;\nconst title = (info.title || '').trim();\n\n// **Do not put the title in the caption.** Facebook and Telegram both unfurl\n// the URL into a card that already carries the title, the description and the\n// thumbnail, so repeating it prints the same sentence twice in one post. The\n// caption's only job is the human line the card cannot supply.\n//\n// The subject is typed into the `topic` field. Failing that it is guessed from\n// a `Subject: hook` or `hook | Subject` title, which is this channel's habit\n// and not a rule \u2014 \"Does Tinnitus Go Away? Temporary vs Chronic\" has no\n// subject to find, so the generic line is the third branch rather than an\n// error. Guessing is a convenience; typing two words is the reliable path.\nlet topic = v.topic;\nif (!topic) {\n  const colon = title.match(/^([^:]{3,40}):\\s/);\n  const pipe = title.match(/\\|\\s*(.{3,40})$/);\n  topic = (colon && colon[1].trim()) || (pipe && pipe[1].trim()) || '';\n}\n\nconst message = topic\n  ? `New video about ${topic} \ud83d\udc47`\n  : `New video is up on YouTube \ud83d\udc47`;\n\n// Telegram posts in HTML parse mode (see the Telegram node), so the three\n// characters HTML reserves have to be escaped. Facebook takes the raw text \u2014\n// it does no markup parsing at all, and escaping there would print \"&amp;\".\nconst esc = (t) => t.replace(/&/g, '&amp;')\n                    .replace(/</g, '&lt;')\n                    .replace(/>/g, '&gt;');\n\nreturn [{ json: {\n  videoId: v.videoId,\n  url: v.url,\n  title,\n  topic,\n  message,\n  facebook: message,\n  telegram: `${esc(message)}\\n${v.url}`,\n} }];\n"
+            },
+            "id": "c52f0eca-5d08-5af8-9e2e-901c31f5ce5c",
+            "name": "Format Video Post",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 1,
+            "position": [
+                400,
+                0
+            ]
+        },
+        {
+            "parameters": {
+                "httpRequestMethod": "POST",
+                "graphApiVersion": "v23.0",
+                "node": "me",
+                "edge": "feed",
+                "options": {
+                    "queryParameters": {
+                        "parameter": [
+                            {
+                                "name": "message",
+                                "value": "={{ $json.facebook }}"
+                            },
+                            {
+                                "name": "link",
+                                "value": "={{ $json.url }}"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "c3854a0f-56c7-5c79-a30c-57193ce3d43e",
+            "name": "Facebook Post",
+            "type": "n8n-nodes-base.facebookGraphApi",
+            "typeVersion": 1,
+            "position": [
+                640,
+                -180
+            ],
+            "credentials": {
+                "facebookGraphApi": {
+                    "id": "ltfxXBWtUWu9wRg3",
+                    "name": "Facebook Graph (TinnitusHelp)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "@tinnitushelpme",
+                "text": "={{ $json.telegram }}",
+                "additionalFields": {
+                    "appendAttribution": false,
+                    "disable_web_page_preview": false,
+                    "parse_mode": "HTML"
+                }
+            },
+            "id": "94d07cef-9745-5c5a-9f3a-a962fa6a4ffd",
+            "name": "Telegram Post",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1.2,
+            "position": [
+                640,
+                0
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "4rLRmLOvcIlidonP",
+                    "name": "Telegram (TinniusHelp)"
+                }
+            },
+            "webhookId": "14fac159-0373-4ea1-ace0-57784254584c"
+        }
+    ],
+    "connections": {
+        "Form Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Normalise Input",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Normalise Input": {
+            "main": [
+                [
+                    {
+                        "node": "Fetch Video Info",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Fetch Video Info": {
+            "main": [
+                [
+                    {
+                        "node": "Format Video Post",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Format Video Post": {
+            "main": [
+                [
+                    {
+                        "node": "Facebook Post",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Telegram Post",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1",
+        "callerPolicy": "workflowsFromSameOwner",
+        "availableInMCP": true
+    },
+    "staticData": null,
+    "meta": null,
+    "nodeGroups": [],
+    "pinData": null,
+    "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+    "activeVersionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+    "versionCounter": 10,
+    "triggerCount": 1,
+    "sourceWorkflowId": null,
+    "shared": [
+        {
+            "updatedAt": "2026-08-14T12:02:18.945Z",
+            "createdAt": "2026-08-14T12:02:18.945Z",
+            "role": "workflow:owner",
+            "workflowId": "q3omZaUm7kpTc6WE",
+            "projectId": "DclWPKscbGB9W1Dg",
+            "project": {
+                "updatedAt": "2025-09-10T22:50:04.155Z",
+                "createdAt": "2025-09-10T22:48:48.404Z",
+                "id": "DclWPKscbGB9W1Dg",
+                "name": "Oktay Shakirov <oktayshakirov@gmail.com>",
+                "type": "personal",
+                "icon": null,
+                "description": null,
+                "customTelemetryTags": [],
+                "creatorId": "4346e89d-8f9e-4244-87be-62981ab23688"
+            }
+        }
+    ],
+    "tags": [],
+    "activeVersion": {
+        "updatedAt": "2026-08-19T22:57:31.264Z",
+        "createdAt": "2026-08-19T22:57:31.264Z",
+        "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+        "workflowId": "q3omZaUm7kpTc6WE",
+        "nodes": [
+            {
+                "parameters": {
+                    "formTitle": "Tinnitus Help: Share Video",
+                    "formDescription": "YouTube video id or URL, plus an optional topic (the subject of the video, two or three words).",
+                    "formFields": {
+                        "values": [
+                            {
+                                "fieldLabel": "videoId",
+                                "requiredField": true
+                            },
+                            {
+                                "fieldLabel": "topic",
+                                "requiredField": false
+                            }
+                        ]
+                    },
+                    "options": {}
+                },
+                "id": "375b3a30-bd59-5963-a834-47a03020c6f8",
+                "name": "Form Trigger",
+                "type": "n8n-nodes-base.formTrigger",
+                "typeVersion": 2.2,
+                "position": [
+                    -260,
+                    0
+                ],
+                "webhookId": "7838e1d1-e1e5-5c15-a32b-60fcac1e65c5"
+            },
+            {
+                "parameters": {
+                    "jsCode": "const raw = String($json.videoId ?? $json['field-0'] ?? '').trim();\nconst m = raw.match(/(?:v=|youtu\\.be\\/|shorts\\/|embed\\/|live\\/)([A-Za-z0-9_-]{11})/);\nconst id = m ? m[1] : raw;\nif (!/^[A-Za-z0-9_-]{11}$/.test(id)) {\n  throw new Error(`Not a YouTube video id or URL: ${raw || '(empty)'}`);\n}\nreturn [{ json: {\n  videoId: id,\n  url: `https://www.youtube.com/watch?v=${id}`,\n  topic: String($json.topic ?? $json['field-1'] ?? '').trim(),\n} }];\n"
+                },
+                "id": "56d7d2d9-8733-5192-aea9-2be05d5ff334",
+                "name": "Normalise Input",
+                "type": "n8n-nodes-base.code",
+                "typeVersion": 1,
+                "position": [
+                    -40,
+                    0
+                ]
+            },
+            {
+                "parameters": {
+                    "url": "=https://www.youtube.com/oembed?url={{ encodeURIComponent($json.url) }}&format=json",
+                    "options": {}
+                },
+                "id": "88401f3f-cf77-5c79-b1e8-99dda5ed7c8d",
+                "name": "Fetch Video Info",
+                "type": "n8n-nodes-base.httpRequest",
+                "typeVersion": 4.2,
+                "position": [
+                    180,
+                    0
+                ]
+            },
+            {
+                "parameters": {
+                    "jsCode": "const info = $json;                       // the oEmbed response\nconst v = $('Normalise Input').item.json;\nconst title = (info.title || '').trim();\n\n// **Do not put the title in the caption.** Facebook and Telegram both unfurl\n// the URL into a card that already carries the title, the description and the\n// thumbnail, so repeating it prints the same sentence twice in one post. The\n// caption's only job is the human line the card cannot supply.\n//\n// The subject is typed into the `topic` field. Failing that it is guessed from\n// a `Subject: hook` or `hook | Subject` title, which is this channel's habit\n// and not a rule \u2014 \"Does Tinnitus Go Away? Temporary vs Chronic\" has no\n// subject to find, so the generic line is the third branch rather than an\n// error. Guessing is a convenience; typing two words is the reliable path.\nlet topic = v.topic;\nif (!topic) {\n  const colon = title.match(/^([^:]{3,40}):\\s/);\n  const pipe = title.match(/\\|\\s*(.{3,40})$/);\n  topic = (colon && colon[1].trim()) || (pipe && pipe[1].trim()) || '';\n}\n\nconst message = topic\n  ? `New video about ${topic} \ud83d\udc47`\n  : `New video is up on YouTube \ud83d\udc47`;\n\n// Telegram posts in HTML parse mode (see the Telegram node), so the three\n// characters HTML reserves have to be escaped. Facebook takes the raw text \u2014\n// it does no markup parsing at all, and escaping there would print \"&amp;\".\nconst esc = (t) => t.replace(/&/g, '&amp;')\n                    .replace(/</g, '&lt;')\n                    .replace(/>/g, '&gt;');\n\nreturn [{ json: {\n  videoId: v.videoId,\n  url: v.url,\n  title,\n  topic,\n  message,\n  facebook: message,\n  telegram: `${esc(message)}\\n${v.url}`,\n} }];\n"
+                },
+                "id": "c52f0eca-5d08-5af8-9e2e-901c31f5ce5c",
+                "name": "Format Video Post",
+                "type": "n8n-nodes-base.code",
+                "typeVersion": 1,
+                "position": [
+                    400,
+                    0
+                ]
+            },
+            {
+                "parameters": {
+                    "httpRequestMethod": "POST",
+                    "graphApiVersion": "v23.0",
+                    "node": "me",
+                    "edge": "feed",
+                    "options": {
+                        "queryParameters": {
+                            "parameter": [
+                                {
+                                    "name": "message",
+                                    "value": "={{ $json.facebook }}"
+                                },
+                                {
+                                    "name": "link",
+                                    "value": "={{ $json.url }}"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "id": "c3854a0f-56c7-5c79-a30c-57193ce3d43e",
+                "name": "Facebook Post",
+                "type": "n8n-nodes-base.facebookGraphApi",
+                "typeVersion": 1,
+                "position": [
+                    640,
+                    -180
+                ],
+                "credentials": {
+                    "facebookGraphApi": {
+                        "id": "ltfxXBWtUWu9wRg3",
+                        "name": "Facebook Graph (TinnitusHelp)"
+                    }
+                }
+            },
+            {
+                "parameters": {
+                    "chatId": "@tinnitushelpme",
+                    "text": "={{ $json.telegram }}",
+                    "additionalFields": {
+                        "appendAttribution": false,
+                        "disable_web_page_preview": false,
+                        "parse_mode": "HTML"
+                    }
+                },
+                "id": "94d07cef-9745-5c5a-9f3a-a962fa6a4ffd",
+                "name": "Telegram Post",
+                "type": "n8n-nodes-base.telegram",
+                "typeVersion": 1.2,
+                "position": [
+                    640,
+                    0
+                ],
+                "credentials": {
+                    "telegramApi": {
+                        "id": "4rLRmLOvcIlidonP",
+                        "name": "Telegram (TinniusHelp)"
+                    }
+                },
+                "webhookId": "14fac159-0373-4ea1-ace0-57784254584c"
+            }
+        ],
+        "connections": {
+            "Form Trigger": {
+                "main": [
+                    [
+                        {
+                            "node": "Normalise Input",
+                            "type": "main",
+                            "index": 0
+                        }
+                    ]
+                ]
+            },
+            "Normalise Input": {
+                "main": [
+                    [
+                        {
+                            "node": "Fetch Video Info",
+                            "type": "main",
+                            "index": 0
+                        }
+                    ]
+                ]
+            },
+            "Fetch Video Info": {
+                "main": [
+                    [
+                        {
+                            "node": "Format Video Post",
+                            "type": "main",
+                            "index": 0
+                        }
+                    ]
+                ]
+            },
+            "Format Video Post": {
+                "main": [
+                    [
+                        {
+                            "node": "Facebook Post",
+                            "type": "main",
+                            "index": 0
+                        },
+                        {
+                            "node": "Telegram Post",
+                            "type": "main",
+                            "index": 0
+                        }
+                    ]
+                ]
+            }
+        },
+        "nodeGroups": [],
+        "authors": "Oktay Shakirov",
+        "name": null,
+        "description": null,
+        "autosaved": false,
+        "workflowPublishHistory": [
+            {
+                "createdAt": "2026-08-19T22:57:31.277Z",
+                "id": 179,
+                "workflowId": "q3omZaUm7kpTc6WE",
+                "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+                "event": "activated",
+                "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+            },
+            {
+                "createdAt": "2026-08-19T22:57:31.294Z",
+                "id": 181,
+                "workflowId": "q3omZaUm7kpTc6WE",
+                "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+                "event": "activated",
+                "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+            },
+            {
+                "createdAt": "2026-08-19T22:57:31.273Z",
+                "id": 178,
+                "workflowId": "q3omZaUm7kpTc6WE",
+                "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+                "event": "deactivated",
+                "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+            },
+            {
+                "createdAt": "2026-08-19T22:57:31.290Z",
+                "id": 180,
+                "workflowId": "q3omZaUm7kpTc6WE",
+                "versionId": "ff89a212-8175-4e7b-96cb-68aec4c2269d",
+                "event": "deactivated",
+                "userId": "4346e89d-8f9e-4244-87be-62981ab23688"
+            }
+        ]
+    }
+}

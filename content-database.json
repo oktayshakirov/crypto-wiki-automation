@@ -565,6 +565,10 @@
     "what.is.mica": {
       "slug": "what-is-mica",
       "title": "What Is MiCA?"
+    },
+    "what.is.a.crypto.liquidation": {
+      "slug": "what-is-a-crypto-liquidation",
+      "title": "What Is a Crypto Liquidation?"
     }
   },
   "tools": {
@@ -596,6 +600,6 @@
   "next_orders": {
     "crypto_ogs": 38,
     "exchanges": 34,
-    "posts": 25
+    "posts": 26
   }
 }

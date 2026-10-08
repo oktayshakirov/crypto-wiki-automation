@@ -147,6 +147,10 @@
     "jeremy.allaire": {
       "slug": "jeremy-allaire",
       "title": "Jeremy Allaire"
+    },
+    "tom.lee": {
+      "slug": "tom-lee",
+      "title": "Tom Lee"
     }
   },
   "exchanges": {
@@ -598,7 +602,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 38,
+    "crypto_ogs": 39,
     "exchanges": 34,
     "posts": 26
   }

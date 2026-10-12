@@ -573,6 +573,10 @@
     "what.is.a.crypto.liquidation": {
       "slug": "what-is-a-crypto-liquidation",
       "title": "What Is a Crypto Liquidation?"
+    },
+    "what.is.dollar.cost.averaging": {
+      "slug": "what-is-dollar-cost-averaging",
+      "title": "What Is Dollar-Cost Averaging?"
     }
   },
   "tools": {
@@ -604,6 +608,6 @@
   "next_orders": {
     "crypto_ogs": 39,
     "exchanges": 34,
-    "posts": 26
+    "posts": 27
   }
 }

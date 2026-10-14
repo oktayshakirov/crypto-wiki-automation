@@ -1,5 +1,28 @@
 # Changelog - publish-content-crypto
 
+## 2026-10-15 - Image and ad placement rules
+
+**What changed:** SKILL.md gained an "Image and ad placement" section that overrides the
+guideline docs. All three guideline docs now say the same thing, and the gate checks it.
+A body image closes its section. Images and ads never go under a heading, after a `:`
+lead-in, or inside a list. The first ad sits 100+ words in. When an image's section
+already ends with an ad, the ad moves, not the image.
+
+**Trigger:** 13 images on 9 exchange pages, 6 on OG bios and 1 on a post sat between a
+lead-in ("X outlines several security measures:") and the list it introduced, or inside
+a list. The cause was the brief. `exchange_guidelines.md` gave no placement rule beyond
+"after Core Services, before Security". `crypto_og_guidelines.md` said "add 1 image
+strategically within this section" and "not rigidly after specific sections". The ad
+rules still said "first ad after introduction", which the 2026-10-13 ad pass reversed.
+They also asked for "one complete section between ads and images", which no live page meets.
+
+**Gate:** two new FAIL checks (image or ad under a heading, after a lead-in or inside a
+list) and three new WARN checks (image not the last block of its section, both images in
+one section, first ad under 100 words in). Run across all 144 live pages, the FAIL checks
+found exactly one problem outside the pages already being fixed: on satoshi-nakamoto, an
+ad sat between the whitepaper lead-in and its list. It was fixed in the same change, and
+all 144 pages now pass both FAIL checks.
+
 ## 2026-10-03 - Article generation moved from GPT-5 to Claude
 
 **What changed:** Step 2 no longer triggers the n8n "New Post" / "New Exchange" /

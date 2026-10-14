@@ -12,7 +12,7 @@
 
 4. **## Major Contributions and Projects** – Highlight their biggest achievements, roles, and innovations with specific years, companies, and measurable outcomes. This is often the longest section.
 
-   - Add 1 image strategically within this section
+   - Close this section with 1 image (after its last paragraph or list, directly before the next heading)
    - Use **bold internal links** to other OGs, posts, or exchanges naturally
 
 5. **## [Contextual Section]** – Add relevant sections based on the person:
@@ -25,14 +25,14 @@
 
 6. **## Legacy and Influence** – Summarize their long-term impact, influence on the industry, and current standing. End with a balanced, concluding sentence.
 
-**IMAGE PLACEMENT**: Place 2 images strategically throughout the article where they enhance the narrative, not rigidly after specific sections.
+**IMAGE PLACEMENT**: Each of the 2 images closes the section it illustrates - after that section's last paragraph or list, directly before the next `##` heading. Never directly under a heading, never after a lead-in sentence ending in `:`, never between list items. Use two different sections, one in each half of the bio.
 
 ---
 
 ## Content Requirements
 
 - **Length:** 1,200–2,000 words (longer for more complex figures)
-- **Images:** Exactly 2, placed strategically to enhance narrative flow
+- **Images:** Exactly 2, each closing a section (see IMAGE PLACEMENT above)
 - **Internal Links:** 8–15 total, using **[Text](/path)** in bold, flowing naturally
 - **Tone:** Narrative, engaging, and story-driven — like reading a compelling biography
 - **Keywords:** Include terms like "crypto pioneer", "blockchain innovator", "decentralization", "Bitcoin", "Ethereum" naturally
@@ -44,11 +44,11 @@
 
 **Placement Rules:**
 
-- **After complete sections only** - Place after a full section/subsection concludes, never mid-section
-- **Avoid image proximity** - Never place immediately before or after images (maintain at least one complete section between ads and images)
-- **Even distribution** - Distribute 2-5 ads evenly throughout (2-3 for shorter bios, 3-5 for longer/complex figures)
-- **Natural breaks** - Place at transition points between topics, after opening section, between major sections (Early Life, Entry into Crypto, Major Contributions), before Conclusion (not immediately before)
-- **Pattern**: First ad after opening, subsequent ads after major biographical sections, last ad before Conclusion
+- At a clean break: after a finished paragraph or list, ideally at the end of a section. Never directly under a heading, never after a lead-in ending in `:`, never between list items
+- Never adjacent to an image: a section end holds an image OR an ad, not both. If an image's section already ends with an ad, move the ad to another clean break rather than moving the image
+- Keep the first ad out of the intro: at least 100 words in, typically 300-650. Never directly under the opening heading
+- Even distribution: spread ads so ads and images roughly alternate down the page; the break between the two Conclusion paragraphs is also allowed
+- Count: 2-5 ads (2-3 for shorter bios, 3-5 for longer/complex figures)
 
 ---
 
@@ -201,7 +201,9 @@ After writing the biography, provide a JSON object with verified social links, a
 
 - [ ] Engaging opening that immediately establishes importance
 - [ ] Flexible section structure adapted to the person's story
-- [ ] 2 images placed strategically to enhance narrative
+- [ ] Each image is the last block of its section, directly before the next `##` heading
+- [ ] No image after a `:` lead-in, directly under a heading, or between list items
+- [ ] The two images sit in different sections, one in each half of the article
 
 **Links**
 
@@ -222,10 +224,10 @@ After writing the biography, provide a JSON object with verified social links, a
 **ArticleAd Placement**
 
 - [ ] 2-5 ArticleAd components placed throughout article
-- [ ] All ads placed after complete sections (never mid-section)
-- [ ] No ads immediately before or after images
-- [ ] Ads evenly distributed across article length
-- [ ] First ad after opening section, last ad before Conclusion
+- [ ] Every ad at a clean break: not under a heading, not after a `:` lead-in, not inside a list
+- [ ] No ad directly before or after an image (each section end holds one or the other)
+- [ ] Ads evenly distributed, roughly alternating with images
+- [ ] First ad at least 100 words in, never in the intro
 
 **JSON**
 

@@ -24,8 +24,9 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 - **Length**: 1,500-2,500 words
 - **Internal Links**: 8-15 total, ALL using **[Text](/path)** bold format, flowing naturally
 - **Images**: Exactly 2 with descriptive alt text using /images/posts/ paths
-  - First: After Core Services, before Security
-  - Second: After User Experience/Regulatory, before Conclusion
+  - First: closes the Core Services section (last block before the Security heading)
+  - Second: closes the User Experience or Regulatory section (last block before the next heading)
+- **Image placement**: each body image closes a section - after its last paragraph or list, directly before the next `##` heading. Never directly under a heading, never after a lead-in sentence ending in `:`, never between list items. Two images in two different sections, one in each half of the article, never in the opening section or Conclusion.
 - **Formatting**: ## for main headings, **bold** for ALL sub-categories in bullet points
 - **Tone**: Professional, balanced, expert-level, E-E-A-T compliant
 - **SEO**: Include naturally 'cryptocurrency exchange', 'crypto trading', 'digital assets'
@@ -36,11 +37,11 @@ FLEXIBILITY: The 7 sections are MINIMUM. Add contextual sections as needed (e.g.
 
 **Placement Rules:**
 
-- **After complete sections only** - Place after a full section/subsection concludes, never mid-section
-- **Avoid image proximity** - Never place immediately before or after images (maintain at least one complete section between ads and images)
-- **Even distribution** - Distribute 2-6 ads evenly throughout (2-3 for medium articles, 4-6 for longer articles)
-- **Natural breaks** - Place at transition points between topics, after opening section, between major sections, before conclusion (not immediately before)
-- **Pattern**: First ad after opening, subsequent ads after Core Services/Security/User Experience sections, last ad before Conclusion
+- At a clean break: after a finished paragraph or list, ideally at the end of a section. Never directly under a heading, never after a lead-in ending in `:`, never between list items
+- Never adjacent to an image: a section end holds an image OR an ad, not both. If an image's section already ends with an ad, move the ad to another clean break rather than moving the image
+- Keep the first ad out of the intro: at least 100 words in, typically 300-650. Never directly under the opening heading
+- Even distribution: spread ads so ads and images roughly alternate down the page; the break between the two Conclusion paragraphs is also allowed
+- Count: 2-6 ads (2-3 for medium articles, 4-6 for longer articles)
 
 ## Internal Linking (MANDATORY - NATURAL FLOW - ALWAYS USE BOLD)
 
@@ -282,8 +283,9 @@ Before finalizing:
 
 - [ ] Exactly 2 images with descriptive alt text
 - [ ] Paths use /images/posts/ (NOT /images/exchanges/)
-- [ ] First: After Core Services, before Security
-- [ ] Second: After User Experience/Regulatory, before Conclusion
+- [ ] Each image is the last block of its section, directly before the next `##` heading
+- [ ] No image after a `:` lead-in, directly under a heading, or between list items
+- [ ] The two images sit in different sections, one in each half of the article
 
 **Content**
 
@@ -308,7 +310,7 @@ Before finalizing:
 **ArticleAd Placement**
 
 - [ ] 3-6 ArticleAd components placed throughout article
-- [ ] All ads placed after complete sections (never mid-section)
-- [ ] No ads immediately before or after images
-- [ ] Ads evenly distributed across article length
-- [ ] First ad after opening section, last ad before Conclusion
+- [ ] Every ad at a clean break: not under a heading, not after a `:` lead-in, not inside a list
+- [ ] No ad directly before or after an image (each section end holds one or the other)
+- [ ] Ads evenly distributed, roughly alternating with images
+- [ ] First ad at least 100 words in, never in the intro

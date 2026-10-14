@@ -356,6 +356,66 @@ def main():
             adj.append(f"lines {i1+1}->{i2+1}")
     check(not adj, "ads not adjacent to images", bad_detail="; ".join(adj))
 
+    # --- image + ad placement ---
+    # A body image closes a section: last block before the next heading. The
+    # GPT-era guidelines said "place strategically within this section", and
+    # the result shipped on 13 exchange and 7 other pages as an image wedged
+    # between a lead-in ("X offers several features:") and the list it
+    # introduces. Fixed by hand 2026-10-15. Ads follow the same spot rules
+    # and never open the article (moved out of the intro 2026-10-13).
+    bl = body.split("\n")
+
+    def nb(i, step):
+        j = i + step
+        while 0 <= j < len(bl) and not bl[j].strip():
+            j += step
+        return bl[j] if 0 <= j < len(bl) else ""
+
+    def in_list(s):
+        return bool(re.match(r"\s*([-*]|\d+\.)\s", s)) or s.startswith((" ", "\t"))
+
+    def bad_spot(i):
+        prev, nxt = nb(i, -1), nb(i, 1)
+        if prev.startswith("#"):
+            return "directly under a heading"
+        if prev.rstrip().endswith(":"):
+            return "after a lead-in ending in ':'"
+        if in_list(prev) and in_list(nxt):
+            return "splits a list"
+        return None
+
+    img_bad, img_mid, ad_bad = [], [], []
+    sec, img_secs = 0, []
+    for i, ln in enumerate(bl):
+        if ln.startswith("## "):
+            sec += 1
+        if ln.startswith("!["):
+            img_secs.append(sec)
+            why = bad_spot(i)
+            if why:
+                img_bad.append(f"line {i+1} {why}")
+            elif not nb(i, 1).startswith("#"):
+                img_mid.append(f"line {i+1}")
+        elif "ArticleAd" in ln:
+            why = bad_spot(i)
+            if why:
+                ad_bad.append(f"line {i+1} {why}")
+    check(not img_bad, "images not after a lead-in or inside a list",
+          bad_detail="; ".join(img_bad))
+    check(not img_mid, "images close their section", level=WARN,
+          bad_detail="not directly before a heading: " + ", ".join(img_mid))
+    check(len(set(img_secs)) == len(img_secs), "images in different sections",
+          level=WARN, bad_detail="two images share one section")
+    check(not ad_bad, "ads not under a heading, after a lead-in or inside a list",
+          bad_detail="; ".join(ad_bad))
+
+    first_ad = body.find("ArticleAd")
+    if first_ad != -1:
+        lead = len(re.findall(r"\b[\w'-]+\b", re.sub(
+            r"<[^>]+>|!\[.*?\]\(.*?\)", "", body[:first_ad])))
+        check(lead >= 100, "first ad not in the intro", level=WARN,
+              bad_detail=f"first ad {lead} words in (aim 100+, typical 300-650)")
+
     emit_and_exit()
 
 

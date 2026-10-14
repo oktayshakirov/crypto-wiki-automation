@@ -16,7 +16,8 @@ For **"How to..."** and beginner-focused guides: Engaging introduction (2–3 pa
 
 - **Length**: 1,200-2,500 words
 - **Internal Links**: 8-15 total, ALL using **[Text](/path)** bold format, flowing naturally
-- **Images**: Exactly 2 with descriptive alt text using `/images/posts/` paths (first after main concept, second before conclusion)
+- **Images**: Exactly 2 with descriptive alt text using `/images/posts/` paths (first at the end of the section that explains the main concept, second at the end of a later section before the conclusion)
+- **Image placement**: each body image closes a section - after its last paragraph or list, directly before the next `##` heading. Never directly under a heading, never after a lead-in sentence ending in `:`, never between list items. Two images in two different sections, one in each half of the article, never in the opening section or Conclusion.
 - **Formatting**: ## for main headings, **bold** for ALL sub-categories in bullet points
 - **Tone**: Professional, educational, expert-level, E-E-A-T compliant, accessible to beginners
 
@@ -48,10 +49,11 @@ For **"How to..."** and beginner-focused guides: Engaging introduction (2–3 pa
 
 **Placement Rules:**
 
-- After complete sections only (never mid-section)
-- Avoid image proximity (maintain at least one complete section between ads and images)
-- Even distribution: 2-3 for <100 lines, 3-4 for 100-150 lines, 4-6 for 150+ lines
-- Pattern: First ad after introduction, subsequent ads after major sections, last ad before final section
+- At a clean break: after a finished paragraph or list, ideally at the end of a section. Never directly under a heading, never after a lead-in ending in `:`, never between list items
+- Never adjacent to an image: a section end holds an image OR an ad, not both. If an image's section already ends with an ad, move the ad to another clean break rather than moving the image
+- Keep the first ad out of the intro: at least 100 words in, typically 300-650. Never directly under the opening heading
+- Even distribution: spread ads so ads and images roughly alternate down the page; the break between the two Conclusion paragraphs is also allowed
+- Count: 2-3 for <100 lines, 3-4 for 100-150 lines, 4-6 for 150+ lines
 
 ## Internal Linking (ALWAYS USE BOLD FORMAT)
 
@@ -173,7 +175,9 @@ After writing the post, provide JSON:
 
 **Structure**: Start with ## heading, engaging opening paragraphs after heading, all core sections with ## headers, conclusion (2-3 paragraphs), 1,200-2,500 words
 
-**ArticleAd Placement**: 2-6 ads evenly distributed, after complete sections only, avoid image proximity, first after introduction, last before conclusion
+**ArticleAd Placement**: 2-6 ads evenly distributed at clean breaks (not under a heading, after a `:` lead-in or inside a list), never adjacent to an image, first ad 100+ words in
+
+**Image Placement**: each image closes its section (directly before the next `##`), never after a `:` lead-in or inside a list, two different sections
 
 **Links & Images**: 8-15 internal links using **[Text](/path)** bold format, exactly 2 images with descriptive alt text, paths use `/images/posts/`
 

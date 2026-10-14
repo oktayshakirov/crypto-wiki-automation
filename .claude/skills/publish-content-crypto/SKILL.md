@@ -163,7 +163,7 @@ It resolves the DB + image archive itself and infers the type from the path (`/e
 
 Known non-issues it deliberately tolerates: markdown table separator rows (`| --- |`) are stripped before the dash check, `#anchor`/`?query` links validate against the base page, and link targets are checked against the DB **union the MDX actually on disk** (the DB can drift and miss live posts).
 
-Checks: 1,200-2,500 words; 8-15 internal links, **bold** `**[Text](/path)**`, each page linked at most once, all slugs valid vs DB; exactly 2 body images **from the real archive** (never invented names) and **not repeated in posts published close together** - reusing an archive image across the site is fine and expected; what matters is that someone reading a few recent posts back to back never sees the same picture twice. The gate warns when a body image also appears in any of the 5 most recent other posts by frontmatter date (`--recent-window`). On a warning, swap in a different archive file, or fetch a new one with `pick_main_image.py`; no em/en dashes or `--` (plain `-` only); **no curly quotes** (`'`/`'`/`"`/`"` -> straight; applies to body AND the frontmatter description); no trailing metadata JSON (fenced or bare); ads never adjacent to images; no References section; author `Oktay Shakirov`.
+Checks: 1,200-2,500 words; 8-15 internal links, **bold** `**[Text](/path)**`, each page linked at most once, all slugs valid vs DB; exactly 2 body images **from the real archive** (never invented names) and **not repeated in posts published close together** - reusing an archive image across the site is fine and expected; what matters is that someone reading a few recent posts back to back never sees the same picture twice. The gate warns when a body image also appears in any of the 5 most recent other posts by frontmatter date (`--recent-window`). On a warning, swap in a different archive file, or fetch a new one with `pick_main_image.py`; no em/en dashes or `--` (plain `-` only); **no curly quotes** (`'`/`'`/`"`/`"` -> straight; applies to body AND the frontmatter description); no trailing metadata JSON (fenced or bare); ads never adjacent to images; images and ads never under a heading, after a `:` lead-in or inside a list (see **Image and ad placement** below); no References section; author `Oktay Shakirov`.
 The Build node's auto-fixes (curly quotes, dashes) no longer run, because Claude writes the MDX directly - **get these right while writing** rather than expecting a cleanup pass. If a violation recurs across articles, fix the guidelines doc, not a workflow node. The notes below about workflow-node fixes apply only if you fall back to n8n generation.
 **Persisting workflow fixes:** live n8n edits only survive in the gitignored `.n8n-backups/`. When a fix is **important/major** (fixes a broken workflow, changes a contract, or prevents a defect on every future run), also sync the live workflow into the repo's committed JSON snapshot (`crypto-wiki-automation/{new_post,share_post,...}.json`) and commit, so it survives an n8n reset - minor tweaks can stay live-only. Known deterministic fix already committed: Share `Set Slug` reads `={{ $json.slug }}` (was hardcoded, shared the wrong post). Live-only (not yet in committed JSON): New Post Build node curly-quote normalization.
 
@@ -173,6 +173,36 @@ Per-type conventions:
 - **Post**: starts `## Heading`; `<ArticleAd />`; images `![alt](/images/posts/x.jpg)`; main image ≠ body images; frontmatter `categories` (fixed list) + optional `crypto-ogs`/`exchanges` (Title Case) + `draft: false`; description 150-160 chars. Proactively link relevant existing crypto-OGs. Avoid brand-heavy/ad-like archive images. **Every name in `crypto-ogs`/`exchanges` must actually be linked in the body** - the AI tends to list OGs it never mentions (the gate now fails on this); either add a real mention+link or drop the name. If you trim a body link, drop the matching frontmatter entry too.
 - **Exchange**: `## Heading` (recent pages are plain, older ones bold - either passes); `<ArticleAd />`; body images `![alt](/images/posts/x.jpg)` from the archive; main image is a **brand logo** at `/images/exchanges/<slug>.png` (~16:9, 600-1200px wide, <100 KB) that the user supplies by hand - never Pexels. Frontmatter needs `title, meta_title, image, description, date, updated, order, authors, quickFacts, faqs, social` - **`meta_title`, `quickFacts` and `faqs` are mandatory** (both render in `layouts/ExchangeSingle.js`, and `faqs` feeds the `faqSchema()` JSON-LD, so omitting it silently costs the FAQ rich result; the AI leaves both out). description **90-125 chars** - the exchange card is a fixed tile and past ~125 chars it wraps to a 5th row and looks off next to the rest of the grid. `social` keys are limited to what `layouts/components/Social.js` destructures (website, twitter, discord, github, telegram, apple, android, facebook, instagram, linkedin, youtube, reddit, medium, wikipedia, ...) - anything else, e.g. `docs`, is silently dropped. Verify each social URL via WebSearch and drop unverified ones. **Always add `apple` and `android` links when the exchange ships mobile apps** - nearly all of them do, and the AI omits them or invents plausible-looking fakes (it guessed `apps.apple.com/app/asterdex` and `id=com.asterdex`, both nonexistent). Find the real listings via WebSearch or the exchange's own site/X account, then **confirm the developer name on the listing matches the exchange** (Aster's Play listing is developer "Aster DEX" / contact@asterdex.com) - store search is full of copycat wallet apps. `curl -sL -o /dev/null -w '%{http_code}'` both URLs before committing. Apple storefronts are per-country and a listing missing from one 404s there while working elsewhere, so if `/us/` 404s try `gb`, `de`, `ch`, `ee` and use one that returns 200 (Aster is not in the US/UK/DE stores; the page uses `ch`). Play Store URLs are global - no `hl=` needed. Fact-check the protocol/company specifics: GPT-5 tends to emit a generic exchange template with the name swapped in, so confirm founders, launch year, native token, architecture, and any major incident actually made it into the body.
 - **Crypto OG**: `## **Bold Heading**`; quotes `> "..." - Name`; social block in frontmatter (verify links via WebSearch; drop unverified); no tags; ISO date + order; description 90-125 chars (same card grid as exchanges). **`meta_title`, `quickFacts` and `faqs` are mandatory here too** - `CryptoOgSingle.js` renders them as `PersonQuickFacts` and `ExchangeFaq` and feeds `faqSchema()`, exactly like the exchange layout, and all 33 live OG pages carry both. The skill used to list them under exchanges only and the gate only checked exchanges, so an OG could ship without them and silently lose the FAQ rich result plus the whole quick-facts panel; the gate now checks both types. Same failure mode as exchanges - the AI leaves both out unless told. Fact-check recent events (GPT-5 may miss them, e.g. verdicts/sentencings).
+
+### Image and ad placement (all types)
+
+This overrides the guideline docs wherever they differ. The GPT-era docs said to place images
+"strategically within this section", and the result shipped on 13 exchange pages and 7 others:
+an image wedged between a lead-in ("Bitpanda emphasizes security and regulation:") and the
+list it introduces, which reads as if the picture were the first bullet. Fixed by hand on
+2026-10-15. The site convention is:
+
+- **A body image closes a section.** Put it after the section's last paragraph or list,
+  directly before the next `##` heading. Never directly under a heading, never after a
+  lead-in ending in `:`, never between list items. Choose a section whose content the
+  image actually illustrates.
+- **Spread the two images out.** Put them in different sections: one in the first half of
+  the article and one in the second half. Never put one in the opening section or in the
+  Conclusion.
+- **Each section end holds one image or one ad, never both.** The gate fails an ad and an
+  image with only a blank line between them.
+- **Ads go at clean breaks:** after a finished paragraph or list. The same bans apply as for
+  images: never under a heading, never after a `:` lead-in, never inside a list. A break
+  between two paragraphs inside a section is fine, and so is the break between the two
+  Conclusion paragraphs. Keep the first ad out of the intro (100+ words in, typically
+  300-650). Spread the rest evenly so that ads and images roughly alternate down the page.
+- **When an image's section already ends with an ad, keep the image there.** Move that ad
+  to the clean spot farthest from its neighbouring ads and images, and keep the ad count.
+  Don't solve it by pushing the image back up into the section.
+
+The gate enforces all of this. It fails an image or ad placed under a heading, after a
+lead-in or inside a list. It warns when an image is not the last block of its section,
+when both images share a section, and when the first ad is under 100 words in.
 
 ## Step 3b - Freshness: the `updated` field
 

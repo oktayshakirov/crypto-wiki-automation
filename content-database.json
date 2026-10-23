@@ -287,6 +287,10 @@
     "bitvavo": {
       "slug": "bitvavo",
       "title": "Bitvavo"
+    },
+    "bullish": {
+      "slug": "bullish",
+      "title": "Bullish"
     }
   },
   "posts": {
@@ -611,7 +615,7 @@
   },
   "next_orders": {
     "crypto_ogs": 39,
-    "exchanges": 34,
+    "exchanges": 35,
     "posts": 28
   }
 }

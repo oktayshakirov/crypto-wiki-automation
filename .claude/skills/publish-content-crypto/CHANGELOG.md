@@ -75,7 +75,7 @@ replication (dot-separated key, `next_orders` increment, no trailing newline).
 **Also on this date:** six dead exchange-generator workflows were identified; two were
 deleted (`H6X0O2HshAaMb3v4`, `Wq4XY7OUIKf8Xhu0`), with JSON backed up to the gitignored
 `.n8n-backups/`. The other four were backed up but the delete was refused by the
-permission classifier and left for the user.
+permission classifier and left to be deleted by hand.
 
 **Open / unverified:** whether this holds up across types - only a post has been
 migrated so far. Tinnitus, exchange and OG migrations are pending. The

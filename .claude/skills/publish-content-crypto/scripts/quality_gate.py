@@ -17,8 +17,12 @@ script rather than one shared script branching on site.
 import argparse, json, os, re, sys
 from datetime import datetime
 
-DB = "/Users/oktayshakirov/Coding/crypto-wiki-automation/content-database.json"
-ARCHIVE = "/Users/oktayshakirov/Coding/crypto-wiki/public/images/posts"
+# Repo root and its siblings, found from this file so the script works from
+# any directory and any checkout (realpath follows the ~/.claude/skills symlink).
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))))
+CODING = os.path.dirname(REPO)
+DB = os.path.join(REPO, "content-database.json")
+ARCHIVE = os.path.join(CODING, "crypto-wiki", "public", "images", "posts")
 DOMAIN = "https://www.thecrypto.wiki"
 # Non-content link targets that are valid but never in the DB.
 STATIC = {"/app", "/tools", "/search", "/about", "/posts",

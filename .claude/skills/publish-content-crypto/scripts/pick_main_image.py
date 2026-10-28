@@ -17,7 +17,11 @@ free key at https://www.pexels.com/api/.
 """
 import argparse, json, os, subprocess, sys, urllib.request, urllib.parse
 
-KEY_PATH = "/Users/oktayshakirov/Coding/crypto-wiki-automation/.pexels-api-key"
+# Repo root and its siblings, found from this file so the script works from
+# any directory and any checkout (realpath follows the ~/.claude/skills symlink).
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))))
+CODING = os.path.dirname(REPO)
+KEY_PATH = os.path.join(REPO, ".pexels-api-key")
 
 
 def load_key():

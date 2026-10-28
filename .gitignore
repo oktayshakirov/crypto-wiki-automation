@@ -2,3 +2,6 @@
 .n8n-backups/
 .pexels-api-key
 __pycache__/
+
+# Archived JSON of deleted n8n workflows: local only (earlier copies are in git history).
+deleted-workflows/

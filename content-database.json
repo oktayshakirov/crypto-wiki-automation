@@ -151,6 +151,10 @@
     "tom.lee": {
       "slug": "tom-lee",
       "title": "Tom Lee"
+    },
+    "logan.paul": {
+      "slug": "logan-paul",
+      "title": "Logan Paul"
     }
   },
   "exchanges": {
@@ -614,7 +618,7 @@
     "non-fungible tokens": "nft"
   },
   "next_orders": {
-    "crypto_ogs": 39,
+    "crypto_ogs": 40,
     "exchanges": 35,
     "posts": 28
   }

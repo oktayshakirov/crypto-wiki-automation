@@ -295,6 +295,10 @@
     "bullish": {
       "slug": "bullish",
       "title": "Bullish"
+    },
+    "edgex": {
+      "slug": "edgex",
+      "title": "edgeX"
     }
   },
   "posts": {
@@ -623,7 +627,7 @@
   },
   "next_orders": {
     "crypto_ogs": 40,
-    "exchanges": 35,
+    "exchanges": 36,
     "posts": 29
   }
 }

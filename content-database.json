@@ -597,6 +597,10 @@
     "which.billionaires.own.crypto": {
       "slug": "which-billionaires-own-crypto",
       "title": "Which Billionaires Own Crypto?"
+    },
+    "is.the.bitcoin.four.year.cycle.over": {
+      "slug": "is-the-bitcoin-four-year-cycle-over",
+      "title": "Is the Bitcoin Four-Year Cycle Over?"
     }
   },
   "tools": {
@@ -628,6 +632,6 @@
   "next_orders": {
     "crypto_ogs": 40,
     "exchanges": 36,
-    "posts": 29
+    "posts": 30
   }
 }

@@ -1,0 +1,548 @@
+{
+  "_comment": "Phrases backlinks.py looks for in body prose. OG and exchange pages default to their frontmatter title; list them here only to add nicknames, guards, or mark them review-only. Post pages have question-shaped titles, so a post is only linked when it is listed here. 'ci': case-insensitive match. 'review': report matches but never auto-apply (the word has another common meaning). 'not_followed_by' / 'not_preceded_by': skip a match next to these words. 'skip_files': article slugs where a match was reviewed and is the wrong sense.",
+  "default_not_followed_by": [
+    "Labs",
+    "Foundation",
+    "Ventures",
+    "Research",
+    "Wallet",
+    "Smart Chain",
+    "Chain",
+    "Coin",
+    "Pay",
+    "Card",
+    "Arena",
+    "Capital",
+    "Academy"
+  ],
+  "/crypto-ogs/sam-bankman": {
+    "phrases": [
+      "Sam Bankman-Fried",
+      "SBF"
+    ]
+  },
+  "/crypto-ogs/changpeng-zhao": {
+    "phrases": [
+      "Changpeng Zhao",
+      "CZ"
+    ]
+  },
+  "/crypto-ogs/emin-gun-sirer": {
+    "phrases": [
+      "Emin Gün Sirer",
+      "Emin Gun Sirer"
+    ]
+  },
+  "/crypto-ogs/donald-trump": {
+    "phrases": [
+      "Donald Trump",
+      "President Trump",
+      "Trump"
+    ],
+    "not_preceded_by": [
+      "Eric",
+      "Melania",
+      "Barron",
+      "Lara",
+      "Ivanka"
+    ],
+    "not_followed_by": [
+      "Media",
+      "family",
+      "Jr",
+      "Organization"
+    ]
+  },
+  "/crypto-ogs/vitalik-buterin": {
+    "phrases": [
+      "Vitalik Buterin"
+    ]
+  },
+  "/crypto-ogs/michael-saylor": {
+    "phrases": [
+      "Michael Saylor"
+    ]
+  },
+  "/crypto-ogs/satoshi-nakamoto": {
+    "phrases": [
+      "Satoshi Nakamoto"
+    ]
+  },
+  "/crypto-ogs/elon-musk": {
+    "phrases": [
+      "Elon Musk"
+    ]
+  },
+  "/exchanges/cryptocom": {
+    "phrases": [
+      "Crypto.com"
+    ]
+  },
+  "/exchanges/robinhood-crypto": {
+    "phrases": [
+      "Robinhood Crypto",
+      "Robinhood"
+    ]
+  },
+  "/exchanges/gate": {
+    "phrases": [
+      "Gate.io",
+      "Gate"
+    ],
+    "review": true
+  },
+  "/exchanges/gemini": {
+    "phrases": [
+      "Gemini"
+    ],
+    "review": true,
+    "not_preceded_by": [
+      "Google"
+    ]
+  },
+  "/exchanges/lighter": {
+    "phrases": [
+      "Lighter"
+    ],
+    "review": true
+  },
+  "/exchanges/bullish": {
+    "phrases": [
+      "Bullish"
+    ],
+    "review": true
+  },
+  "/exchanges/aster": {
+    "phrases": [
+      "Aster"
+    ]
+  },
+  "/exchanges/okx": {
+    "phrases": [
+      "OKX"
+    ]
+  },
+  "/posts/what-is-bitcoin": {
+    "phrases": [
+      "Bitcoin"
+    ],
+    "not_followed_by": [
+      "halving",
+      "halvings",
+      "ETF",
+      "ETFs",
+      "mining",
+      "miners",
+      "whitepaper",
+      "white paper",
+      "Cash",
+      "treasury",
+      "Core",
+      "network",
+      "price",
+      "Fear",
+      "SV"
+    ]
+  },
+  "/posts/what-is-ethereum": {
+    "phrases": [
+      "Ethereum"
+    ],
+    "not_followed_by": [
+      "Foundation",
+      "Virtual Machine",
+      "Name Service",
+      "network",
+      "co-founder",
+      "Classic"
+    ]
+  },
+  "/posts/what-is-solana": {
+    "phrases": [
+      "Solana"
+    ]
+  },
+  "/posts/what-is-blockchain": {
+    "phrases": [
+      "blockchain technology"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-defi": {
+    "phrases": [
+      "decentralized finance",
+      "decentralised finance",
+      "DeFi"
+    ]
+  },
+  "/posts/what-is-a-dex": {
+    "phrases": [
+      "decentralized exchanges",
+      "decentralized exchange",
+      "decentralised exchange",
+      "DEXs",
+      "DEX"
+    ]
+  },
+  "/posts/what-are-stablecoins": {
+    "phrases": [
+      "stablecoins",
+      "stablecoin"
+    ],
+    "ci": true
+  },
+  "/posts/what-are-perpetual-futures": {
+    "phrases": [
+      "perpetual futures",
+      "perpetual swaps",
+      "perpetual swap",
+      "perps"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-a-crypto-liquidation": {
+    "phrases": [
+      "liquidations",
+      "liquidation"
+    ],
+    "ci": true,
+    "not_preceded_by": [
+      "Enron's",
+      "company's",
+      "firm's",
+      "court-ordered"
+    ]
+  },
+  "/posts/crypto-staking": {
+    "phrases": [
+      "staking"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-proof-of-stake": {
+    "phrases": [
+      "proof of stake",
+      "proof-of-stake"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-proof-of-work": {
+    "phrases": [
+      "proof of work",
+      "proof-of-work"
+    ],
+    "ci": true
+  },
+  "/posts/what-are-memecoins": {
+    "phrases": [
+      "memecoins",
+      "memecoin",
+      "meme coins",
+      "meme coin"
+    ],
+    "ci": true
+  },
+  "/posts/understanding-crypto-airdrops": {
+    "phrases": [
+      "airdrops",
+      "airdrop"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-a-dao": {
+    "phrases": [
+      "decentralized autonomous organization",
+      "DAOs",
+      "DAO"
+    ]
+  },
+  "/posts/what-are-layer-2-blockchains": {
+    "phrases": [
+      "layer 2 networks",
+      "layer-2 networks",
+      "layer 2",
+      "layer-2",
+      "rollups"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-mica": {
+    "phrases": [
+      "MiCA"
+    ]
+  },
+  "/posts/what-is-the-genius-act": {
+    "phrases": [
+      "GENIUS Act"
+    ]
+  },
+  "/posts/what-is-a-seed-phrase": {
+    "phrases": [
+      "seed phrases",
+      "seed phrase",
+      "recovery phrase"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-a-hardware-wallet": {
+    "phrases": [
+      "hardware wallets",
+      "hardware wallet",
+      "cold wallets",
+      "cold wallet"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-a-rug-pull": {
+    "phrases": [
+      "rug pulls",
+      "rug pull",
+      "rug-pull"
+    ],
+    "ci": true
+  },
+  "/posts/what-are-gas-fees": {
+    "phrases": [
+      "gas fees",
+      "gas fee"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-yield-farming": {
+    "phrases": [
+      "yield farming"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-dollar-cost-averaging": {
+    "phrases": [
+      "dollar-cost averaging",
+      "dollar cost averaging"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-market-cap-in-crypto": {
+    "phrases": [
+      "market capitalization",
+      "market capitalisation",
+      "market cap"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-a-crypto-whale": {
+    "phrases": [
+      "whales",
+      "whale"
+    ],
+    "ci": true
+  },
+  "/posts/what-are-prediction-markets": {
+    "phrases": [
+      "prediction markets",
+      "prediction market"
+    ],
+    "ci": true
+  },
+  "/posts/what-are-tokenized-stocks": {
+    "phrases": [
+      "tokenized stocks",
+      "tokenised stocks",
+      "tokenized equities"
+    ],
+    "ci": true
+  },
+  "/posts/real-world-asset-tokenization": {
+    "phrases": [
+      "real-world asset tokenization",
+      "real world asset tokenization",
+      "real-world assets",
+      "real world assets",
+      "RWAs"
+    ]
+  },
+  "/posts/the-bitcoin-halving": {
+    "phrases": [
+      "Bitcoin halving",
+      "halvings",
+      "halving"
+    ],
+    "ci": true
+  },
+  "/posts/crypto-fear-and-greed-index-for-beginners": {
+    "phrases": [
+      "Fear and Greed Index",
+      "Fear & Greed Index"
+    ],
+    "ci": true
+  },
+  "/posts/crypto-etfs-explained": {
+    "phrases": [
+      "spot Bitcoin ETFs",
+      "spot Bitcoin ETF",
+      "Bitcoin ETFs",
+      "crypto ETFs",
+      "ETFs",
+      "ETF"
+    ]
+  },
+  "/posts/central-bank-digital-currencies": {
+    "phrases": [
+      "central bank digital currencies",
+      "central bank digital currency",
+      "CBDCs",
+      "CBDC"
+    ]
+  },
+  "/posts/smart-contracts-and-industries-beyond-crypto": {
+    "phrases": [
+      "smart contracts",
+      "smart contract"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-web3": {
+    "phrases": [
+      "Web3"
+    ]
+  },
+  "/posts/what-are-altcoins": {
+    "phrases": [
+      "altcoins",
+      "altcoin"
+    ],
+    "ci": true
+  },
+  "/posts/what-is-gamefi": {
+    "phrases": [
+      "GameFi"
+    ]
+  },
+  "/posts/are-nfts-dead": {
+    "phrases": [
+      "NFTs",
+      "NFT"
+    ]
+  },
+  "/posts/bear-market-in-crypto": {
+    "phrases": [
+      "bear markets",
+      "bear market"
+    ],
+    "ci": true
+  },
+  "/posts/how-to-identify-crypto-bull-or-bear-market": {
+    "phrases": [
+      "bull markets",
+      "bull market",
+      "bull run"
+    ],
+    "ci": true
+  },
+  "/posts/crypto-volatility": {
+    "phrases": [
+      "volatility"
+    ],
+    "ci": true
+  },
+  "/posts/understanding-crypto-taxes": {
+    "phrases": [
+      "crypto taxes",
+      "capital gains tax"
+    ],
+    "ci": true
+  },
+  "/posts/how-to-store-crypto": {
+    "phrases": [
+      "self-custody",
+      "cold storage"
+    ],
+    "ci": true
+  },
+  "/posts/understanding-crypto-exchanges": {
+    "phrases": [
+      "centralized exchanges",
+      "centralised exchanges",
+      "crypto exchanges"
+    ],
+    "ci": true
+  },
+  "/posts/how-to-avoid-crypto-scams": {
+    "phrases": [
+      "crypto scams"
+    ],
+    "ci": true
+  },
+  "/posts/how-does-north-korea-steal-crypto": {
+    "phrases": [
+      "Lazarus Group",
+      "North Korean hackers"
+    ]
+  },
+  "/posts/quantum-computers-and-crypto": {
+    "phrases": [
+      "quantum computers",
+      "quantum computing"
+    ],
+    "ci": true
+  },
+  "/posts/decentralized-ai-can-ai-run-on-the-blockchain": {
+    "phrases": [
+      "decentralized AI",
+      "decentralised AI"
+    ],
+    "ci": true
+  },
+  "/posts/how-ai-agents-pay-with-crypto": {
+    "phrases": [
+      "AI agents"
+    ],
+    "ci": true
+  },
+  "/posts/is-bitcoin-mining-still-profitable": {
+    "phrases": [
+      "Bitcoin mining"
+    ],
+    "ci": true
+  },
+  "/posts/how-to-build-a-mining-rig": {
+    "phrases": [
+      "mining rigs",
+      "mining rig"
+    ],
+    "ci": true
+  },
+  "/posts/is-the-bitcoin-four-year-cycle-over": {
+    "phrases": [
+      "four-year cycle",
+      "four year cycle"
+    ],
+    "ci": true
+  },
+  "/posts/do-your-own-research": {
+    "phrases": [
+      "do your own research",
+      "DYOR"
+    ],
+    "ci": true
+  },
+  "/posts/grand-theft-auto-crypto": {
+    "phrases": [
+      "Grand Theft Auto",
+      "GTA 6",
+      "GTA VI"
+    ]
+  },
+  "/posts/the-squid-game-crypto-scam": {
+    "phrases": [
+      "Squid Game token",
+      "SQUID token"
+    ]
+  },
+  "/posts/send-and-receive-crypto-safely": {
+    "phrases": [
+      "wallet addresses",
+      "wallet address"
+    ],
+    "ci": true
+  }
+}

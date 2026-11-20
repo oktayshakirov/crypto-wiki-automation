@@ -5,7 +5,7 @@ description: Publish content to thecrypto.wiki - suggest topics, write the artic
 
 # Publish Content — Crypto Wiki
 
-Full agent loop: **suggest topics → user picks → Claude writes the article → quality gate → stage locally → fetch main-image candidates (user picks) → user reviews → push (deploy gate) → share → verify.**
+Full agent loop: **suggest topics → user picks → Claude writes the article → quality gate → backlinks from older articles → stage locally → fetch main-image candidates (user picks) → user reviews → push (deploy gate) → share → verify.**
 
 **Claude writes the articles; n8n posts them.** The three "New" generation workflows are kept as a fallback but are not the path - see Step 2.
 
@@ -229,6 +229,56 @@ posts carry it.
   specifically, rather than re-reading what is already there. The gap is always
   in what happened since, not in what was written.
 
+## Step 3c - Backlinks: link older articles to the new page
+
+A new page is an orphan until older articles link to it. Run, from anywhere:
+
+```
+python3 scripts/backlinks.py --target /<posts|exchanges|crypto-ogs>/<slug>          # report
+python3 scripts/backlinks.py --target /<posts|exchanges|crypto-ogs>/<slug> --apply  # write
+```
+
+(script dir is this skill's folder; it defaults to `~/Coding/crypto-wiki`).
+On posts it also appends the entity to the frontmatter `crypto-ogs:` /
+`exchanges:` list, which the gate requires to match the body links.
+
+**OGs and exchanges are matched by their title automatically. A new post is
+not** - post titles are questions ("What Are Perpetual Futures?") that never
+appear in prose. So for a new post, first add it to
+`scripts/link_aliases.json` with the 1-3 phrases an article would actually
+use ("perpetual futures", "perps"). Add nicknames for new OGs there too
+(`"SBF"`, `"CZ"`), and mark a name `"review": true` if it is also an ordinary
+word. When a match is the wrong sense in one article ("Enron's
+liquidation"), add that article's slug to the alias's `skip_files` so later
+sweeps do not re-add it.
+
+A full-site sweep (`backlinks.py --apply` with no `--target`) is worth running
+after a batch of new pages, or whenever the alias file grows.
+
+Rules the script enforces, so you do not have to re-check them by hand:
+one link per target per article, never a self-link, only in paragraph and
+list prose (never headings, quotes, tables, images, components or their
+props, existing links or bold spans), never a second link in a sentence that
+already has one, and it stops once an article reaches 15 internal links -
+the gate's upper bound. Articles already at 15 show as `CAPPED`; leave them.
+`REVIEW` matches are words with a second meaning (Gemini, Bullish, Gate,
+Lighter): read the context, and if it really is the entity, re-run with
+`--target <path> --files <file> --approve-review --apply`.
+
+**Do not bump `updated` for backlink edits.** Adding a link is not a content
+revision, and moving `dateModified` on a dozen pages for that is noise.
+
+Then gate every older file it touched and compare against the file's own
+result before the edit - many older pages already fail checks the current
+gate added later (image counts, description length), and the job is "no new
+failures", not "fix every old page". Commit the edited older files together
+with the new page in Step 5.
+
+Why this exists: on 2026-11-20 a first full sweep found 223 missing links
+across 103 of ~130 articles, including the brand-new Jeff Yan page that
+nothing linked to. New pages only ever linked *outward*; nothing went back
+and linked *in*, so every new page started as an orphan.
+
 ## Step 4 - Stage locally + pick the main image
 The MDX is already in `crypto-wiki/content/{posts|exchanges|crypto-ogs}/` from Step 2 - do NOT commit yet. (The old copy-from-the-automation-repo hop is gone.)
 
@@ -289,7 +339,7 @@ Site standards: posts ~800px wide JPG (existing archive is 800-900px, ~70 KB); c
 Then let the user review (offer dev server). Fold their feedback into guidelines/workflow so the next run is right by default.
 
 ## Step 5 - Push (only on explicit approval)
-Commit post + ALL new images (check `git status` for untracked images - a missing image ships a broken page) to `crypto-wiki`, push. Then **DEPLOY GATE**: poll the production article URL AND main-image URL until both return 200, using the exact hosts + path shapes from the **Production URLs** table at the top of this skill (`curl -sL`). If the first poll returns `000`, stop and fix the URL - that is a bad host, not a slow deploy. Never share before this passes - the banner generator fetches the main image from production (black-spot banner otherwise).
+Commit post + ALL new images (check `git status` for untracked images - a missing image ships a broken page) + every older article Step 3c edited to `crypto-wiki`, push. Then **DEPLOY GATE**: poll the production article URL AND main-image URL until both return 200, using the exact hosts + path shapes from the **Production URLs** table at the top of this skill (`curl -sL`). If the first poll returns `000`, stop and fix the URL - that is a bad host, not a slow deploy. Never share before this passes - the banner generator fetches the main image from production (black-spot banner otherwise).
 
 ### Step 5b - Push notification (automatic)
 **Nothing to run.** The push to main triggers `.github/workflows/notify-new-content.yml`, which waits for the deployment to go live and then syncs to Firestore, which sends the notification. Check the repo's Actions tab to confirm the run went green - it takes a few minutes because it waits on the deploy.

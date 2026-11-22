@@ -544,5 +544,22 @@
       "wallet address"
     ],
     "ci": true
+  },
+  "/posts/what-is-a-bitcoin-treasury-company": {
+    "phrases": [
+      "bitcoin treasury companies",
+      "bitcoin treasury company",
+      "digital asset treasuries",
+      "digital asset treasury",
+      "treasury companies",
+      "treasury company",
+      "corporate Bitcoin treasury",
+      "corporate treasuries",
+      "corporate treasury"
+    ],
+    "ci": true,
+    "skip_files": [
+      "gemini"
+    ]
   }
 }

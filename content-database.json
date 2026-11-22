@@ -605,6 +605,10 @@
     "is.the.bitcoin.four.year.cycle.over": {
       "slug": "is-the-bitcoin-four-year-cycle-over",
       "title": "Is the Bitcoin Four-Year Cycle Over?"
+    },
+    "what.is.a.bitcoin.treasury.company": {
+      "slug": "what-is-a-bitcoin-treasury-company",
+      "title": "What Is a Bitcoin Treasury Company?"
     }
   },
   "tools": {
@@ -636,6 +640,6 @@
   "next_orders": {
     "crypto_ogs": 41,
     "exchanges": 36,
-    "posts": 30
+    "posts": 31
   }
 }

@@ -303,6 +303,10 @@
     "edgex": {
       "slug": "edgex",
       "title": "edgeX"
+    },
+    "variational": {
+      "slug": "variational",
+      "title": "Variational"
     }
   },
   "posts": {
@@ -639,7 +643,7 @@
   },
   "next_orders": {
     "crypto_ogs": 41,
-    "exchanges": 36,
+    "exchanges": 37,
     "posts": 31
   }
 }
